@@ -1,0 +1,38 @@
+#title1{
+    color: rgb(224, 224, 224);
+    font-size: 5em;
+}
+
+#subTitle{
+    color: rgb(224, 224, 224);
+    font-size: 1.5em;
+}
+
+.loginSigninBanner{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+h3{
+    margin-left: 15px;
+}
+
+#sign{
+    display: flex;
+    margin: 15px;
+}
+
+#link1{
+    margin-right: 25px;
+}
+
+#link2{
+    margin-right: 15px;
+}
+
+.icon{
+    width: 15px;
+    margin-bottom: 2px;
+    margin-right: 5px;
+}

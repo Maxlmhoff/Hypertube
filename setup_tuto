@@ -1,0 +1,121 @@
+***************** Comment faire des requetes a l'api via react ***************************
+*****************      (Comment utiliser react avec node)      ***************************
+
+
+- Creer le dossier du projet (ex: mkdir hypertube)
+
+- cd hypertube
+
+*** CLIENT ***
+
+- Creer un dossier client avec create-react-app (create-react-app client)
+
+=> Si la commande create-react-app ne fonctionne pas:
+(attention create-react-app doit d'abord etre installe de maniere gloable a la base: npm install -g create-react-app)
+ voir lien suivant 
+        => https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally
+
+- cd client
+
+- ouvrir fichier App.js
+
+- declarer un etat au composant
+
+- appel de la fonction: componentDidMount() dans le composant et utiliser fetch()
+
+ex:
+
+...
+
+    state = { users: [] }
+  
+
+        // componentDidMount is invoked after a component is mounted (inserted into the DOM).
+        //componentDidMount is used if we need to load data from a remote endpoint (network request).
+
+  componentDidMount() {
+    fetch('/users')
+      .then(res => res.json())
+      .then(users => this.setState({ users }));
+  }
+
+...
+
+fetch() permet de faire une requete a l'api du serveur qu'il faut configurer
+
+- Ouvrir le fichier package.json du dossier client et ajouter la ligne suivante: 
+
+        ===> "proxy": "http://localhost:3001/",
+
+*** SERVEUR **
+
+- retourner dans le dossier hypertube
+
+- Creer un dossier serveur (mkdir serveur)
+
+- cd serveur
+
+- Creer un projet node (npm init) ou (npm init -y pour accepter toutes les questions de init)
+
+- mettre en place le serveur express
+
+- ouvir le fichier package.json et inserer la ligne suivante: 
+
+    ====> "start": "nodemon server.js" (ne pas oublier d'installer nodemon (npm install --save nodemon))
+
+
+
+
+- Retourner dans le dossier hypertube 
+
+- faire un npm init -y (un fichier package.json se cree)
+
+- ouvrir le fichier package.json et inserer ce qui suit: 
+
+{
+  "name": "hypertube",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "client": "cd client && npm start",
+    "server": "cd server && npm start",
+    "start": "concurrently - kill-others \"npm run server\" \"npm run client\""
+  },
+  "keywords": [],
+  "author": "cholm",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^4.1.0"
+  }
+}
+
+- Retourner dans le dossier hypertube et faire un npm install
+
+- Lancer la commande npm start (le client react se lance sur le port 3000 et le serveur se lance sur le port 3001
+, grace au proxy le client peut faire des requettes sur le port 3001 en fonction des routes qui sont appelees);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

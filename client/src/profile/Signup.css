@@ -1,0 +1,108 @@
+/* .login-page{
+    background-image: none;
+    background-color: rgb(26, 25, 31);
+} */
+
+.backgroundGrey {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(26, 25, 31);
+}
+
+.topBanner {
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+}
+
+.divsInBanner {
+    margin-right: 15px;
+}
+
+.smallText {
+    font-size: 0.9em;
+}
+
+#white {
+    margin-top: 2px;
+    color: rgb(224, 224, 224);
+}
+
+h1{
+    color: rgb(240, 110, 32);
+    text-align: center;
+}
+
+h1 a {
+    color: rgb(240, 110, 32);
+}
+
+h1 a:hover {
+    text-decoration: none;
+    color: rgb(210, 90, 10);
+}
+
+#linkForgot {
+    margin-left: 10px;
+}
+
+.containerForm {
+    margin: auto;
+	border: 1px solid rgb(224, 224, 224);
+	background-color: rgb(64, 64, 64);
+	width: 370px;
+	margin-top: 150px;
+}
+
+.containerForm h3{
+    text-align: center;
+    margin: 35px;
+    color: rgb(240, 110, 32);
+	
+}
+
+.divForm {
+    width: 300px;
+    margin: auto
+}
+
+input[type='text'] {
+    background-color: rgb(35, 34, 39);
+    color: rgb(224, 224, 224);
+}
+
+input[type='email'] {
+    background-color: rgb(35, 34, 39);
+    color: rgb(224, 224, 224);
+}
+
+input[type='password'] {
+    background-color: rgb(35, 34, 39);
+    color: rgb(224, 224, 224);
+}
+
+label {
+    color: rgb(224, 224, 224);
+}
+
+#submitButton {
+    background-color: rgb(240, 110, 32);
+    margin: auto;
+    width: 300px;
+	margin-top: 15px;
+	margin-bottom: 30px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
