@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import LandingPage from './profile/LandingPage';
 import Signup from './profile/Signup'
 
+const HYPERTUBE_ROUTE = 'localhost:3001';
+
+
 
 // class Users extends Component {
 //   constructor(props) {

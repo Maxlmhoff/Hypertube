@@ -1,17 +1,40 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Signup.css';
+import axios from 'axios';
+
+const HYPERTUBE_ROUTE = 'localhost:3001';
 const signin = require('../img/signin.png');
 
-class Signup extends Component {
 
+class Signup extends Component {
+  constructor() {
+    super();
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(event) {
+    event.preventDefault();
+    const data = new FormData(event.target);
+
+    fetch('http://' + HYPERTUBE_ROUTE + '/register', {
+      method: 'POST',
+      body: data,
+    });
+  }
 
   render() {
     return (
       <div className="backgroundGrey">
         <div className="topBanner">
           <div className="divsInBanner">
-            <p className="smallText" id="white">Already have a Matcha account?<br /><a href="#" className="smallText" id="linkForgot">I forgot my User ID or Password</a></p>
+            <p className="smallText" id="white">
+              Already have a Matcha account?
+              <br />
+              <a href="#" className="smallText" id="linkForgot">
+                I forgot my User ID or Password
+                </a>
+            </p>
           </div>
           <div className="divsInBanner">
             <Link to="/signin">
@@ -28,7 +51,7 @@ class Signup extends Component {
         <div className="containerForm">
           <h3>Hypertube</h3>
           <div className="divForm">
-            <form method="post" action="/register">
+            <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label for="firstname">
                   Prenom
