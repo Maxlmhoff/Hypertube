@@ -93,11 +93,18 @@ label {
 	margin-bottom: 30px;
 }
 
+#errorPass{
+    display: none;
+}
 
+#errorPassConfirm {
+    display: none;
+    color: red;
+}
 
-
-
-
+#flash {
+    text-align: center;
+}
 
 
 

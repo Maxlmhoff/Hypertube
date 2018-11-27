@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import './Signup.css';
-import axios from 'axios';
+import InputText from '../components/forms/InputText';
+import InputEmail from '../components/forms/InputEmail';
+import InputPassword from '../components/forms/InputPassword';
+import SendButton from '../components/forms/SendButton';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 const signin = require('../img/signin.png');
@@ -20,8 +23,33 @@ class Signup extends Component {
     fetch('http://' + HYPERTUBE_ROUTE + '/register', {
       method: 'POST',
       body: data,
-    });
+    })
+      .then(res => res.json())
+      .then(users => {
+        var flash = document.getElementById('flash');
+        console.log(users[0]);
+        console.log(flash);
+        if (users[0].success)
+        {
+          flash.textContent = users[0].success;
+          flash.style.color = 'green';
+        }
+        if (users[0].error)
+        {
+          flash.textContent = users[0].error;
+          flash.style.color = 'red';
+        }
+      })
+
+    var inputs = document.getElementsByTagName('input');
+    for (var i = 0; i < inputs.length; i++)
+      inputs[i].value = '';
   }
+
+
+
+
+
 
   render() {
     return (
@@ -52,46 +80,13 @@ class Signup extends Component {
           <h3>Hypertube</h3>
           <div className="divForm">
             <form onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label for="firstname">
-                  Prenom
-                </label>
-                <input type="text" name="firstname" id="firstname" class="form-control"></input>
-              </div>
-              <div class="form-group">
-                <label for="name">
-                  Nom
-                </label>
-                <input type="text" name="name" id="name" class="form-control"></input>
-              </div>
-              <div class="form-group">
-                <label for="email">
-                  Adresse email
-                </label>
-                <input type="email" name="email" id="email" class="form-control"></input>
-              </div>
-              <div class="form-group">
-                <label for="login">
-                  Login
-                  </label>
-                <input type="text" name="login" id="login" class="form-control"></input>
-              </div>
-              <div class="form-group">
-                <label for="password">
-                  Mot de passe
-                    </label>
-                <input type="password" name="password" id="password" class="form-control"></input>
-              </div>
-              <div class="form-group">
-                <label for="passConfirm">
-                  Confirmez votre mot de passe
-                      </label>
-                <input type="password" name="passConfirm" id="passConfirm" class="form-control">
-                </input>
-              </div>
-              <button type="submit" class="btn btn-warning" id="submitButton">
-                Create account
-            </button>
+              <InputText label="Prenom" name="prenom" id="Prenom" />
+              <InputText label="Nom" name="nom" id="Nom" />
+              <InputEmail label="Email" name="email" id="Email" />
+              <InputText label="Login" name="login" id="Login" />
+              <InputPassword label="Password" name="password" id="Password" />
+              <SendButton bootstrapButtonType="btn btn-warning" value="Create account" />
+              <p id="flash"></p>
             </form>
           </div>
         </div>
@@ -99,5 +94,6 @@ class Signup extends Component {
     );
   }
 }
+
 
 export default Signup;
