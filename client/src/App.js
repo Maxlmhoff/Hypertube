@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import LandingPage from './profile/LandingPage';
 import Signup from './profile/Signup'
+import Signin from './profile/Signin'
 
-const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
 
@@ -66,10 +66,10 @@ const HYPERTUBE_ROUTE = 'localhost:3001';
 const App = () => (
   <Router>
     <div className="App">
-      {/* <MainMenu/> */}
       <div>
         <Route exact path="/" component={LandingPage} />
         <Route exact path="/signup" component={Signup} />
+        <Route exact path="/signin" component={Signin} />
       </div>
     </div>
   </Router>

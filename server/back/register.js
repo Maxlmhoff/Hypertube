@@ -2,13 +2,15 @@ var express = require('express');
 var eschtml = require('htmlspecialchars');
 var formidable = require('formidable');
 var hash = require('password-hash');
+var file = require('file-system');
+var fs = require('fs');
 
 var router = express.Router();
 var con = require('../config/database');
 
 router.post('/', (req, res) => {
     var form = new formidable.IncomingForm();
-    form.parse(req, function (err, fields, files) { if err throw (err);
+    form.parse(req, (err, fields, files) => {
 
         if (fields.prenom && fields.nom && fields.email && fields.login && fields.password && fields.passwordConfirm) {
             var login = eschtml(fields.login);
@@ -22,26 +24,63 @@ router.post('/', (req, res) => {
             var regMail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
             if (fields.password == fields.passwordConfirm) {
                 if (password.search(regUp) !== -1 && password.search(regLow) !== -1 && password.search(regNumber) !== -1 && password.length > 5) {
-                    if (email.search(regMail) !== -1) {
-                        var sql = "SELECT email FROM users WHERE email = ?";
-                        con.query(sql, [email], function (err, result) {
-                            if (result.length > 0)
-                                res.json([{ error: "Désolé, cette adresse email est déja prise par un autre utilisateur" }])
-                            else {
-                                var sql = "SELECT login FROM users WHERE login = ?";
-                                con.query(sql, [login], function (err, result) {
+                    if (files.photo && (files.photo.type === 'image/png' || files.photo.type === 'image/jpg' || files.photo.type === 'image/jpeg')) {
+                        if (files.photo.size < (50 * 1024 * 1024)) {
+
+                            if (email.search(regMail) !== -1) {
+
+                                var sql = "SELECT email FROM users WHERE email = ?";
+                                con.query(sql, [email], (err, result) => {
                                     if (result.length > 0)
-                                        res.json([{ error: "Nom d'utilisateur déja pris" }])
+                                        res.json([{ error: "Désolé, cette adresse email est déja prise par un autre utilisateur" }])
                                     else {
-                                        con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?', [login, name, firstname, email, hash.generate(password)]);
-                                        res.json([{ success: "Merci pour votre inscription, vous pouvez désormais vous connecter sur hypertube" }])
+                                        var sql = "SELECT login FROM users WHERE login = ?";
+                                        con.query(sql, [login], (err, result) => {
+                                            if (result.length > 0)
+                                                res.json([{ error: "Nom d'utilisateur déja pris" }])
+                                            else {
+                                                if (files.photo.type === 'image/png') {
+                                                    var png = ".png";
+                                                    var result = login + png;
+                                                    var oldpath = files.photo.path;
+                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    fs.copyFile(oldpath, newpath, function (err) {
+                                                        console.log("file moved");
+                                                    });
+                                                }
+                                                else if (files.photo.type === 'image/jpg') {
+                                                    var jpg = ".jpg";
+                                                    var result = login + jpg;
+                                                    var oldpath = files.photo.path;
+                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    fs.copyFile(oldpath, newpath, function (err) {
+                                                        console.log("file moved");
+                                                    });
+                                                }
+                                                else if (files.photo.type === 'image/jpeg') {
+                                                    var jpg = ".jpeg";
+                                                    var result = login + jpg;
+                                                    var oldpath = files.photo.path;
+                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    fs.copyFile(oldpath, newpath, function (err) {
+                                                        console.log("file moved");
+                                                    });
+                                                }
+                                                con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), result]);
+                                                res.json([{ success: "Merci pour votre inscription, vous pouvez désormais vous connecter sur hypertube" }])
+                                            }
+                                        })
                                     }
                                 })
                             }
-                        })
+                            else
+                                res.json([{ error: "Veuillez entrer une adresse mail valide" }])
+                        }
+                        else
+                            res.json([{ error: "Le fichier uploader est trop gros, la taille maximale du fichier est de 5MB" }])
                     }
                     else
-                        res.json([{ error: "Veuillez entrer une adresse mail valide" }])
+                        res.json([{ error: "Veuillez choisir un fichier jpg, jpeg ou png" }])
                 }
                 else
                     res.json([{ error: "Votre mot de passe doit contenir au moins une minuscule, une majuscule, un nombre, et contenir minimum 5 caractères" }])

@@ -81,6 +81,11 @@ input[type='password'] {
     color: rgb(224, 224, 224);
 }
 
+input[type='file'] {
+    background-color: rgb(35, 34, 39);
+    color: rgb(224, 224, 224);
+}
+
 label {
     color: rgb(224, 224, 224);
 }
@@ -105,9 +110,6 @@ label {
 #flash {
     text-align: center;
 }
-
-
-
 
 
 

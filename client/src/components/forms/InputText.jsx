@@ -12,13 +12,13 @@ class InputText extends Component {
     }
 
     handleChange = (e) => {
-      e.target.style.color = 'green';
+      // e.target.style.color = 'green';
       this.setState({ value: e.target.value });
     }
   
-    checked = (e) => {
-      e.target.style.color = "rgb(224, 224, 224)";
-    }
+    // checked = (e) => {
+    //   e.target.style.color = "rgb(224, 224, 224)";
+    // }
   
     render() {
       const { label, name, id } = this.props;
@@ -33,7 +33,6 @@ class InputText extends Component {
             id={id}
             className="form-control"
             onChange={this.handleChange}
-            onBlur={this.checked}
             value={this.state.value}
             required
           >
