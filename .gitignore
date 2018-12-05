@@ -1,0 +1,18 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    .gitignore                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: cholm <marvin@42.fr>                       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2018/12/05 14:54:43 by cholm             #+#    #+#              #
+#    Updated: 2018/12/05 14:56:56 by cholm            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+node_modules/
+package-lock.json
+client/node_modules/
+client/package-lock.json
+server/node_modules/
+server/package-lock.json
