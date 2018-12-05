@@ -55,7 +55,7 @@ class Signup extends Component {
             <p className="smallText" id="white">
               Already have a Matcha account?
               <br />
-              <a href="#" className="smallText" id="linkForgot">
+              <a href="resetPass" className="smallText" id="linkForgot">
                 I forgot my User ID or Password
                 </a>
             </p>

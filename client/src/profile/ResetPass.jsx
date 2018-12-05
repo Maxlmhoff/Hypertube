@@ -1,15 +1,12 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
 import './Signup.css';
-import InputText from '../components/forms/InputText';
-import InputPassSign from '../components/forms/InputPassSign';
+import InputEmail from '../components/forms/InputEmail';
 import SendButton from '../components/forms/SendButton';
-// import { Route, Redirect } from 'react-router-dom'
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
-class Signin extends Component {
+class ResetPass extends Component {
   constructor() {
     super();
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -19,15 +16,16 @@ class Signin extends Component {
     event.preventDefault();
     const data = new FormData(event.target);
 
-    fetch('http://' + HYPERTUBE_ROUTE + '/signin', {
+    fetch('http://' + HYPERTUBE_ROUTE + '/resetPass', {
       method: 'POST',
       body: data,
     })
       .then(res => res.json())
       .then(users => {
         var flash = document.getElementById('flash');
-        if (users[0].connected) {
-          window.location = '/';
+        if (users[0].success) {
+          flash.textContent = users[0].success;
+          flash.style.color = 'green';
         }
         if (users[0].error) {
           flash.textContent = users[0].error;
@@ -40,29 +38,18 @@ class Signin extends Component {
       inputs[i].value = '';
   }
 
-
-
   render() {
     return (
       <div className="backgroundGrey">
-        <div className="topBanner">
-          <div className="divsInBanner">
-            <p className="smallText" id="white">
-              <a href="resetPass" className="smallText" id="linkForgot">
-                I forgot my User ID or Password
-                </a>
-            </p>
-          </div>
-        </div>
+        <div className="topBanner"></div>
         <div>
           <h1><a href="/">Hypertube</a></h1>
         </div>
         <div className="containerForm">
-          <h3>Sign in</h3>
+          <h3>Get new password</h3>
           <div className="divForm">
             <form onSubmit={this.handleSubmit}>
-              <InputText label="Login" name="login" id="Login" />
-              <InputPassSign label="Password" name="password" id="Password" />
+              <InputEmail label="Email" name="email" id="Email" />
               <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
               <p id="flash"></p>
             </form>
@@ -73,5 +60,4 @@ class Signin extends Component {
   }
 }
 
-
-export default Signin;
+export default ResetPass;

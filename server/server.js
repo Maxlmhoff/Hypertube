@@ -11,6 +11,7 @@ const PORT = 3001
 
 var register = require('./back/register');
 var signin = require('./back/signin');
+var resetPass = require('./back/resetPass');
 
 
 
@@ -24,17 +25,20 @@ app.use(session({
 	saveUninitialized: true,
 	cookie: { secure: false }
 }));
+// cors permet d'accepter toutes les entetes HTTP 
 app.use(cors())
 app.use(require('./Middlewares/user'))
 
 
 app.get('/', (req, res) => {
-    res.send("This is the index page");
+	console.log("celui qui est connecté est: ");
+	console.log(req.session.log);
 })
 
 
 app.use('/register', register);
 app.use('/signin', signin);
+app.use('/resetPass', resetPass);
 
 
 

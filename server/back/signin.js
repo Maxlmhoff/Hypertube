@@ -8,7 +8,7 @@ var con = require('../config/database');
 
 router.post("/", function (req, res) {
     var form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, (err, fields) => {
         var login = eschtml(fields.login);
         var password = eschtml(fields.password);
         var sql = "SELECT * FROM users WHERE login = ?";
