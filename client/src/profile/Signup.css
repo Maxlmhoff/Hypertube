@@ -63,7 +63,12 @@ h1 a:hover {
 
 .divForm {
     width: 300px;
-    margin: auto
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
 }
 
 input[type='text'] {
@@ -109,6 +114,10 @@ label {
 
 #flash {
     text-align: center;
+}
+
+#ou{
+    color: white;
 }
 
 

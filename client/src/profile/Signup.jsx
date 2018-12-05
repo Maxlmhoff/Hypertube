@@ -6,6 +6,7 @@ import InputEmail from '../components/forms/InputEmail';
 import InputPassword from '../components/forms/InputPassword';
 import InputFile from '../components/forms/InputFile';
 import SendButton from '../components/forms/SendButton';
+import FacebookLogin from '../components/auth/fb.jsx';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 const signin = require('../img/signin.png');
@@ -85,6 +86,8 @@ class Signup extends Component {
               <SendButton bootstrapButtonType="btn btn-warning" value="Create account" />
               <p id="flash"></p>
             </form>
+            <p id="ou">OU</p>
+              <FacebookLogin />
           </div>
         </div>
       </div>
