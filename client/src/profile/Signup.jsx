@@ -6,7 +6,7 @@ import InputEmail from '../components/forms/InputEmail';
 import InputPassword from '../components/forms/InputPassword';
 import InputFile from '../components/forms/InputFile';
 import SendButton from '../components/forms/SendButton';
-import FacebookLogin from '../components/auth/fb.jsx';
+import FbLogin from '../components/auth/fb.jsx';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 const signin = require('../img/signin.png');
@@ -58,7 +58,7 @@ class Signup extends Component {
               <br />
               <a href="resetPass" className="smallText" id="linkForgot">
                 I forgot my User ID or Password
-                </a>
+              </a>
             </p>
           </div>
           <div className="divsInBanner">
@@ -66,7 +66,7 @@ class Signup extends Component {
               <button className="btn btn-primary" type="button">
                 <img src={signin} className="icon" alt="signin" />
                 Sign in
-                </button>
+              </button>
             </Link>
           </div>
         </div>
@@ -87,7 +87,9 @@ class Signup extends Component {
               <p id="flash"></p>
             </form>
             <p id="ou">OU</p>
-              <FacebookLogin />
+              <FbLogin />
+            <p id="ou">Salut</p>
+
           </div>
         </div>
       </div>
