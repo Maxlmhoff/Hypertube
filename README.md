@@ -1,2 +1,2 @@
 # hypertube
-video streaming web application
+video streaming web application (in the making)
