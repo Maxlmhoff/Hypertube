@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import './Signup.css';
 import InputText from '../components/forms/InputText';
 import InputPassSign from '../components/forms/InputPassSign';
@@ -39,9 +40,7 @@ class Signin extends Component {
     for (var i = 0; i < inputs.length; i++)
       inputs[i].value = '';
   }
-
-
-
+  
   render() {
     return (
       <div className="backgroundGrey">
@@ -50,7 +49,7 @@ class Signin extends Component {
             <p className="smallText" id="white">
               <a href="resetPass" className="smallText" id="linkForgot">
                 I forgot my User ID or Password
-                </a>
+              </a>
             </p>
           </div>
         </div>
@@ -64,7 +63,7 @@ class Signin extends Component {
               <InputText label="Login" name="login" id="Login" />
               <InputPassSign label="Password" name="password" id="Password" />
               <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
-              <p id="flash"></p>
+              <p id="flash" />
             </form>
           </div>
         </div>
@@ -73,5 +72,7 @@ class Signin extends Component {
   }
 }
 
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({ dispatch });
 
-export default Signin;
+export default connect(mapStateToProps, mapDispatchToProps)(Signin);

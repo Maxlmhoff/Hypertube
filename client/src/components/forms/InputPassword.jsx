@@ -13,7 +13,7 @@ class InputPassword extends Component {
         confirmValue: '',
       }
     }
-  
+    
     handleChange = (e) => {
       const regUp = /[A-Z]+/;
       const regLow = /[a-z]+/;

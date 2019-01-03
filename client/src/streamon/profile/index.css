@@ -1,0 +1,28 @@
+.page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.middle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 400px;
+  width: 50vw;
+  background-color: grey;
+}
+
+h2 {
+  min-width: 400px;
+  width: 50vw;
+  text-align: center;
+}
+
+.form_div {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}

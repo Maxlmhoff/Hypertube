@@ -1,47 +1,58 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
 
-export default class FbLogin extends React.Component {
+const HYPERTUBE_ROUTE = 'localhost:3001';
+
+class FbLogin extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoggedIn: false,
-      userID: '',
       name: '',
-      email: '',
       picture: '',
+      token: '',
     };
   }
 
   responseFacebook = (response) => {
-    const {
-      name, email, picture, userID,
-    } = this.state;
+    console.log('composant fb');
+    console.log(response);
     this.setState({
       isLoggedIn: true,
-      userID: response.userID,
       name: response.name,
-      email: response.email,
       picture: response.picture.data.url,
+      token: response.accessToken,
     });
-    console.log(name);
-    console.log(email);
-    console.log(picture);
-    console.log(userID);
+    this.sendToken(this.state.token);
   };
 
+  sendToken(token) {
+    console.log('token -> ' + token)
+    const { dispatch } = this.props;
+    fetch(`http://${HYPERTUBE_ROUTE}/loginFb`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    })
+      .then(res => res.json())
+      .then(res => dispatch({ type: 'NEW_TOKEN', value: JSON.stringify(res) }));
+  }
 
   render() {
     let FbContent;
     const {
-      isLoggedIn, picture, name, email,
+      isLoggedIn, picture, name,
     } = this.state;
     if (isLoggedIn) {
       FbContent = (
         <div
           style={{
             width: '300px',
-            height: '100px',
+            height: '200px',
             backgroundColor: 'white',
           }
           }
@@ -49,18 +60,13 @@ export default class FbLogin extends React.Component {
           <img src={picture} alt={name} />
           <p>
             Tu es log
-            {name}
-          </p>
-          <p>
-            Mail :
-            {email}
           </p>
         </div>
       );
     } else {
       FbContent = (
         <FacebookLogin
-          autoLoad
+          // autoLoad
           appId="355821668516129"
           fields="name,email,picture"
           onClick={this.componentClicked}
@@ -74,3 +80,8 @@ export default class FbLogin extends React.Component {
     );
   }
 }
+
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(mapStateToProps, mapDispatchToProps)(FbLogin);
