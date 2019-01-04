@@ -22,6 +22,20 @@ class Profile extends Component {
     }
   }
 
+  getUser(token) {
+    const { dispatch } = this.props;
+    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    })
+      .then(user => user.json())
+      .then(user => dispatch({ type: 'GET_USER', value: user }));
+  }
+
   render() {
     return (
       <div className="page">

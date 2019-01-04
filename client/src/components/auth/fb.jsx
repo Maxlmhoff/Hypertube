@@ -28,7 +28,6 @@ class FbLogin extends React.Component {
   };
 
   sendToken(token) {
-    console.log('token -> ' + token)
     const { dispatch } = this.props;
     fetch(`http://${HYPERTUBE_ROUTE}/loginFb`, {
       method: 'POST',
@@ -39,7 +38,7 @@ class FbLogin extends React.Component {
       body: JSON.stringify({ token }),
     })
       .then(res => res.json())
-      .then(res => dispatch({ type: 'NEW_TOKEN', value: JSON.stringify(res) }));
+      .then(res => dispatch({ type: 'NEW_TOKEN', value: res.token }));
   }
 
   render() {

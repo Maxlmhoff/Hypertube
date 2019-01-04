@@ -65,10 +65,12 @@ router.post('/', (req, res) => {
                                                     });
                                                 }
                                                 con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), result]);
-                                                var ID = con.query("SELECT LAST_INSERT_ID() FROM users");
+                                                con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
+                                                var ID = result[0].ID;
                                                 const token = jwt.sign({ id: ID }, 'ultrasecret');
-                                                res.json({ success: "Merci pour votre inscription, vous pouvez désormais vous connecter sur hypertube" ,
-                                                           token})
+                                                res.json({Success: "Merci pour votre inscription",
+                                                        token});
+                                                });
                                             }
                                         })
                                     }

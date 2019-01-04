@@ -26,11 +26,6 @@ router.post('/', (req, res) => {
     var name = bigName[1];
     var pseudo = firstname+name;
     var email = user.email;
-
-    var ID = con.query("SELECT LAST_INSERT_ID() FROM users") + 1;
-
-    const token = jwt.sign({ id: ID }, 'ultrasecret');
-    
     var sql = "SELECT email FROM users WHERE email = ?";
     con.query(sql, [email], (err, result) => {
     if (result.length > 0){
@@ -48,8 +43,14 @@ router.post('/', (req, res) => {
             fs.copyFile(oldpath, newpath, function (err) {
                 console.log("file moved");
             });
-            con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [pseudo, name, firstname, email, token, photo]);
-            res.json(token);
+            con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, img = ?', [pseudo, name, firstname, email, photo]);
+            con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
+              var ID = result[0].ID;
+              const token = jwt.sign({ id: ID }, 'ultrasecret');
+              res.json({Success: "Vous vennez de vous inscrire avec facebook !",
+                      token});
+            });
+            
           }
         });
       }

@@ -1,17 +1,11 @@
 const initialState = {
-  log: false,
   token: '',
+  user: {},
 };
 
 function users(state = initialState, action) {
   let nextState;
   switch (action.type) {
-    case 'UPDATE_USER':
-      nextState = {
-        ...state,
-        log: action.value,
-      };
-      return nextState || state;
     case 'NEW_TOKEN':
       nextState = {
         ...state,
@@ -21,6 +15,12 @@ function users(state = initialState, action) {
     case 'DISCONNECT':
       nextState = {
         ...state,
+      };
+      return initialState;
+    case 'GET_USER':
+      nextState = {
+        ...state,
+        user: action.value,
       };
       return initialState;
     default:
