@@ -1,6 +1,7 @@
 const initialState = {
   token: '',
   user: {},
+  allUsers: {},
 };
 
 function users(state = initialState, action) {
@@ -21,6 +22,12 @@ function users(state = initialState, action) {
       nextState = {
         ...state,
         user: action.value,
+      };
+      return nextState || state;
+    case 'ALL_USERS':
+      nextState = {
+        ...state,
+        allUsers: action.value,
       };
       return nextState || state;
     default:

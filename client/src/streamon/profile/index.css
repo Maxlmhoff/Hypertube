@@ -12,7 +12,6 @@
   min-width: 400px;
   width: 50vw;
   background-color: grey;
-  height: 2000px;
   border-radius: 20px;
 }
 
@@ -22,7 +21,7 @@
   align-content: center;
   min-width: 400px;
   width: 50vw;
-  height: 550px;
+  height: 600px;
 }
 
 h2 {
@@ -37,8 +36,8 @@ h2 {
 }
 
 .form_div {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
   flex-direction: column;
   align-items: center;
 }
@@ -55,4 +54,17 @@ h2 {
   height: 200px;
   border-radius: 10%;
   cursor: pointer;
+}
+
+.all_profiles{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.one_profile{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 50px;
 }

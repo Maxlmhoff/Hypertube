@@ -4,7 +4,7 @@ var hash = require('password-hash');
 var formidable = require('formidable');
 
 var router = express.Router();
-var con = require('../config/database');
+var con = require('../../config/database');
 
 router.post("/", function (req, res) {
     var form = new formidable.IncomingForm();

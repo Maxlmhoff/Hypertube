@@ -10,11 +10,12 @@ const PORT = 3001
 
 //Routes var 
 
-var register = require('./back/register');
-var signin = require('./back/signin');
-var resetPass = require('./back/resetPass');
-var loginFb = require('./back/loginFb');
-var getUser = require('./back/getuser');
+var register = require('./back/connection/register');
+var signin = require('./back/connection/signin');
+var resetPass = require('./back/connection/resetPass');
+var loginFb = require('./back/connection/loginFb');
+var getUser = require('./back/profile/getuser');
+var getAllUsers = require('./back/profile/getallusers');
 
 
 //Midllewares
@@ -43,6 +44,7 @@ app.use('/signin', signin);
 app.use('/resetPass', resetPass);
 app.use('/loginFb', loginFb);
 app.use('/getuser', getUser);
+app.use('/getallusers', getAllUsers);
 app.use('/img', express.static('public/img'));
 
 

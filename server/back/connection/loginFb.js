@@ -10,7 +10,7 @@ const request = require('request');
 const fetch = require('node-fetch');
 
 var router = express.Router();
-var con = require('../config/database');
+var con = require('../../config/database');
 
 router.post('/', (req, res) => {
   fetch(`https://graph.facebook.com/me?fields=name,email&access_token=${req.body.token}`, {

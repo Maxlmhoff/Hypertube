@@ -34,7 +34,7 @@ function handleSubmit(event, dispatch) {
       }
       return (users);
     })
-    .then(users => dispatch({ type: 'NEW_TOKEN', value: JSON.stringify(users.token) }));
+    .then(users => dispatch({ type: 'NEW_TOKEN', value: users.token }));
   const inputs = document.getElementsByTagName('input');
   for (let i = 0; i < inputs.length; i += 1) {
     inputs[i].value = '';

@@ -25,7 +25,7 @@ class Profile extends Component {
       allUser: {},
     };
     this.getUser(token);
-    // this.getAllUser();
+    this.getAllUser();
   }
 
   getUser(token) {
@@ -44,18 +44,19 @@ class Profile extends Component {
 
   getAllUser() {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getalluser`, {
+    fetch(`http://${HYPERTUBE_ROUTE}/getallusers`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
     })
-      .then(response => response.json());
+      .then(response => response.json())
+      .then(response => dispatch({ type: 'ALL_USERS', value: response.user }));
   }
 
   render() {
-    const { user } = this.props;
+    const { user, allUsers } = this.props;
     return (
       <div className="page">
         <h1>Pourquoi pas mettre une bannière menu ici</h1>
@@ -86,7 +87,21 @@ class Profile extends Component {
             </form>
           </div>
           <div className="other">
-            <h2>Autres profils</h2>
+            <h2>Tous les profils</h2>
+            <div className="all_profiles">
+              {
+                Object.values(allUsers).map(elem => (
+                  <div key={elem.login} className="one_profile">
+                    <img src={`http://localhost:3001/img/${elem.img}`} alt="Profil" className="profile_picture" />
+                    <div className="info_all">
+                      <p>{elem.firstname}</p>
+                      <p>{elem.name}</p>
+                      <p>{elem.login}</p>
+                    </div>
+                  </div>
+                ))
+              }
+            </div>
           </div>
         </div>
       </div>

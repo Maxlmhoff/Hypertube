@@ -7,7 +7,7 @@ var fs = require('fs');
 var jwt = require('jsonwebtoken');
 
 var router = express.Router();
-var con = require('../config/database');
+var con = require('../../config/database');
 
 router.post('/', (req, res) => {
     var form = new formidable.IncomingForm();
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
                                                     var png = ".png";
                                                     var result = login + png;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved");
                                                     });
@@ -50,7 +50,7 @@ router.post('/', (req, res) => {
                                                     var jpg = ".jpg";
                                                     var result = login + jpg;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved");
                                                     });
@@ -59,7 +59,7 @@ router.post('/', (req, res) => {
                                                     var jpg = ".jpeg";
                                                     var result = login + jpg;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved");
                                                     });
@@ -68,6 +68,7 @@ router.post('/', (req, res) => {
                                                 con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
                                                 var ID = result[0].ID;
                                                 const token = jwt.sign({ id: ID }, 'ultrasecret');
+                                                console.log(token);
                                                 res.json({Success: "Merci pour votre inscription",
                                                         token});
                                                 });
