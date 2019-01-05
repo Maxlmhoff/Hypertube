@@ -22,7 +22,7 @@ function users(state = initialState, action) {
         ...state,
         user: action.value,
       };
-      return initialState;
+      return nextState || state;
     default:
       return state;
   }

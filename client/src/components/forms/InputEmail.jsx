@@ -6,12 +6,19 @@ class InputEmail extends Component {
     static propTypes = {
       label: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      id: PropTypes.string.isRequired,
+      placeholder: PropTypes.string,
     }
-    constructor(props) {
-      super(props)
-      this.state = { value: '' }
-    }
-  
+
+  static defaultProps = {
+    placeholder: undefined,
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = { value: '' };
+  }
+
     handleChange = (e) => {
       const regMail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
       if (e.target.value.search(regMail) !== -1)
@@ -20,13 +27,15 @@ class InputEmail extends Component {
         e.target.style.color = 'red';
       this.setState({ value: e.target.value });
     }
-  
+
     checked = (e) => {
       e.target.style.color = "rgb(224, 224, 224)";
     }
-  
+
     render() {
-      const { label, name, id } = this.props;
+      const {
+        label, name, id, placeholder,
+      } = this.props;
       return (
         <div className="form-group">
           <label htmlFor={label}>
@@ -35,17 +44,17 @@ class InputEmail extends Component {
           <input
             type="email"
             name={name}
+            placeholder={placeholder}
             id={id}
             className="form-control"
             onChange={this.handleChange}
             onBlur={this.checked}
             value={this.state.value}
             required
-          >
-          </input>
+          />
         </div>
       );
     }
-  }
+}
 
-  export default InputEmail;
+export default InputEmail;

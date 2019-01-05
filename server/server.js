@@ -43,6 +43,7 @@ app.use('/signin', signin);
 app.use('/resetPass', resetPass);
 app.use('/loginFb', loginFb);
 app.use('/getuser', getUser);
+app.use('/img', express.static('public/img'));
 
 
 

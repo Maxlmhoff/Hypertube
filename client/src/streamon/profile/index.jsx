@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import './index.css';
+import { connect } from 'react-redux';
 import InputText from '../../components/forms/InputText';
 import InputEmail from '../../components/forms/InputEmail';
 import InputPassword from '../../components/forms/InputPassword';
 import InputFile from '../../components/forms/InputFile';
 import SendButton from '../../components/forms/SendButton';
 
-class Profile extends Component {
-  constructor (props) {
-    super(props)
+const HYPERTUBE_ROUTE = 'localhost:3001';
 
+class Profile extends Component {
+  constructor(props) {
+    super(props);
+    const { token } = this.props;
     this.state = {
       username: '',
       mail: '',
@@ -18,8 +21,11 @@ class Profile extends Component {
       password: '',
       confirmPassword: '',
       image: '',
-      loadingBtn: false
-    }
+      loadingBtn: false,
+      allUser: {},
+    };
+    this.getUser(token);
+    // this.getAllUser();
   }
 
   getUser(token) {
@@ -32,32 +38,49 @@ class Profile extends Component {
       },
       body: JSON.stringify({ token }),
     })
-      .then(user => user.json())
-      .then(user => dispatch({ type: 'GET_USER', value: user }));
+      .then(response => response.json())
+      .then(response => dispatch({ type: 'GET_USER', value: response.user }));
+  }
+
+  getAllUser() {
+    const { dispatch } = this.props;
+    fetch(`http://${HYPERTUBE_ROUTE}/getalluser`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(response => response.json());
   }
 
   render() {
+    const { user } = this.props;
     return (
       <div className="page">
         <h1>Pourquoi pas mettre une bannière menu ici</h1>
         <div className="middle">
           <div className="your_profile">
-            <h2>Ton profil</h2>
-            <form onSubmit={""}>
-              <InputFile label="Nouvelle photo de profil" name="photo" id="photo" />
-              <div className="form_div">
-                <InputText placeholder="tutu" label="Nouveau prenom" name="prenom" id="Prenom" />
-                <InputText label="Nouveau nom" name="nom" id="Nom" />
+            <form onSubmit={this.handleSubmit}>
+              <div className="photo_div">
+                <label htmlFor="photo">
+                  <img src={`http://localhost:3001/img/${user.img}`} alt="Profil" className="profile_picture" />
+                  <InputFile style={{ display: 'none' }} name="photo" label="" id="photo" />
+                </label>
+              </div>
+              <div className="big_form_div">
+                <div className="form_div">
+                  <InputText placeholder={user.firstname} label="Prenom" name="prenom" id="Prenom" />
+                  <InputText placeholder={user.name} label="Nom" name="nom" id="Nom" />
+                  <InputText placeholder={user.login} label="Login" name="login" id="Login" />
+                </div>
+                <div className="form_div">
+                  <InputEmail placeholder={user.email} label="Email" name="email" id="Email" />
+                  <InputPassword placeholder="********" label="Password" name="password" id="Password" />
+                </div>
               </div>
               <div className="form_div">
-                <InputText label="Nouveau login" name="login" id="Login" />
-                <InputEmail label="Nouvel email" name="email" id="Email" />
-              </div>
-              <div className="form_div">
-                <InputPassword label="Nouveau password" name="password" id="Password" />
-              </div>
-              <div className="form_div">
-                <SendButton bootstrapButtonType="btn btn-warning" value="Valider" />
+                <SendButton bootstrapButtonType="btn btn-warning" value="Modifier" />
               </div>
               <p id="flash" />
             </form>
@@ -71,4 +94,7 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

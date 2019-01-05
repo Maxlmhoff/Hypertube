@@ -14,7 +14,6 @@ router.post('/', (req, res) => {
     res.json({user: result[0]});
   });
 
-  res.end();
 });
 
 module.exports = router;
