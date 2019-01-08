@@ -17,8 +17,8 @@ const App = ({ token }) => (
       <div>
         <Route exact path="/signup" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signup /> ) )} />
         <Route exact path="/" component={LandingPage} />
-        <Route exact path="/stream" component={Stream} />
-        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/stream" render={() => ( !token ? ( <Redirect to="/" /> ) : ( <Stream /> ) )} />
+        <Route exact path="/signin" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signin /> ) )}/>
         <Route exact path="/resetPass" component={ResetPass} />
         <Route exact path="/profile" component={Profile} />
       </div>

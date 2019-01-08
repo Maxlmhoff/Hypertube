@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import './Signup.css';
 import InputText from '../components/forms/InputText';
 import InputPassSign from '../components/forms/InputPassSign';
@@ -10,13 +11,13 @@ import SendButton from '../components/forms/SendButton';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
-class Signin extends Component {
-  constructor() {
-    super();
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+// class Signin extends Component {
+//   constructor() {
+//     super();
+//     this.handleSubmit = this.handleSubmit.bind(this);
+//   }
 
-  handleSubmit(event) {
+  function handleSubmit(event, dispatch) {
     event.preventDefault();
     const data = new FormData(event.target);
 
@@ -26,23 +27,27 @@ class Signin extends Component {
     })
       .then(res => res.json())
       .then(users => {
+        console.log("token crée lors du login");
+        console.log(users.token);
+        console.log("1");
         var flash = document.getElementById('flash');
-        if (users[0].connected) {
-          window.location = '/';
-        }
-        if (users[0].error) {
+        // if (users[0].connected) {
+        //   window.location = '/';
+        // }
+        if (users.error) {
           flash.textContent = users[0].error;
           flash.style.color = 'red';
         }
+        return users;
       })
-
-    var inputs = document.getElementsByTagName('input');
-    for (var i = 0; i < inputs.length; i++)
-      inputs[i].value = '';
+      .then(users => dispatch({ type: 'NEW_TOKEN', value: users.token }));
+      console.log("2");
+    // var inputs = document.getElementsByTagName('input');
+    // for (var i = 0; i < inputs.length; i++)
+    //   inputs[i].value = '';
   }
   
-  render() {
-    return (
+  const Signin = ({dispatch}) => (
       <div className="backgroundGrey">
         <div className="topBanner">
           <div className="divsInBanner">
@@ -59,7 +64,7 @@ class Signin extends Component {
         <div className="containerForm">
           <h3>Sign in</h3>
           <div className="divForm">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={event => handleSubmit(event, dispatch)}>
               <InputText label="Login" name="login" id="Login" />
               <InputPassSign label="Password" name="password" id="Password" />
               <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
@@ -68,9 +73,16 @@ class Signin extends Component {
           </div>
         </div>
       </div>
-    );
-  }
-}
+  );
+
+Signin.propTypes = {
+  token: PropTypes.string,
+  dispatch: PropTypes.func.isRequired,
+};
+
+Signin.defaultProps = {
+  token: undefined,
+};
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({ dispatch });
