@@ -43,7 +43,7 @@ router.post('/', (req, res) => {
                                                     var oldpath = files.photo.path;
                                                     var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
-                                                        console.log("file moved");
+                                                        console.log("file moved (/server/register)");
                                                     });
                                                 }
                                                 else if (files.photo.type === 'image/jpg') {
@@ -52,7 +52,7 @@ router.post('/', (req, res) => {
                                                     var oldpath = files.photo.path;
                                                     var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
-                                                        console.log("file moved");
+                                                        console.log("file moved (/server/register)");
                                                     });
                                                 }
                                                 else if (files.photo.type === 'image/jpeg') {
@@ -61,12 +61,13 @@ router.post('/', (req, res) => {
                                                     var oldpath = files.photo.path;
                                                     var newpath = __dirname + '/../../public/img/' + result;
                                                     fs.copyFile(oldpath, newpath, function (err) {
-                                                        console.log("file moved");
+                                                        console.log("file moved (/server/register)");
                                                     });
                                                 }
                                                 con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), result]);
                                                 con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
                                                 var ID = result[0].ID;
+                                                console.log("ID est: " + ID);
                                                 const token = jwt.sign({ id: ID }, 'ultrasecret');
                                                 console.log(token);
                                                 res.json({Success: "Merci pour votre inscription",

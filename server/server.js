@@ -49,9 +49,6 @@ app.use('/img', express.static('public/img'));
 
 
 
-
-
-
 app.listen(PORT, () => {
 		console.log("Server listening on port 3001");
 })

@@ -22,6 +22,7 @@ function handleSubmit(event, dispatch) {
   })
     .then(res => res.json())
     .then((users) => {
+      console.log("un utilisateur est crée: ")
       console.log(users);
       const flash = document.getElementById('flash');
       if (users.success) {
