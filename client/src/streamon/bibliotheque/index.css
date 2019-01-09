@@ -1,5 +1,26 @@
-.test {
-  height: 500;
-  width: 500;
-  background-color: white;
+.main_banner 
+{
+  height: 100px;
+  display: flex;
+  align-items: center;
+  background-color:black;
+}
+
+.main_banner h1
+{
+  display: flex;
+  font-size: 4em;
+}
+
+.main_banner button
+{
+  background-color: rgb(240, 110, 32);
+  color: white;
+  border-radius: 3px;
+  border: none;
+}
+
+button:hover
+{
+  background-color: red;
 }

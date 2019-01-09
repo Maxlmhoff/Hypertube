@@ -3,16 +3,14 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import './index.css';
 
-const Stream = ({ dispatch, token }) => (
-  <div className="test">
-    <h1>Page stream</h1>
+const disconnet = require('../../img/powerof.png');
+
+const Stream = ({ dispatch}) => (
+  <div className="main_banner">
+    <h1>Hypertube</h1>
     <button type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
-      Disconnect (remise du token à 0)
+      Disconnect
     </button>
-    <p>
-      Token :
-      {token}
-    </p>
   </div>
 );
 
