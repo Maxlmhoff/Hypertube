@@ -1,11 +1,52 @@
+#div_name
+{
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 15px;
+}
 .main_banner 
 {
   height: 100px;
   display: flex;
+  justify-content: space-between;
   align-items: center;
   background-color:black;
 }
 
+.main_banner #div_title
+{
+  border: 1px solid white;
+  margin-left: 30px;
+}
+
+.main_banner #div_menu
+{
+  border: 1px solid white;
+  margin-right: 200px;
+}
+
+.main_banner #div_menu ul
+{
+  display: flex;
+}
+
+.main_banner #div_menu ul li
+{
+  list-style-type: none;
+  color: white;
+  margin-right: 45px;
+  font-size: 1.5em;
+}
+
+.main_banner #div_search_disconnect
+{
+  border: 1px solid white;
+  margin-right: 30px;
+  display: flex;
+  width: 400px;
+  justify-content: space-around
+}
 .main_banner h1
 {
   display: flex;
@@ -16,7 +57,7 @@
 {
   background-color: rgb(240, 110, 32);
   color: white;
-  border-radius: 3px;
+  border-radius: 5px;
   border: none;
 }
 
@@ -24,3 +65,83 @@ button:hover
 {
   background-color: red;
 }
+
+#search
+{
+  width: 270px;
+  height: 35px;
+  border-radius: 5px;
+  background: url('../../img/mglass.png') no-repeat;
+  background-size: 22px;
+  background-position: 230px;
+}
+
+.down_arrow
+{
+  width: 20px;
+  height: 20px;
+}
+
+#div_movies
+{
+  display: none;
+  width: 200px;
+  border: 2px solid white;
+}
+
+#div_series
+{
+  display: none;
+  width: 200px;
+  border: 2px solid white;
+}
+
+#div_mangas
+{
+  display: none;
+  width: 200px;
+  border: 2px solid white;
+}
+
+.main_banner #div_menu ul li:hover #div_movies
+{
+  display: block;
+  position: absolute;
+}
+
+.main_banner #div_menu ul li:hover #div_series
+{
+  display: block;
+  position: absolute;
+}
+
+.main_banner #div_menu ul li:hover #div_mangas
+{
+  display: block;
+  position: absolute;
+}
+
+
+#:hover
+{
+  display: block;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
