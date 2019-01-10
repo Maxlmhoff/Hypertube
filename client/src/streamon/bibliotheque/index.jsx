@@ -7,7 +7,7 @@ import './index.css';
 import down_arrow from '../../img/down_arrow.png';
 import profile_icon from '../../img/profile_icon.png';
 
-const HYPERTUBE_ROUTE = 'localhost:3001';
+// const HYPERTUBE_ROUTE = 'localhost:3001';
 
 // const Stream = ({ user, dispatch }) => (
 
@@ -33,9 +33,9 @@ class Stream extends Component {
           <div id="div_menu">
             <ul>
               <li>ACCUEIL</li>
-              <li>MENU FILMS <img src={down_arrow} className="down_arrow" /><div id="div_movies">test</div></li>
-              <li>MENU SERIES <img src={down_arrow} className="down_arrow" /><div id="div_series">test</div></li>
-              <li>MENUS MANGAS <img src={down_arrow} className="down_arrow" /><div id="div_mangas">test</div></li>
+              <li>MENU FILMS <img alt="arrow" src={down_arrow} className="down_arrow" /><div id="div_movies">test</div></li>
+              <li>MENU SERIES <img alt="arrow" src={down_arrow} className="down_arrow" /><div id="div_series">test</div></li>
+              <li>MENUS MANGAS <img alt="arrow" src={down_arrow} className="down_arrow" /><div id="div_mangas">test</div></li>
             </ul>
           </div>
           <div id="div_search_disconnect">
