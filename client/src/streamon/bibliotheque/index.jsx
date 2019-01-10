@@ -49,7 +49,7 @@ class Stream extends Component {
           </div>
         </div>
         <div>
-          TESTES
+          salut
         </div>
       </div>
     );
