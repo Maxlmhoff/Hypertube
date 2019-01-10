@@ -8,11 +8,12 @@ class InputPassword extends Component {
       placeholder: PropTypes.string,
       id: PropTypes.string.isRequired,
       required: PropTypes.bool,
-      onChange: PropTypes.func.isRequired,
+      onChange: PropTypes.func,
     }
 
     static defaultProps = {
       placeholder: undefined,
+      onChange: undefined,
       required: true,
     }
 

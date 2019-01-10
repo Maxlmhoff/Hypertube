@@ -60,7 +60,7 @@ class Profile extends Component {
   }
 
   handleSubmit() {
-    const { token, dispatch } = this.props;
+    const { token } = this.props;
     const data = new FormData();
     Object.entries(this.state).map(([key, value]) => {
       console.log({ key, value });
