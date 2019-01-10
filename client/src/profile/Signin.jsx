@@ -17,63 +17,79 @@ const HYPERTUBE_ROUTE = 'localhost:3001';
 //     this.handleSubmit = this.handleSubmit.bind(this);
 //   }
 
-  function handleSubmit(event, dispatch) {
-    event.preventDefault();
-    const data = new FormData(event.target);
+function getUser(token, dispatch) {
+  fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ token }),
+  })
+    .then(response => response.json())
+    .then(response => dispatch({ type: 'GET_USER', value: response.user }));
+}
 
-    fetch('http://' + HYPERTUBE_ROUTE + '/signin', {
-      method: 'POST',
-      body: data,
+function handleSubmit(event, dispatch) {
+  event.preventDefault();
+  const data = new FormData(event.target);
+
+  fetch(`http://${HYPERTUBE_ROUTE}/signin`, {
+    method: 'POST',
+    body: data,
+  })
+    .then(res => res.json())
+    .then((users) => {
+      console.log("token crée lors du login");
+      console.log(users.token);
+      console.log("1");
+      var flash = document.getElementById('flash');
+      // if (users[0].connected) {
+      //   window.location = '/';
+      // }
+      if (users.error) {
+        flash.textContent = users[0].error;
+        flash.style.color = 'red';
+      }
+      return users;
     })
-      .then(res => res.json())
-      .then(users => {
-        console.log("token crée lors du login");
-        console.log(users.token);
-        console.log("1");
-        var flash = document.getElementById('flash');
-        // if (users[0].connected) {
-        //   window.location = '/';
-        // }
-        if (users.error) {
-          flash.textContent = users[0].error;
-          flash.style.color = 'red';
-        }
-        return users;
-      })
-      .then(users => dispatch({ type: 'NEW_TOKEN', value: users.token }));
-      console.log("2");
-    // var inputs = document.getElementsByTagName('input');
-    // for (var i = 0; i < inputs.length; i++)
-    //   inputs[i].value = '';
-  }
-  
-  const Signin = ({dispatch}) => (
-      <div className="backgroundGrey">
-        <div className="topBanner">
-          <div className="divsInBanner">
-            <p className="smallText" id="white">
-              <a href="resetPass" className="smallText" id="linkForgot">
-                I forgot my User ID or Password
-              </a>
-            </p>
-          </div>
-        </div>
-        <div>
-          <h1><a href="/">Hypertube</a></h1>
-        </div>
-        <div className="containerForm">
-          <h3>Sign in</h3>
-          <div className="divForm">
-            <form onSubmit={event => handleSubmit(event, dispatch)}>
-              <InputText label="Login" name="login" id="Login" />
-              <InputPassSign label="Password" name="password" id="Password" />
-              <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
-              <p id="flash" />
-            </form>
-          </div>
+    .then((users) => {
+      dispatch({ type: 'NEW_TOKEN', value: users.token });
+      getUser(users.token, dispatch);
+    });
+    console.log("2");
+  // var inputs = document.getElementsByTagName('input');
+  // for (var i = 0; i < inputs.length; i++)
+  //   inputs[i].value = '';
+}
+
+const Signin = ({dispatch}) => (
+    <div className="backgroundGrey">
+      <div className="topBanner">
+        <div className="divsInBanner">
+          <p className="smallText" id="white">
+            <a href="resetPass" className="smallText" id="linkForgot">
+              I forgot my User ID or Password
+            </a>
+          </p>
         </div>
       </div>
-  );
+      <div>
+        <h1><a href="/">Hypertube</a></h1>
+      </div>
+      <div className="containerForm">
+        <h3>Sign in</h3>
+        <div className="divForm">
+          <form onSubmit={event => handleSubmit(event, dispatch)}>
+            <InputText label="Login" name="login" id="Login" />
+            <InputPassSign label="Password" name="password" id="Password" />
+            <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
+            <p id="flash" />
+          </form>
+        </div>
+      </div>
+    </div>
+);
 
 Signin.propTypes = {
   token: PropTypes.string,

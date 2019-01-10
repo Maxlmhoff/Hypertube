@@ -13,18 +13,34 @@ class FbLogin extends React.Component {
       picture: '',
       token: '',
     };
+    this.getUser = this.getUser.bind(this);
+    this.responseFacebook = this.responseFacebook.bind(this);
+    this.sendToken = this.sendToken.bind(this);
+  }
+
+  getUser(token) {
+    const { dispatch } = this.props;
+    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    })
+      .then(response => response.json())
+      .then(response => dispatch({ type: 'GET_USER', value: response.user }));
   }
 
   responseFacebook = (response) => {
-    console.log('composant fb');
-    console.log(response);
     this.setState({
       isLoggedIn: true,
       name: response.name,
       picture: response.picture.data.url,
       token: response.accessToken,
     });
-    this.sendToken(this.state.token);
+    const { token } = this.state;
+    this.sendToken(token);
   };
 
   sendToken(token) {
@@ -38,7 +54,10 @@ class FbLogin extends React.Component {
       body: JSON.stringify({ token }),
     })
       .then(res => res.json())
-      .then(res => dispatch({ type: 'NEW_TOKEN', value: res.token }));
+      .then((res) => {
+        dispatch({ type: 'NEW_TOKEN', value: res.token });
+        this.getUser(res.token);
+      });
   }
 
   render() {
@@ -68,7 +87,6 @@ class FbLogin extends React.Component {
           // autoLoad
           appId="355821668516129"
           fields="name,email,picture"
-          onClick={this.componentClicked}
           callback={this.responseFacebook}
         />);
     }

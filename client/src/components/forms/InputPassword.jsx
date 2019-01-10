@@ -7,10 +7,13 @@ class InputPassword extends Component {
       name: PropTypes.string.isRequired,
       placeholder: PropTypes.string,
       id: PropTypes.string.isRequired,
+      required: PropTypes.bool,
+      onChange: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
       placeholder: undefined,
+      required: true,
     }
 
     constructor(props) {
@@ -25,8 +28,8 @@ class InputPassword extends Component {
       const regUp = /[A-Z]+/;
       const regLow = /[a-z]+/;
       const regNumber = /[0-9]+/;
-      var password = e.target.value;
-      var errorPass = document.getElementById('errorPass');
+      const password = e.target.value;
+      const errorPass = document.getElementById('errorPass');
       if (password.search(regUp) !== -1 && password.search(regLow) !== -1 && password.search(regNumber) !== -1 && password.length > 5) {
         errorPass.style.display = 'none';
         e.target.style.color = 'green';
@@ -40,26 +43,32 @@ class InputPassword extends Component {
     }
 
     handleChangeConfirm = (e) => {
-      var errorPassConfirm = document.getElementById('errorPassConfirm');
+      const { onChange = () => {} } = this.props;
+      const { value } = this.state;
+      const errorPassConfirm = document.getElementById('errorPassConfirm');
       this.setState({ confirmValue: e.target.value });
-      if (this.state.value === e.target.value) {
+      if (value === e.target.value) {
         e.target.style.color = 'green';
         errorPassConfirm.style.display = 'none';
+        onChange(e);
       } else {
         errorPassConfirm.style.display = 'block';
         e.target.style.color = 'red';
       }
     }
 
-    checked = (e) => {
-      var errorPass = document.getElementById('errorPass');
-      var errorPassConfirm = document.getElementById('errorPassConfirm');
+    checked = () => {
+      const errorPass = document.getElementById('errorPass');
+      const errorPassConfirm = document.getElementById('errorPassConfirm');
       errorPass.style.display = 'none';
       errorPassConfirm.style.display = 'none';
     }
 
     render() {
-      const { label, name, id, placeholder } = this.props;
+      const {
+        label, name, id, placeholder, required,
+      } = this.props;
+      const { value, confirmValue } = this.state;
       return (
         <div>
           <div className="form-group">
@@ -74,8 +83,8 @@ class InputPassword extends Component {
               className="form-control"
               onChange={this.handleChange}
               onBlur={this.checked}
-              value={this.state.value}
-              required
+              value={value}
+              required={required}
             />
             <p id="errorPass">Votre mot de passe doit contenir au moins une minuscule, une majuscule, un nombre, et contenir minimum 5 caractères</p>
           </div>
@@ -90,8 +99,8 @@ class InputPassword extends Component {
               className="form-control"
               onChange={this.handleChangeConfirm}
               onBlur={this.checked}
-              value={this.state.confirmValue}
-              required
+              value={confirmValue}
+              required={required}
               placeholder={placeholder}
             />
             <p id="errorPassConfirm">Les mots de passes ne sont pas identiques</p>

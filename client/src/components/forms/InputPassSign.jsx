@@ -5,7 +5,13 @@ class InputPassword extends Component {
     static propTypes = {
       label: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      required: PropTypes.bool,
     }
+
+    static defaultProps = {
+      required: true,
+    }
+
     constructor(props) {
       super(props)
       this.state = {
@@ -18,7 +24,7 @@ class InputPassword extends Component {
     }
   
     render() {
-      const { label, name, id } = this.props;
+      const { label, name, id, required } = this.props;
       return (
           <div className="form-group">
             <label htmlFor={label}>
@@ -31,7 +37,7 @@ class InputPassword extends Component {
               className="form-control"
               onChange={this.handleChange}
               value={this.state.value}
-              required
+              required={required}
             >
             </input>
           </div>

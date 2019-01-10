@@ -23,7 +23,7 @@
 .main_banner #div_menu
 {
   border: 1px solid white;
-  margin-right: 200px;
+  /* margin-right: 200px; */
 }
 
 .main_banner #div_menu ul
@@ -68,12 +68,12 @@ button:hover
 
 #search
 {
-  width: 270px;
+  width: 250px;
   height: 35px;
   border-radius: 5px;
   background: url('../../img/mglass.png') no-repeat;
   background-size: 22px;
-  background-position: 230px;
+  background-position: 210px;
 }
 
 .down_arrow
@@ -121,12 +121,12 @@ button:hover
   position: absolute;
 }
 
-
-#:hover
+#profile_icon
 {
-  display: block;
+  width: 35px;
+  height: 35px;
+  /* margin-top: 2px; */
 }
-
 
 
 

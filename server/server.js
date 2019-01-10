@@ -16,6 +16,7 @@ var resetPass = require('./back/connection/resetPass');
 var loginFb = require('./back/connection/loginFb');
 var getUser = require('./back/profile/getuser');
 var getAllUsers = require('./back/profile/getallusers');
+var modify = require('./back/profile/modify');
 
 
 //Midllewares
@@ -45,6 +46,7 @@ app.use('/resetPass', resetPass);
 app.use('/loginFb', loginFb);
 app.use('/getuser', getUser);
 app.use('/getallusers', getAllUsers);
+app.use('/modify', modify);
 app.use('/img', express.static('public/img'));
 
 
