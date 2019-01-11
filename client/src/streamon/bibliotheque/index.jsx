@@ -9,21 +9,51 @@ import profile_icon from '../../img/profile_icon.png';
 
 // const HYPERTUBE_ROUTE = 'localhost:3001';
 
-// const Stream = ({ user, dispatch }) => (
+
+function getMovies() {
+  return fetch('https://yts.am/api/v2/list_movies.json', {
+    method: 'GET',
+  })
+    .then(res => res.json())
+   /* .then((movies) => {
+      // console.log(movies.data);
+      // this.setState({movies: movies})
+      // console.log("ici -> " + this.state.movies.data)s
+      return movies;
+    });*/
+}
+
 
 class Stream extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      movies: undefined,
+    }
+  }
+
+
+  componentDidMount() {
+    getMovies()
+      .then(movies => this.setState({ movies }))
+      .then(() => console.log(this.state.movies.data))
+  }
+
   render() {
     const { user, dispatch } = this.props;
-    fetch('https://yts.am/api/v2/list_movies.json', {
-      method: 'GET',
-    })
-      .then(res => res.json())
-      .then((movies) => {
-        console.log(movies.data);
-      })
+    // fetch('https://yts.am/api/v2/list_movies.json', {
+    //   method: 'GET',
+    // })
+    //   .then(res => res.json())s
+    //   .then((movies) => {
+    //     console.log(movies.data);
+    //     // this.setState({movies: movies})
+    //     // console.log("ici -> " + this.state.movies.data)
+    //     // return ;
+    //   })
     return (
-      
+
       <div>
         <div id="div_name">Bonjour {user.login}</div>
         <div className="main_banner">
@@ -49,7 +79,7 @@ class Stream extends Component {
           </div>
         </div>
         <div>
-          salutd
+
         </div>
       </div>
     );
