@@ -72,7 +72,7 @@ class Signup extends Component {
     const { token } = this.props;
     return (
       <div className="backgroundGrey">
-        <div className="topBanner">
+        <div className="topBanner">      
           <div className="divsInBanner">
             <p className="smallText" id="white">
               Already have a Hypertube account?

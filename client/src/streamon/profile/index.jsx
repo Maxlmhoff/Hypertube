@@ -6,6 +6,7 @@ import InputEmail from '../../components/forms/InputEmail';
 import InputPassword from '../../components/forms/InputPassword';
 import InputFile from '../../components/forms/InputFile';
 import SendButton from '../../components/forms/SendButton';
+import Header from '../../components/header';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
@@ -27,6 +28,8 @@ class Profile extends Component {
       name: '',
       password: '',
       photo: undefined,
+      error: false,
+      message: '',
     };
     this.getUser(token);
     this.getAllUser();
@@ -67,7 +70,6 @@ class Profile extends Component {
       data.append(key, value);
       return ({ key, value });
     });
-    console.log(data);
     fetch(`http://${HYPERTUBE_ROUTE}/modify`, {
       method: 'POST',
       body: data,
@@ -75,7 +77,17 @@ class Profile extends Component {
         Authorization: token,
       },
     })
-      .then(() => this.getUser(token));
+      .then(response => response.json())
+      .then((response) => {
+        if (response.error) {
+          this.setState({ error: true, message: response.error });
+        } else {
+          this.setState({ error: false, message: response.success });
+        }
+      })
+      // .then(response => console.log(response.error))
+      .then(() => this.getUser(token))
+      .then(() => this.getAllUser());
   }
 
   handleChangeFile(event) {
@@ -105,34 +117,36 @@ class Profile extends Component {
   render() {
     const { user, allUsers } = this.props;
     const {
-      login, name, firstname, email,
+      login, name, firstname, email, error, message,
     } = this.state;
     return (
       <div className="page">
-        <h1>Pourquoi pas mettre une bannière menu ici</h1>
+        <Header />
         <div className="middle">
           <div className="your_profile">
-              <div className="photo_div">
-                <label htmlFor="photo">
-                  <img src={`http://localhost:3001/img/${user.img}`} alt="Profil" className="profile_picture" />
-                  <InputFile onChange={this.handleChangeFile} required={false} style={{ display: 'none' }} name="photo" label="" id="photo" />
-                </label>
-              </div>
-              <div className="big_form_div">
-                <div className="form_div">
-                  <InputText value={firstname} onChange={this.handleChangeFistname} required={false} placeholder={user.firstname} label="Prenom" name="prenom" id="Prenom" />
-                  <InputText value={name} onChange={this.handleChangeName} required={false} placeholder={user.name} label="Nom" name="nom" id="Nom" />
-                  <InputText value={login} onChange={this.handleChangeLogin} required={false} placeholder={user.login} label="Login" name="login" id="Login" />
-                </div>
-                <div className="form_div">
-                  <InputEmail value={email} onChange={this.handleChangeEmail} required={false} placeholder={user.email} label="Email" name="email" id="Email" />
-                  <InputPassword onChange={this.handleChangePassword} required={false} placeholder="********" label="Password" name="password" id="Password" />
-                </div>
+            <div className="photo_div">
+              <label htmlFor="photo">
+                <img src={`http://localhost:3001/img/${user.img}`} alt="Profil" className="profile_picture" />
+                <InputFile onChange={this.handleChangeFile} required={false} style={{ display: 'none' }} name="photo" label="" id="photo" />
+              </label>
+            </div>
+            <div className="big_form_div">
+              <div className="form_div">
+                <InputText value={firstname} onChange={this.handleChangeFistname} required={false} placeholder={user.firstname} label="Prenom" name="prenom" id="Prenom" />
+                <InputText value={name} onChange={this.handleChangeName} required={false} placeholder={user.name} label="Nom" name="nom" id="Nom" />
+                <InputText value={login} onChange={this.handleChangeLogin} required={false} placeholder={user.login} label="Login" name="login" id="Login" />
               </div>
               <div className="form_div">
-                <SendButton onClick={this.handleSubmit} bootstrapButtonType="btn btn-warning" value="Modifier" />
-                <p id="flash" />
+                <InputEmail value={email} onChange={this.handleChangeEmail} required={false} placeholder={user.email} label="Email" name="email" id="Email" />
+                <InputPassword onChange={this.handleChangePassword} required={false} placeholder="********" label="Password" name="password" id="Password" />
               </div>
+            </div>
+            <div className="form_div">
+              <SendButton onClick={this.handleSubmit} bootstrapButtonType="btn btn-warning" value="Modifier" />
+              <p id="flash" className={error ? 'error' : 'success'}>
+                {message}
+              </p>
+            </div>
           </div>
           <div className="other">
             <h2>Tous les profils</h2>

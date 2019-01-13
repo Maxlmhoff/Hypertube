@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
             var regLow = /[a-z]+/;
             var regNumber = /[0-9]+/;
             var regMail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
-            if (fields.password == fields.passwordConfirm) {
+            if (fields.password === fields.passwordConfirm) {
                 if (password.search(regUp) !== -1 && password.search(regLow) !== -1 && password.search(regNumber) !== -1 && password.length > 5) {
                   if (files.photo && (files.photo.type === 'image/png' || files.photo.type === 'image/jpg' || files.photo.type === 'image/jpeg')) {
                      if (files.photo.size < (50 * 1024 * 1024)) {

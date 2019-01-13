@@ -68,3 +68,11 @@ h2 {
   align-items: center;
   margin-top: 50px;
 }
+
+.error{
+  color: red;
+}
+
+.success{
+  color: lightgreen;
+}
