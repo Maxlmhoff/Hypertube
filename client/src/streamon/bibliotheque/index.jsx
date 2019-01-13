@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 // import { Link } from 'react-router-dom';
 
@@ -25,12 +26,13 @@ class Movie extends Component {
   render() {
     return (
       <div className="mini">
-        <a href="#">
+        <Link to={"/movie/" + this.props.movie.title_english}>
           <div className="div_play_button">
             <img src={play_button}></img>
           </div>
           <img src={this.props.movie.medium_cover_image}></img>
-        </a></div>
+        </Link>
+      </div>
     )
   }
 }
