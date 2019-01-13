@@ -52,8 +52,16 @@ class Movie extends Component {
                             <div id="synopsys_title">
                                 Synopsys {this.state.movie && this.state.movie.data.movies[0].title_english}
                             </div>
-                            <div></div>
+                            <div id="synopsys">
+                                {this.state.movie && this.state.movie.data.movies[0].synopsis}
+                            </div>
                         </div>
+                    </div>
+                    <div id="more_infos">
+                        <div id="genre"><span id="span_genre">Genre: </span>{this.state.movie && this.state.movie.data.movies[0].genres.map((genre) => {
+                            console.log(genre);
+                            return (<span> {genre} </span>)
+                        })}</div>
                     </div>
 
                 </div>

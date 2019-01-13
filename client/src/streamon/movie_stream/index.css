@@ -15,7 +15,6 @@
 
 #movie_infos {
     border: 1px solid red;
-    /* height: 100px; */
     width: 90%;
     margin: auto;
     margin-bottom: 50px;
@@ -23,9 +22,7 @@
 
 }
 
-.mini_info {
-    border: 1px solid white;
-}
+
 
 .mini_info  img {
     width: 10vw;
@@ -42,9 +39,42 @@
 
 #rty_infos {
     color: white;
-    opacity: 0.8;
+    opacity: 0.6;
+    margin-top: 10px;
+    font-size: 0.8em;
 }
 
 #synopsys_title {
+    color: white;
+    margin-top: 10px;
+    /* font-size: 1.1em; */
+}
+
+#synopsys {
+    color: white;
+    opacity: 0.6;
+    margin-top: 10px;
+}
+
+#more_infos {
+    border: 1px solid white;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 50px;
+    position: relative;
+    bottom: 20px;
+}
+
+
+#genre {
+    color: white;
+}
+
+#span_genre {
+    opacity: 0.6;
+}
+
+
+#genre span {
     color: white;
 }
