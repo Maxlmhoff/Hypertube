@@ -8,6 +8,7 @@ import Signin from './profile/Signin';
 import ResetPass from './profile/ResetPass';
 import Stream from './streamon/bibliotheque/index';
 import Profile from './streamon/profile/index';
+import Movie from './streamon/movie_stream/index';
 
 // const HYPERTUBE_ROUTE = 'localhost:3001';
 
@@ -21,6 +22,7 @@ const App = ({ token }) => (
         <Route exact path="/signin" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signin /> ) )}/>
         <Route exact path="/resetPass" component={ResetPass} />
         <Route exact path="/profile" component={Profile} />
+        <Route exact path="/movie/:value" component={Movie} />
       </div>
     </div>
   </Router>
