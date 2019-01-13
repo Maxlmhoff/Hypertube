@@ -21,7 +21,7 @@ const App = ({ token }) => (
         <Route exact path="/stream" render={() => ( !token ? ( <Redirect to="/" /> ) : ( <Stream /> ) )} />
         <Route exact path="/signin" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signin /> ) )}/>
         <Route exact path="/resetPass" component={ResetPass} />
-        <Route exact path="/profile" component={Profile} />
+        <Route exact path="/profile" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Profile /> ) )}/>
         <Route exact path="/movie/:value" component={Movie} />
       </div>
     </div>
