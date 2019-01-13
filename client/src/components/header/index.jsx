@@ -10,9 +10,10 @@ import duck from '../../img/duck.png';
 
 class Header extends Component {
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, user } = this.props;
     return (
       <div>
+      <div id="div_name">Bonjour {user.login}</div>
         <div className="main_banner">
           <div id="div_title">
             <Link to="/stream">
