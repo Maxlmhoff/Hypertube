@@ -26,7 +26,7 @@ class Movie extends Component {
   render() {
     return (
       <div className="mini">
-        <Link to={"/movie/" + this.props.movie.title_english}>
+        <Link to={"/movie/" + this.props.movie.id}>
           <div className="div_play_button">
             <img src={play_button}></img>
           </div>
