@@ -74,9 +74,9 @@ button:hover
   width: 200px;
   height: 35px;
   border-radius: 5px;
-  background: url('../../img/mglass.png') no-repeat;
+  /* background: url('../../img/mglass.png') no-repeat; */
   background-size: 22px;
-  background-position: 210px;
+  background-position: 170px;
 }
 
 .down_arrow

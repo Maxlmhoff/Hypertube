@@ -8,12 +8,33 @@ import './index.css';
 import profileIcon from '../../img/profileIcon.png';
 import duck from '../../img/duck.png';
 
+
+
 class Header extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: '',
+    }
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.search = this.search.bind(this);
+  }
+
+  handleKeyPress(e) {
+    this.setState({ query: e.target.value })
+  }
+
+  search(e){
+    if (e.key === 'Enter')
+    window.location = "/search/" + this.state.query;  
+  }
+
+
   render() {
     const { dispatch, user } = this.props;
     return (
       <div>
-      <div id="div_name">Bonjour {user.login}</div>
+        <div id="div_name">Bonjour {user.login}</div>
         <div className="main_banner">
           <div id="div_title">
             <Link to="/stream">
@@ -42,13 +63,13 @@ class Header extends Component {
                 MANGAS
                 {/* <img alt="arrow" src={down_arrow} className="down_arrow" /> */}
                 <div id="div_mangas">
-                test
+                  test
                 </div>
               </li>
             </ul>
           </div>
           <div id="div_search_disconnect">
-            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." />
+            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={this.state.value} onChange={this.handleKeyPress} onKeyPress={this.search}/>
             <Link to="/profile">
               <img src={profileIcon} id="profile_icon" alt="profile_icon" />
             </Link>

@@ -154,4 +154,15 @@
 #comment {
     height: 100px;;
     background-color: rgb(35, 34, 39);
+    color: white;
+}
+
+#comment_button {
+    width: 250px;
+    height: 30px;
+    background-color: rgb(240, 110, 32);
+    border-radius: 5px;
+    border: none;
+    color: white;
+    font-size: 0.9em;
 }

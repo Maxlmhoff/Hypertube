@@ -123,8 +123,9 @@ class Movie extends Component {
                         </div>
                     </div>
                     <div id="form_div">
-                        <p id="title_comment">Laisser un commentaire</p>
-                        <InputTextArea name="comment" label="comment" id="comment"/>
+                        <p id="title_comment">Leave a comment</p>
+                        <InputTextArea name="comment" label="comment" id="comment" />
+                        <button id="comment_button">LEAVE A COMMENT</button>
                     </div>
                 </div>
             </div>
