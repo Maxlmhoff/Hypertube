@@ -7,7 +7,7 @@
 #player_stream {
     border: 1px solid white;
     width: 90%;
-    height: 600px;
+    /* height: 600px; */
     margin: auto;
     margin-top: 50px;
     margin-bottom: 50px;
@@ -21,8 +21,6 @@
     display: flex;
 
 }
-
-
 
 .mini_info  img {
     width: 10vw;

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { Player } from 'video-react';
 
 import './index.css';
+import "../../../node_modules/video-react/dist/video-react.css";
 import Header from '../../components/header';
 import play_button from '../../img/play_button.png';
 import person_icon from '../../img/person_icon.png';
@@ -53,7 +55,13 @@ class Movie extends Component {
                 <Header />
                 <div id="main_div">
                     <div id="player_stream">
-
+                        <Player
+                            playsInline
+                            poster={this.state.movie && this.state.movie.data.movie.large_cover_image}
+                            src="https://media.w3.org/2010/05/sintel/trailer_hd.mp4"
+                            width={100}
+                            height={100}
+                        />
                     </div>
                     <div id="movie_infos">
                         <div className="mini_info">
