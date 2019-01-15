@@ -1,13 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class SendButton extends Component {
-    render() {
-      return (
-        <button onClick={this.props.onClick} type="submit" className={this.props.bootstrapButtonType} id="submitButton">
-          {this.props.value}
-          </button>
-      );
-    }
-  }
+const SendButton = ({
+  onClick, bootstrapButtonType, value,
+}) => (
+  <button onClick={onClick} type="submit" className={bootstrapButtonType} id="submitButton">
+    {value}
+  </button>
+);
 
-  export default SendButton;
+SendButton.propTypes = {
+  onClick: PropTypes.string,
+  bootstrapButtonType: PropTypes.string,
+  value: PropTypes.string,
+
+};
+
+SendButton.defaultProps = {
+  onClick: undefined,
+  bootstrapButtonType: undefined,
+  value: undefined,
+};
+
+export default SendButton;

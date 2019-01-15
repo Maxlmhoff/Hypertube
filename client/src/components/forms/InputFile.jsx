@@ -3,25 +3,23 @@ import PropTypes from 'prop-types';
 
 const InputFile = ({
   label, name, id, style, required, onChange,
-}) => {
-  return (
-    <div className="form-group">
-      <label htmlFor={label}>
-        {label}
-      </label>
-      <input
-        onChange={onChange}
-        type="file"
-        name={name}
-        id={id}
-        style={style}
-        className="form-control"
-        required={required}
-        accept="image/png, image/jpeg, image/jpg"
-      />
-    </div>
-  );
-};
+}) => (
+  <div className="form-group">
+    <label htmlFor={label}>
+      {label}
+    </label>
+    <input
+      onChange={onChange}
+      type="file"
+      name={name}
+      id={id}
+      style={style}
+      className="form-control"
+      required={required}
+      accept="image/png, image/jpeg, image/jpg"
+    />
+  </div>
+);
 
 InputFile.propTypes = {
   label: PropTypes.string,
