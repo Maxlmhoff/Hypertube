@@ -59,8 +59,8 @@ class Search extends Component {
       <div>
         <Header />
         <div id="mini_container">
-          {this.state.movie && console.log(this.state.movie)}
-          {this.state.movie && this.state.movie.data.movies.map((movie) => {
+          {this.state.movie && console.log(this.state.movie.data.movie_count)}
+          {this.state.movie && this.state.movie.data.movie_count > 0 && this.state.movie.data.movies.map((movie) => {
             return <Movie key={movie.id} movie={movie} />
           })}
         </div>

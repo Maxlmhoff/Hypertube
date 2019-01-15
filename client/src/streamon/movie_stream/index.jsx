@@ -81,7 +81,7 @@ class Movie extends Component {
                         </div>
                         <div id="cast_div">
                             Cast:<br />
-                            {this.state.movie && this.state.movie.data.movie.cast.map((genre) => {
+                            {this.state.movie && this.state.movie.data.movie.cast > 0 && this.state.movie.data.movie.cast.map((genre) => {
                                 return (<span className="cast_name" key={genre.name}><img src={person_icon} className="person_icon" alt="person_icon"></img>{genre.name} <br /></span>)
                             })}
                         </div>
