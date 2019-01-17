@@ -15,11 +15,11 @@ router.get('/', (req, res) => {
         engine.files.forEach(function(file) {
             var fileName = file.name;
             var filePath = file.path;
-            console.log(fileName + '  ***  ' + filePath);
+            // console.log(fileName + '  ***  ' + filePath);
             console.log('filename:', file.name);
             console.log(file); 
             var stream = file.createReadStream();
-            // console.log(stream);
+            console.log(stream);
             // stream is readable stream to containing the file content
         });
     });
