@@ -17,6 +17,7 @@ var loginFb = require('./back/connection/loginFb');
 var getUser = require('./back/profile/getuser');
 var getAllUsers = require('./back/profile/getallusers');
 var modify = require('./back/profile/modify');
+var stream = require('./back/stream/stream');
 
 
 //Midllewares
@@ -47,6 +48,7 @@ app.use('/loginFb', loginFb);
 app.use('/getuser', getUser);
 app.use('/getallusers', getAllUsers);
 app.use('/modify', modify);
+app.use('/stream', stream);
 app.use('/img', express.static('public/img'));
 
 

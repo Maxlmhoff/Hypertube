@@ -11,7 +11,7 @@ import person_icon from '../../img/person_icon.png';
 
 
 function getMovies(query_term) {
-  return fetch('https://yts.am/api/v2/list_movies.json?query_term=' + query_term, {
+  return fetch('https://yts.am/api/v2/list_movies.json?query_term=' + query_term + '&limit=50', {
     method: 'GET',
   })
     .then(res => res.json())
