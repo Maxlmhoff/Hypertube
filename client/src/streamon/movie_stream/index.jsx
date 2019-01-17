@@ -10,7 +10,7 @@ import Header from '../../components/header';
 import play_button from '../../img/play_button.png';
 import person_icon from '../../img/person_icon.png';
 import InputTextArea from '../../components/forms/InputTextArea';
-
+import test from '../../tmp/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4';
 
 function getMovie(id) {
   return fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id + '&with_cast=true', {
@@ -57,7 +57,7 @@ class Movie extends Component {
             <Player
               playsInline
               poster={this.state.movie && this.state.movie.data.movie.large_cover_image}
-              src="http://peach.themazzone.com/durian/movies/sintel-1024-surround.mp4"
+              src={test}
               fluid={false}
               width="100%"
               height={600}
