@@ -20,12 +20,12 @@ const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
 
-function getMovie(id) {
-  return fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id + '&with_cast=true', {
-    method: 'GET',
-  })
-    .then(res => res.json())
-}
+// function getMovie(id) {
+//   return fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id + '&with_cast=true', {
+//     method: 'GET',
+//   })
+//     .then(res => res.json())
+// }
 
 function getRelatedMovies(id) {
   return fetch('https://yts.am/api/v2/movie_suggestions.json?movie_id=' + id, {
@@ -34,16 +34,18 @@ function getRelatedMovies(id) {
     .then(res => res.json())
 }
 
-function getStream(movie_infos) {
-  fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
+function getStream(id) {
+  return fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({movie_infos}),
+    body: JSON.stringify({ id }),
   })
-    .then(response => response.json());
+    .then(res => res.json());
+    // .then(response => response.json());
+
     // .then(() => {console.log("telechargement")})
 }
 
@@ -60,11 +62,21 @@ class Movie extends Component {
   }
 
   componentDidMount() {
-    getMovie(this.props.match.params.value)
-      .then(movie => this.setState({ movie }))
-      .then(() => {getStream(this.state.movie.data)})
+    // getMovie(this.props.match.params.value)
+    //   .then(movie => this.setState({ movie }))
+    //   .then(() => {getStream(this.state.movie.data)})
+
+
+    getStream(this.props.match.params.value)
+      .then(movie => this.setState({ movie: movie.movie }))
+      // .then(response => {console.log(response)})
+
+
+
+
+
       // .then(() => console.log(this.state.movie.data.movie))
-      .then(() => this.setState({ trailer: 'https://www.youtube.com/embed/' + this.state.movie.data.movie.yt_trailer_code }));
+      // .then(() => this.setState({ trailer: 'https://www.youtube.com/embed/' + this.state.movie.data.movie.yt_trailer_code }));
     getRelatedMovies(this.props.match.params.value)
       .then(related => this.setState({ related }))
     // .then(() => console.log(this.state.related.data.movies))
@@ -72,7 +84,7 @@ class Movie extends Component {
 
   render() {
     // eslint-disable-next-line
-    const video = this.state.movie !== undefined ? require(`../../tmp/${this.state.movie.data.movie.title_long}/Fight.Club.10th.Anniversary.Edition.1999.720p.BrRip.x264.YIFY.mp4`) : undefined;
+    const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
     return (
       <div>
         <Header />
