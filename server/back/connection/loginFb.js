@@ -1,9 +1,4 @@
 var express = require('express');
-var eschtml = require('htmlspecialchars');
-var formidable = require('formidable');
-var hash = require('password-hash');
-var file = require('file-system');
-var fs = require('fs');
 var jwt = require('jsonwebtoken');
 const request = require('request');
 
