@@ -31,7 +31,8 @@ class InputPassword extends Component {
       const regNumber = /[0-9]+/;
       const password = e.target.value;
       const errorPass = document.getElementById('errorPass');
-      if (password.search(regUp) !== -1 && password.search(regLow) !== -1 && password.search(regNumber) !== -1 && password.length > 5) {
+      if (password.search(regUp) !== -1 && password.search(regLow) !== -1
+      && password.search(regNumber) !== -1 && password.length > 5) {
         errorPass.style.display = 'none';
         e.target.style.color = 'green';
       } else {

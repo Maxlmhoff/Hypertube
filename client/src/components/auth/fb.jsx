@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import FacebookLogin from 'react-facebook-login';
+import PropTypes from 'prop-types';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
@@ -97,6 +98,10 @@ class FbLogin extends React.Component {
     );
   }
 }
+
+FbLogin.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({ dispatch });
