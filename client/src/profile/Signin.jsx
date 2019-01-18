@@ -11,12 +11,6 @@ import SendButton from '../components/forms/SendButton';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
-// class Signin extends Component {
-//   constructor() {
-//     super();
-//     this.handleSubmit = this.handleSubmit.bind(this);
-//   }
-
 function getUser(token, dispatch) {
   fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
     method: 'POST',

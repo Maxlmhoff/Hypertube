@@ -10,7 +10,15 @@ import Header from '../../components/header';
 import play_button from '../../img/play_button.png';
 import person_icon from '../../img/person_icon.png';
 import InputTextArea from '../../components/forms/InputTextArea';
-import test from '../../tmp/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4';
+// import test from '../../tmp/Fight Club (1999)/Fight.Club.10th.Anniversary.Edition.1999.720p.BrRip.x264.YIFY.mp4';
+
+
+
+const HYPERTUBE_ROUTE = 'localhost:3001';
+
+
+
+
 
 function getMovie(id) {
   return fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id + '&with_cast=true', {
@@ -24,6 +32,19 @@ function getRelatedMovies(id) {
     method: 'GET',
   })
     .then(res => res.json())
+}
+
+function getStream(movie_infos) {
+  fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({movie_infos}),
+  })
+    .then(response => response.json());
+    // .then(() => {console.log("telechargement")})
 }
 
 
@@ -41,6 +62,7 @@ class Movie extends Component {
   componentDidMount() {
     getMovie(this.props.match.params.value)
       .then(movie => this.setState({ movie }))
+      .then(() => {getStream(this.state.movie.data)})
       // .then(() => console.log(this.state.movie.data.movie))
       .then(() => this.setState({ trailer: 'https://www.youtube.com/embed/' + this.state.movie.data.movie.yt_trailer_code }));
     getRelatedMovies(this.props.match.params.value)
@@ -49,26 +71,32 @@ class Movie extends Component {
   }
 
   render() {
+    // eslint-disable-next-line
+    const video = this.state.movie !== undefined ? require(`../../tmp/${this.state.movie.data.movie.title_long}/Fight.Club.10th.Anniversary.Edition.1999.720p.BrRip.x264.YIFY.mp4`) : undefined;
     return (
       <div>
         <Header />
         <div id="main_div">
           <div id="player_stream">
-            <Player
-              playsInline
-              poster={this.state.movie && this.state.movie.data.movie.large_cover_image}
-              src={test}
-              fluid={false}
-              width="100%"
-              height={600}
-            >
-              <BigPlayButton position="center" />
-              <ControlBar>
-                <ReplayControl seconds={5} order={2.1} />
-                <ReplayControl seconds={10} order={2.2} />
-                <ReplayControl seconds={30} order={2.3} />
-              </ControlBar>
-            </Player>
+            {video
+              && (
+                <Player
+                  playsInline
+                  poster={this.state.movie && this.state.movie.data.movie.large_cover_image}
+                  src={video}
+                  fluid={false}
+                  width="100%"
+                  height={600}
+                >
+                  <BigPlayButton position="center" />
+                  <ControlBar>
+                    <ReplayControl seconds={5} order={2.1} />
+                    <ReplayControl seconds={10} order={2.2} />
+                    <ReplayControl seconds={30} order={2.3} />
+                  </ControlBar>
+                </Player>
+              )
+            }
           </div>
           <div id="movie_infos">
             <div className="mini_info">
