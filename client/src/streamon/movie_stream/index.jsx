@@ -68,8 +68,8 @@ class Movie extends Component {
 
 
     getStream(this.props.match.params.value)
-      .then(movie => this.setState({ movie: movie.movie }))
       // .then(response => {console.log(response)})
+      .then(movie => this.setState({ movie: movie.movie }))
 
 
 
