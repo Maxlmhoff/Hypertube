@@ -9,6 +9,7 @@ import InputPassword from '../components/forms/InputPassword';
 import InputFile from '../components/forms/InputFile';
 import SendButton from '../components/forms/SendButton';
 import FbLogin from '../components/auth/fb';
+import FourtyTwo from '../components/auth/fourtyTwo';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 const signin = require('../img/signin.png');
@@ -111,6 +112,7 @@ class Signup extends Component {
             </form>
             <p id="ou">OU</p>
             <FbLogin />
+            <FourtyTwo />
           </div>
         </div>
       </div>
