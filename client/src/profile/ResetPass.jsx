@@ -7,16 +7,16 @@ const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
 class ResetPass extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleSubmit(event) {
+    // const {} = this.props;
     event.preventDefault();
     const data = new FormData(event.target);
-
-    fetch('http://' + HYPERTUBE_ROUTE + '/resetPass', {
+    fetch(`http://${HYPERTUBE_ROUTE}/resetPass`, {
       method: 'POST',
       body: data,
     })
@@ -32,7 +32,6 @@ class ResetPass extends Component {
           flash.style.color = 'red';
         }
       })
-
     var inputs = document.getElementsByTagName('input');
     for (var i = 0; i < inputs.length; i++)
       inputs[i].value = '';
@@ -41,7 +40,7 @@ class ResetPass extends Component {
   render() {
     return (
       <div className="backgroundGrey">
-        <div className="topBanner"></div>
+        <div className="topBanner" />
         <div>
           <h1><a href="/">Hypertube</a></h1>
         </div>
@@ -51,7 +50,7 @@ class ResetPass extends Component {
             <form onSubmit={this.handleSubmit}>
               <InputEmail label="Email" name="email" id="Email" />
               <SendButton bootstrapButtonType="btn btn-warning" value="Sign in" />
-              <p id="flash"></p>
+              <p id="flash" />
             </form>
           </div>
         </div>

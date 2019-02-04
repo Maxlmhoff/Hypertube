@@ -1,76 +1,53 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-// import { Link } from 'react-router-dom';
-
+import Movie from '../movie';
 import './index.css';
 import Header from '../../components/header';
-import play_button from '../../img/play_button.png';
-import person_icon from '../../img/person_icon.png';
 
-
-function getMovies(query_term) {
-  return fetch('https://yts.am/api/v2/list_movies.json?query_term=' + query_term + '&limit=50', {
+function getMovies(queryTerm) {
+  return fetch(`https://yts.am/api/v2/list_movies.json?query_term=${queryTerm}&limit=50`, {
     method: 'GET',
   })
-    .then(res => res.json())
-}
-
-
-class Movie extends Component {
-
-  render() {
-    return (
-      <div className="mini">
-        <Link to={"/movie/" + this.props.movie.id}>
-          <div className="div_play_button">
-            <img src={play_button}></img>
-          </div>
-          <img src={this.props.movie.medium_cover_image}></img>
-        </Link>
-      </div>
-    )
-  }
+    .then(res => res.json());
 }
 
 class Search extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       movie: undefined,
-    }
+    };
+    this.props = {
+      match: undefined,
+    };
   }
 
   componentDidMount() {
-    console.log(this.props.match.params.value)
-    getMovies(this.props.match.params.value)
-        .then(movie => this.setState({ movie }))
-        .then(() => {console.log(this.state)})
-
-}
+    const { match } = this.props;
+    console.log(match.params.value);
+    getMovies(match.params.value)
+      .then(movie => this.setState({ movie }))
+      .then(() => { console.log(this.state); });
+  }
 
   render() {
-    const { user, dispatch } = this.props;
-
+    const { movie } = this.state;
     return (
-
       <div>
         <Header />
         <div id="mini_container">
-          {this.state.movie && console.log(this.state.movie.data.movie_count)}
-          {this.state.movie && this.state.movie.data.movie_count > 0 && this.state.movie.data.movies.map((movie) => {
-            return <Movie key={movie.id} movie={movie} />
-          })}
+          {movie && console.log(movie.data.movie_count)}
+          {movie && movie.data.movie_count > 0 && movie.data.movies.map(film => (
+            <Movie key={film.id} movie={film} />
+          ))}
         </div>
       </div>
     );
   }
 }
 Search.propTypes = {
-  token: PropTypes.string.isRequired,
-  dispatch: PropTypes.func.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => state;

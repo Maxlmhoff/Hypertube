@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import InputText from '../../components/forms/InputText';
 import InputEmail from '../../components/forms/InputEmail';
 import InputPassword from '../../components/forms/InputPassword';
@@ -170,6 +171,13 @@ class Profile extends Component {
     );
   }
 }
+
+Profile.propTypes = {
+  token: PropTypes.string.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
+  allUsers: PropTypes.object.isRequired,
+};
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({ dispatch });

@@ -14,10 +14,12 @@ var register = require('./back/connection/register');
 var signin = require('./back/connection/signin');
 var resetPass = require('./back/connection/resetPass');
 var loginFb = require('./back/connection/loginFb');
+var login42 = require('./back/connection/login42');
 var getUser = require('./back/profile/getuser');
 var getAllUsers = require('./back/profile/getallusers');
 var modify = require('./back/profile/modify');
 var stream = require('./back/stream/stream');
+var comment = require('./back/stream/comment');
 
 
 //Midllewares
@@ -45,10 +47,12 @@ app.use('/register', register);
 app.use('/signin', signin);
 app.use('/resetPass', resetPass);
 app.use('/loginFb', loginFb);
+app.use('/login42', login42);
 app.use('/getuser', getUser);
 app.use('/getallusers', getAllUsers);
 app.use('/modify', modify);
 app.use('/stream', stream);
+app.use('/comment', comment);
 app.use('/img', express.static('public/img'));
 
 

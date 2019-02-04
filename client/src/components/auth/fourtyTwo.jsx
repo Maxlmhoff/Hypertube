@@ -8,7 +8,7 @@ class FourtyTwo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoggedIn: false,
+      isLogged: false,
       name: '',
       picture: '',
       token: '',
@@ -32,26 +32,22 @@ class FourtyTwo extends React.Component {
   //     .then(response => dispatch({ type: 'GET_USER', value: response.user }));
   // }
 
-  // responseFacebook = (response) => {
-  //   this.setState({
-  //     isLoggedIn: true,
-  //     name: response.name,
-  //     picture: response.picture.data.url,
-  //     token: response.accessToken,
-  //   });
-  //   const { token } = this.state;
-  //   this.sendToken(token);
-  // };
+  response42 = (response) => {
+    console.log(response);
+    console.log('hello');
+    // const { token } = this.state;
+    // this.sendToken(token);
+  };
 
-  // sendToken(token) {
+  // sendToken(code) {
   //   const { dispatch } = this.props;
-  //   fetch(`http://${HYPERTUBE_ROUTE}/loginFb`, {
+  //   fetch(`http://${HYPERTUBE_ROUTE}/login42`, {
   //     method: 'POST',
   //     headers: {
   //       Accept: 'application/json',
   //       'Content-Type': 'application/json',
   //     },
-  //     body: JSON.stringify({ token }),
+  //     body: JSON.stringify({ code }),
   //   })
   //     .then(res => res.json())
   //     .then((res) => {
@@ -63,39 +59,33 @@ class FourtyTwo extends React.Component {
   render() {
     let FourtyTwoContent;
     const {
-      isLoggedIn, picture, name,
+      isLogged,
     } = this.state;
-    if (isLoggedIn) {
+    if (isLogged) {
       FourtyTwoContent = (
-        <div
-          style={{
-            width: '300px',
-            height: '200px',
-            backgroundColor: 'white',
-          }
-          }
-        >
-          <img src={picture} alt={name} />
-          <p>
-            Tu es log
-          </p>
-        </div>
+        <p>
+          Tu es log
+        </p>
       );
     } else {
       FourtyTwoContent = (
-        <button
-        style={{
-          width: '245px',
-          height: '60px',
-          backgroundColor: 'black',
-          color: 'white',
-          marginTop: '40px',
-        }
-        }
-          // callback={this.responseFacebook}
-        >
-          LOGIN WITH 42
-        </button>);
+        <a href="https://api.intra.42.fr/oauth/authorize?client_id=95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438&redirect_uri=https%3A%2F%2Flocalhost%3A3001%2Flogin42&response_type=code">
+          <button
+            style={{
+              width: '245px',
+              height: '60px',
+              backgroundColor: 'black',
+              color: 'white',
+              marginTop: '40px',
+            }
+          }
+            type="button"
+            // callback={this.response42}
+          >
+            LOGIN WITH 42
+          </button>
+        </a>
+      );
     }
     return (
       <div>
@@ -105,9 +95,9 @@ class FourtyTwo extends React.Component {
   }
 }
 
-FourtyTwo.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-};
+// FourtyTwo.propTypes = {
+//   dispatch: PropTypes.func.isRequired,
+// };
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({ dispatch });

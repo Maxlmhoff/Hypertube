@@ -1,6 +1,7 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 const request = require('request');
+var fs = require('fs');
 
 const fetch = require('node-fetch');
 
@@ -36,7 +37,7 @@ router.post('/', (req, res) => {
           } else {
             var jpg = ".jpg";
             var photo = pseudo + jpg;
-            // var file = fs.createWriteStream(`../public/img/${photo}`);
+            var dest = fs.createWriteStream(`../public/img/${photo}`);
             const download = (url, dest, cb = () => {}) => {
               const file = fs.createWriteStream(dest);
               const sendReq = request.get(url);
@@ -65,8 +66,8 @@ router.post('/', (req, res) => {
               });
           };
             var url = `https://graph.facebook.com/${user.id}/picture?height=200&width=200`;
-            var dest = `/Users/maxime/Programmation/42/hypertube/server/public/img/${photo}`;
-            download(url, dest);
+            var dest2 = `/Users/maxime/Programmation/42/hypertube/server/public/img/${photo}`;
+            download(url, dest2);
             // http.get(`https://graph.facebook.com/${user.id}/picture?height=200&width=200`, function(response) {response.pipe(file);});
             con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, img = ?', [pseudo, name, firstname, email, photo]);
             con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {

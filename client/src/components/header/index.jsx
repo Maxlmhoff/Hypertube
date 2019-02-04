@@ -8,25 +8,24 @@ import './index.css';
 import profileIcon from '../../img/profileIcon.png';
 import duck from '../../img/duck.png';
 
-
-
 class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {
       query: '',
-    }
+    };
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.search = this.search.bind(this);
   }
 
   handleKeyPress(e) {
-    this.setState({ query: e.target.value })
+    this.setState({ query: e.target.value });
   }
 
-  search(e){
-    if (e.key === 'Enter')
-    window.location = "/search/" + this.state.query;  
+  search(e) {
+    if (e.key === 'Enter') {
+      window.location = `/search/${this.state.query}`;  
+    }
   }
 
 
@@ -34,7 +33,10 @@ class Header extends Component {
     const { dispatch, user } = this.props;
     return (
       <div>
-        <div id="div_name">Bonjour {user.login}</div>
+        <div id="div_name">
+          Bonjour
+          {user.login}
+        </div>
         <div className="main_banner">
           <div id="div_title">
             <Link to="/stream">
@@ -69,7 +71,7 @@ class Header extends Component {
             </ul>
           </div>
           <div id="div_search_disconnect">
-            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={this.state.value} onChange={this.handleKeyPress} onKeyPress={this.search}/>
+            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={this.state.value} onChange={this.handleKeyPress} onKeyPress={this.search} />
             <Link to="/profile">
               <img src={profileIcon} id="profile_icon" alt="profile_icon" />
             </Link>
@@ -85,6 +87,7 @@ class Header extends Component {
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => state;
