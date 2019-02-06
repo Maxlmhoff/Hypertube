@@ -12,6 +12,7 @@ import Header from '../../components/header';
 import playButton from '../../img/playButton.png';
 import personIcon from '../../img/personIcon.png';
 import InputTextArea from '../../components/forms/InputTextArea';
+import SendButton from '../../components/forms/SendButton';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
@@ -28,20 +29,6 @@ function getRelatedMovies(id) {
   })
     .then(res => res.json());
 }
-
-// function putComment(user) {
-//   return fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
-//     method: 'POST',
-//     headers: {
-//       Accept: 'application/json',
-//       'Content-Type': 'application/json',
-//     },
-//     body: JSON.stringify({
-//       userId: user.id,
-//       pseudo: user.login,
-//     }),
-//   });
-// }
 
 function getStream(id) {
   return fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
@@ -65,7 +52,10 @@ class MovieStream extends Component {
       movie: undefined,
       related: undefined,
       trailer: '',
+      comment: '',
     };
+    this.putComment = this.putComment.bind(this);
+    this.handleChangeComment = this.handleChangeComment.bind(this);
     // const { user } = this.props;
   }
 
@@ -85,10 +75,33 @@ class MovieStream extends Component {
     // .then(() => console.log(this.state.related.data.movies))
   }
 
+  handleChangeComment(event) {
+    this.setState({ comment: event.target.value });
+  }
+
+  putComment() {
+    const { token, user } = this.props;
+    const { comment, movie } = this.state;
+    fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        comment,
+        user,
+        movie,
+      }),
+    });
+  }
+
   render() {
     // eslint-disable-next-line
     const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
-    const { movie, trailer, related } = this.state;
+    const {
+      movie, trailer, related, comment,
+    } = this.state;
     // const { user } = this.props;
     return (
       <div>
@@ -201,11 +214,12 @@ class MovieStream extends Component {
           </div>
           <div id="form_div">
             <p id="title_comment">Leave a comment</p>
-            <InputTextArea name="comment" label="comment" id="comment" />
+            <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
             {/* <button onClick={putComment(user)} id="comment_button" type="button">
               {console.log(user)}
               LEAVE A COMMENT
             </button> */}
+            <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Modifier" />
           </div>
         </div>
       </div>
@@ -215,6 +229,8 @@ class MovieStream extends Component {
 
 MovieStream.propTypes = {
   match: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
+  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => state;
