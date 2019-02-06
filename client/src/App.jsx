@@ -8,7 +8,7 @@ import Signin from './profile/Signin';
 import ResetPass from './profile/ResetPass';
 import Stream from './streamon/bibliotheque/index';
 import Profile from './streamon/profile/index';
-import Movie from './streamon/movie_stream/index';
+import MovieStream from './streamon/movie_stream/index';
 import Search from './streamon/search/index';
 
 // const HYPERTUBE_ROUTE = 'localhost:3001';
@@ -17,14 +17,14 @@ const App = ({ token }) => (
   <Router>
     <div className="App">
       <div>
-        <Route exact path="/signup" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signup /> ) )} />
+        <Route exact path="/signup" render={() => (token ? (<Redirect to="/stream" />) : (<Signup />))} />
         <Route exact path="/" component={LandingPage} />
-        <Route exact path="/stream" render={() => ( !token ? ( <Redirect to="/" /> ) : ( <Stream /> ) )} />
-        <Route exact path="/signin" render={() => ( token ? ( <Redirect to="/stream" /> ) : ( <Signin /> ) )}/>
+        <Route exact path="/stream" render={() => (!token ? (<Redirect to="/" />) : (<Stream />))} />
+        <Route exact path="/signin" render={() => (token ? (<Redirect to="/stream" />) : (<Signin />))} />
         <Route exact path="/resetPass" component={ResetPass} />
-        <Route exact path="/profile" component={Profile}/>
-        <Route exact path="/movie/:value" component={Movie} />
-        <Route exact path="/search/:value"component={Search} />
+        <Route exact path="/profile" render={() => (!token ? (<Redirect to="/" />) : (<Profile />))} />
+        <Route exact path="/movie/:value" component={MovieStream} />
+        <Route exact path="/search/:value" component={Search} />
       </div>
     </div>
   </Router>

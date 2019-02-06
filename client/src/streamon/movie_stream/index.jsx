@@ -16,10 +16,10 @@ import InputTextArea from '../../components/forms/InputTextArea';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 // function getMovie(id) {
-//   return fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + id + '&with_cast=true', {
+//   return fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${id}&with_cast=true`, {
 //     method: 'GET',
 //   })
-//     .then(res => res.json())
+//     .then(res => res.json());
 // }
 
 function getRelatedMovies(id) {
@@ -29,15 +29,18 @@ function getRelatedMovies(id) {
     .then(res => res.json());
 }
 
-// function putComment() {
+// function putComment(user) {
 //   return fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
 //     method: 'POST',
 //     headers: {
 //       Accept: 'application/json',
 //       'Content-Type': 'application/json',
 //     },
-//     body: JSON.stringify({ id }),
-//   })
+//     body: JSON.stringify({
+//       userId: user.id,
+//       pseudo: user.login,
+//     }),
+//   });
 // }
 
 function getStream(id) {
@@ -63,6 +66,7 @@ class MovieStream extends Component {
       related: undefined,
       trailer: '',
     };
+    // const { user } = this.props;
   }
 
   componentDidMount() {
@@ -83,8 +87,9 @@ class MovieStream extends Component {
 
   render() {
     // eslint-disable-next-line
-    // const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
+    const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
     const { movie, trailer, related } = this.state;
+    // const { user } = this.props;
     return (
       <div>
         <Header />
@@ -95,7 +100,7 @@ class MovieStream extends Component {
             <Player
               playsInline
               poster={movie && movie.data.movie.large_cover_image}
-              // src={video}
+              src={video}
               fluid={false}
               width="100%"
               height={600}
@@ -143,7 +148,6 @@ class MovieStream extends Component {
               {movie && movie.data.movie.genres.map(genre => (
                 <span key={genre}>
                   {genre}
-                  {/* {console.log(genre)} */}
                 </span>
               ))
               }
@@ -155,7 +159,6 @@ class MovieStream extends Component {
                 <span className="cast_name" key={genre}>
                   <img src={personIcon} className="person_icon" alt="person_icon" />
                   {genre.name}
-                  {console.log(genre.name)}
                   <br />
                 </span>
               ))}
@@ -168,16 +171,17 @@ class MovieStream extends Component {
                 </button>
               </a>
             </div>
-            {/* <div>
+            <div>
               <iframe
-                  width="560"
-                  height="315"
-                  src={this.state.trailer}
-                  frameborder="0"
-                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen>
-              </iframe>
-          </div> */}
+                width="560"
+                height="315"
+                src={trailer}
+                frameBorder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                title="auto"
+              />
+            </div>
             <p id="title_suggestions">Films associés</p>
             <div className="suggestions_div">
               {related && related.data.movies.map(suggestion => (
@@ -198,9 +202,10 @@ class MovieStream extends Component {
           <div id="form_div">
             <p id="title_comment">Leave a comment</p>
             <InputTextArea name="comment" label="comment" id="comment" />
-            <button id="comment_button" type="button">
+            {/* <button onClick={putComment(user)} id="comment_button" type="button">
+              {console.log(user)}
               LEAVE A COMMENT
-            </button>
+            </button> */}
           </div>
         </div>
       </div>

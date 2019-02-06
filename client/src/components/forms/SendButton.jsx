@@ -10,7 +10,7 @@ const SendButton = ({
 );
 
 SendButton.propTypes = {
-  onClick: PropTypes.string,
+  onClick: PropTypes.func,
   bootstrapButtonType: PropTypes.string,
   value: PropTypes.string,
 

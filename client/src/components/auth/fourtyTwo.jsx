@@ -1,60 +1,40 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import queryString from 'query-string';
 
-// const HYPERTUBE_ROUTE = 'localhost:3001';
+const HYPERTUBE_ROUTE = 'localhost:3001';
 
 class FourtyTwo extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLogged: false,
-      name: '',
-      picture: '',
-      token: '',
     };
-    // this.getUser = this.getUser.bind(this);
-    // this.responseFacebook = this.responseFacebook.bind(this);
-    // this.sendToken = this.sendToken.bind(this);
   }
 
-  // getUser(token) {
-  //   const { dispatch } = this.props;
-  //   fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ token }),
-  //   })
-  //     .then(response => response.json())
-  //     .then(response => dispatch({ type: 'GET_USER', value: response.user }));
-  // }
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const response = queryString.parse(window.location.href);
+    if (response.token) {
+      dispatch({ type: 'NEW_TOKEN', value: response.token });
+      this.getUser(response.token);
+    }
+  }
 
-  response42 = (response) => {
-    console.log(response);
-    console.log('hello');
-    // const { token } = this.state;
-    // this.sendToken(token);
-  };
-
-  // sendToken(code) {
-  //   const { dispatch } = this.props;
-  //   fetch(`http://${HYPERTUBE_ROUTE}/login42`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({ code }),
-  //   })
-  //     .then(res => res.json())
-  //     .then((res) => {
-  //       dispatch({ type: 'NEW_TOKEN', value: res.token });
-  //       this.getUser(res.token);
-  //     });
-  // }
+  getUser(token) {
+    const { dispatch } = this.props;
+    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ token }),
+    })
+      .then(response => response.json())
+      .then(response => dispatch({ type: 'GET_USER', value: response.user }));
+  }
 
   render() {
     let FourtyTwoContent;
@@ -69,7 +49,7 @@ class FourtyTwo extends React.Component {
       );
     } else {
       FourtyTwoContent = (
-        <a href="https://api.intra.42.fr/oauth/authorize?client_id=95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438&redirect_uri=https%3A%2F%2Flocalhost%3A3001%2Flogin42&response_type=code">
+        <a href="https://api.intra.42.fr/oauth/authorize?client_id=95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Flogin42&response_type=code">
           <button
             style={{
               width: '245px',
@@ -80,7 +60,6 @@ class FourtyTwo extends React.Component {
             }
           }
             type="button"
-            // callback={this.response42}
           >
             LOGIN WITH 42
           </button>
@@ -95,9 +74,9 @@ class FourtyTwo extends React.Component {
   }
 }
 
-// FourtyTwo.propTypes = {
-//   dispatch: PropTypes.func.isRequired,
-// };
+FourtyTwo.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 const mapStateToProps = state => state;
 const mapDispatchToProps = dispatch => ({ dispatch });

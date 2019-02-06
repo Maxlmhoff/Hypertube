@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import './index.css';
-// import down_arrow from '../../img/down_arrow.png';
 import profileIcon from '../../img/profileIcon.png';
 import duck from '../../img/duck.png';
 
@@ -24,7 +23,7 @@ class Header extends Component {
 
   search(e) {
     if (e.key === 'Enter') {
-      window.location = `/search/${this.state.query}`;  
+      window.location = `/search/${this.state.query}`;
     }
   }
 

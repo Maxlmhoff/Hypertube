@@ -2,7 +2,6 @@ var express = require('express');
 var eschtml = require('htmlspecialchars');
 var formidable = require('formidable');
 var hash = require('password-hash');
-var file = require('file-system');
 var fs = require('fs');
 var jwt = require('jsonwebtoken');
 
@@ -39,32 +38,36 @@ router.post('/', (req, res) => {
                                             else {
                                                 if (files.photo.type === 'image/png') {
                                                     var png = ".png";
-                                                    var result = login + png;
+                                                    var result1 = login + png;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result1;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
+                                                    var path =  'http://localhost:3001/img/' + result1;
                                                 }
                                                 else if (files.photo.type === 'image/jpg') {
                                                     var jpg = ".jpg";
-                                                    var result = login + jpg;
+                                                    var result1 = login + jpg;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result1;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
+                                                    var path =  'http://localhost:3001/img/' + result1;
                                                 }
                                                 else if (files.photo.type === 'image/jpeg') {
                                                     var jpg = ".jpeg";
-                                                    var result = login + jpg;
+                                                    var result1 = login + jpg;
                                                     var oldpath = files.photo.path;
-                                                    var newpath = __dirname + '/../../public/img/' + result;
+                                                    var newpath = __dirname + '/../../public/img/' + result1;
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
+                                                    var path =  'http://localhost:3001/img/' + result1;
+
                                                 }
-                                                con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), result]);
+                                                con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), path]);
                                                 con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
                                                 var ID = result[0].ID;
                                                 console.log("ID est: " + ID);

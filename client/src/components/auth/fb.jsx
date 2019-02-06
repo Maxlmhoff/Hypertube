@@ -13,6 +13,7 @@ class FbLogin extends React.Component {
       name: '',
       picture: '',
       token: '',
+      id: '',
     };
     this.getUser = this.getUser.bind(this);
     this.responseFacebook = this.responseFacebook.bind(this);
@@ -39,6 +40,7 @@ class FbLogin extends React.Component {
       name: response.name,
       picture: response.picture.data.url,
       token: response.accessToken,
+      id: response.id,
     });
     const { token } = this.state;
     this.sendToken(token);
@@ -64,7 +66,7 @@ class FbLogin extends React.Component {
   render() {
     let FbContent;
     const {
-      isLoggedIn, picture, name,
+      isLoggedIn, picture, name, id,
     } = this.state;
     if (isLoggedIn) {
       FbContent = (
@@ -77,6 +79,7 @@ class FbLogin extends React.Component {
           }
         >
           <img src={picture} alt={name} />
+          {id}
           <p>
             Tu es log
           </p>

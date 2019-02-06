@@ -2,6 +2,7 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 const request = require('request');
 var fs = require('fs');
+var http = require('http');
 
 const fetch = require('node-fetch');
 
@@ -25,60 +26,52 @@ router.post('/', (req, res) => {
     var email = user.email;
     var sql = "SELECT * FROM users WHERE email = ?";
     con.query(sql, [email], (err, result) => {
-    if (result.length > 0){
-      const token = jwt.sign({ id: result[0].id }, 'ultrasecret');
-      res.json({Success: "Vous vennez de vous inscrire avec facebook !",
-      token});
-    } else {
-    var sql = "SELECT login FROM users WHERE login = ?";
-        con.query(sql, [pseudo], (err, result) => {
-          if (result.length > 0) {
-            res.json([{ error: "Nom d'utilisateur déja pris, veuillez vous inscrire d'une autre facon" }])
-          } else {
-            var jpg = ".jpg";
-            var photo = pseudo + jpg;
-            var dest = fs.createWriteStream(`../public/img/${photo}`);
-            const download = (url, dest, cb = () => {}) => {
-              const file = fs.createWriteStream(dest);
-              const sendReq = request.get(url);
-          
-              // verify response code
-              sendReq.on('response', (response) => {
-                  if (response.statusCode !== 200) {
-                      return cb('Response status was ' + response.statusCode);
-                  }
-          
-                  sendReq.pipe(file);
-              });
-          
-              // close() is async, call cb after close completes
-              file.on('finish', () => file.close(cb));
-          
-              // check for request errors
-              sendReq.on('error', (err) => {
-                  fs.unlink(dest);
-                  return cb(err.message);
-              });
-          
-              file.on('error', (err) => { // Handle errors
-                  fs.unlink(dest, () => {}); // Delete the file async. (But we don't check the result)
-                  return cb(err.message);
-              });
-          };
-            var url = `https://graph.facebook.com/${user.id}/picture?height=200&width=200`;
-            var dest2 = `/Users/maxime/Programmation/42/hypertube/server/public/img/${photo}`;
-            download(url, dest2);
-            // http.get(`https://graph.facebook.com/${user.id}/picture?height=200&width=200`, function(response) {response.pipe(file);});
-            con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, img = ?', [pseudo, name, firstname, email, photo]);
-            con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
-              var ID = result[0].ID;
-              const token = jwt.sign({ id: ID }, 'ultrasecret');
-              res.json({Success: "Vous vennez de vous inscrire avec facebook !",
-                      token});
-            });
-            
-          }
+      if (result.length > 0){
+        const token = jwt.sign({ id: result[0].id }, 'ultrasecret');
+        res.json({
+          Success: "Connexion avec fb !",
+          token,
         });
+      }
+      else {
+        // var jpg = ".jpg";
+        var photo = `https://graph.facebook.com/${user.id}/picture?height=200&width=200`;
+        // var file = fs.createWriteStream(`../public/img/${photo}`);
+        // http.get(`https://graph.facebook.com/${user.id}/picture?height=200&width=200`, function(response) {response.pipe(file);});
+
+        // const download = (url, dest, cb = () => {}) => {
+        //   const file = fs.createWriteStream(dest);
+        //   const sendReq = request.get(url);
+        //   // verify response code
+        //   sendReq.on('response', (response) => {
+        //     if (response.statusCode !== 200) {
+        //       return cb('Response status was ' + response.statusCode);
+        //     }
+        //     sendReq.pipe(file);
+        //   });
+        //   // close() is async, call cb after close completes
+        //   file.on('finish', () => file.close(cb));
+        //   // check for request errors
+        //   sendReq.on('error', (err) => {
+        //       fs.unlink(dest);
+        //       return cb(err.message);
+        //   });
+        //   file.on('error', (err) => { // Handle errors
+        //       fs.unlink(dest, () => {}); // Delete the file async. (But we don't check the result)
+        //       return cb(err.message);
+        //   });
+        // };
+        // var url = `https://graph.facebook.com/${user.id}/picture?height=200&width=200`;
+        // var dest = `/Users/maxime/Programmation/42/hypertube/server/public/img/${photo}`;
+        // download(url, dest);
+
+        con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, img = ?', [pseudo, name, firstname, email, photo]);
+        con.query('SELECT ID FROM users WHERE email = ?', [email], (err, result) => {
+        var ID = result[0].ID;
+        const token = jwt.sign({ id: ID }, 'ultrasecret');
+        res.json({Success: "Vous vennez de vous inscrire avec facebook !",
+                token});
+        }); 
       }
     })
   })

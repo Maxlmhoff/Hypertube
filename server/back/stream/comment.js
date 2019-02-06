@@ -14,7 +14,8 @@ router.post('/', (req, res) => {
     var userId = eschtml(req.body.userId);
     var comment = eschtml(req.body.comment);
     var movieId = eschtml(req.body.movieId);
-    con.query('INSERT INTO comment SET userId = ?, movieId = ?, comment = ?', [userId, movieId, comment]);
+    var pseudo = eschtml(req.body.pseudo);
+    con.query('INSERT INTO comment SET userId = ?, pseudo = ?, movieId = ?, comment = ?', [userId, pseudo, movieId, comment]);
     res.json({success: "Merci d'avoir laissé un commentaire"})
   }
   else

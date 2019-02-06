@@ -112,33 +112,36 @@ router.post('/', async (req, res) => {
       else
         password = hash.generate(password);
       if (files.photo && files.photo.type === 'image/png') {
-          var png = ".png";
-          var result1 = login + png;
-          var oldpath = files.photo.path;
+          let png = ".png";
+          let result1 = login + png;
+          let oldpath = files.photo.path;
           var newpath = __dirname + '/../../public/img/' + result1;
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      }
+      var path =  'http://localhost:3001/img/' + result1;
+    }
       else if (files.photo && files.photo.type === 'image/jpg') {
-          var jpg = ".jpg";
-          var result1 = login + jpg;
-          var oldpath = files.photo.path;
+          let jpg = ".jpg";
+          let result1 = login + jpg;
+          let oldpath = files.photo.path;
           var newpath = __dirname + '/../../public/img/' + result1;
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      }
+      var path =  'http://localhost:3001/img/' + result1;
+    }
       else if (files.photo && files.photo.type === 'image/jpeg') {
-          var jpg = ".jpeg";
-          var result1 = login + jpg;
-          var oldpath = files.photo.path;
+          let jpg = ".jpeg";
+          let result1 = login + jpg;
+          let oldpath = files.photo.path;
           var newpath = __dirname + '/../../public/img/' + result1;
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      }
-      con.query('UPDATE users SET login = ?, name = ?, firstname = ?, password = ?, email = ?, img = ? WHERE id = ? ', [login, name, firstname, password, email, result1, decoded.id]);
+      var path =  'http://localhost:3001/img/' + result1;
+    }
+      con.query('UPDATE users SET login = ?, name = ?, firstname = ?, password = ?, email = ?, img = ? WHERE id = ? ', [login, name, firstname, password, email, path, decoded.id]);
       res.json({success: "Vos modifications on bien été prises en compte"});
       }
     });

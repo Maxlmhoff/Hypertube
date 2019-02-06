@@ -67,7 +67,6 @@ class Profile extends Component {
     const { token } = this.props;
     const data = new FormData();
     Object.entries(this.state).map(([key, value]) => {
-      console.log({ key, value });
       data.append(key, value);
       return ({ key, value });
     });
@@ -127,7 +126,7 @@ class Profile extends Component {
           <div className="your_profile">
             <div className="photo_div">
               <label htmlFor="photo">
-                <img src={`http://localhost:3001/img/${user.img}`} alt="Profil" className="profile_picture" />
+                <img src={`${user.img}`} alt="Profil" className="profile_picture" />
                 <InputFile onChange={this.handleChangeFile} required={false} style={{ display: 'none' }} name="photo" label="" id="photo" />
               </label>
             </div>
@@ -155,7 +154,7 @@ class Profile extends Component {
               {
                 Object.values(allUsers).map(elem => (
                   <div key={elem.login} className="one_profile">
-                    <img src={`http://localhost:3001/img/${elem.img}`} alt="Profil" className="profile_picture" />
+                    <img src={`${elem.img}`} alt="Profil" className="profile_picture" />
                     <div className="info_all">
                       <p>{elem.firstname}</p>
                       <p>{elem.name}</p>
@@ -176,7 +175,7 @@ Profile.propTypes = {
   token: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
-  allUsers: PropTypes.object.isRequired,
+  allUsers: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 };
 
 const mapStateToProps = state => state;

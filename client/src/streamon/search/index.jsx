@@ -18,9 +18,6 @@ class Search extends Component {
     this.state = {
       movie: undefined,
     };
-    this.props = {
-      match: undefined,
-    };
   }
 
   componentDidMount() {
