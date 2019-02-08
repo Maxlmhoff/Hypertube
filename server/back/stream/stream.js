@@ -27,23 +27,25 @@ router.post('/', (req, res) => {
             //console.log(movie.data.movie)
             var hash = movie.data.movie.torrents[0].hash;
             var link = movie.data.movie.torrents[0].url;
-            var path = '';
+            var path = 'salut max';
             // console.log(req.body.movie_infos.movie.torrents[0]);
             var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: '/tmp/movies' });
-            engine.on('ready', function () {
-                engine.files.forEach(function (file) {
-                    var fileName = file.name;
-                    var filePath = file.path;
-                    console.log(fileName + '  ***  ' + filePath);
-                    path = filePath;
-                    //console.log('filename:', file.name);
-                    //console.log(file);
-                    var stream = file.createReadStream();
-                    // console.log(stream);
-                    // stream is readable stream to containing the file content
+            return new Promise(function(resolve, reject) {
+                engine.on('ready', function () {
+                    resolve({ engine, movie });
                 });
             });
-            movie.path = path;
+        })
+        .then(({ engine, movie }) => {
+            const file = engine.files[0];
+            var fileName = file.name;
+            var filePath = file.path;
+            console.log(fileName + '  ***  ' + filePath);
+            path = filePath;
+            console.log("filepath = " + path);
+            var stream = file.createReadStream();
+            // stream is readable stream to containing the file content
+            movie.path = filePath;
             return movie;
         })
         .then((movie) => {res.json({ movie: movie })});

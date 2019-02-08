@@ -72,6 +72,7 @@ class MovieStream extends Component {
       // .then((response) => { console.log(response); })
       // .then(() => { console.log(match); })
       .then(movie => this.setState({ movie: movie.movie }))
+      // .then(movie => console.log(movie))
       // .then(() => console.log(this.state.movie.data.movie))
       .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.data.movie.yt_trailer_code}` }));
 
@@ -118,7 +119,8 @@ class MovieStream extends Component {
 
   render() {
     // eslint-disable-next-line
-    const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
+    const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
+    console.log("page movie_stream");
     console.log(this.state.movie ? this.state.movie.data.movie.title_long : undefined)
     const {
       movie, trailer, related, comment,
@@ -132,7 +134,7 @@ class MovieStream extends Component {
         <Header />
         <div id="main_div">
           <div id="player_stream">
-            {/* {video */}
+            {video}
               && (
             <Player
               playsInline
@@ -150,6 +152,7 @@ class MovieStream extends Component {
               </ControlBar>
             </Player>
           )
+            
           </div>
           <div id="movie_infos">
             <div className="mini_info">
