@@ -73,7 +73,7 @@ class MovieStream extends Component {
       // .then(() => { console.log(match); })
       .then(movie => this.setState({ movie: movie.movie }))
       // .then(() => console.log(this.state.movie.data.movie))
-      // .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.data.movie.yt_trailer_code}` }));
+      .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.data.movie.yt_trailer_code}` }));
 
     getRelatedMovies(match.params.value)
       .then(related => this.setState({ related }))
@@ -119,6 +119,7 @@ class MovieStream extends Component {
   render() {
     // eslint-disable-next-line
     const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
+    // console.log(this.state.movie.data.movie.title_long)
     const {
       movie, trailer, related, comment,
     } = this.state;
