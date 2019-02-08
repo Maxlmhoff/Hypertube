@@ -16,6 +16,8 @@ class FourtyTwo extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const response = queryString.parse(window.location.href);
+    console.log("AAAAAA");
+    console.log(response);
     if (response.token) {
       dispatch({ type: 'NEW_TOKEN', value: response.token });
       this.getUser(response.token);

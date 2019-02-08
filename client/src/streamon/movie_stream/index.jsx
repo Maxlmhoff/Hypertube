@@ -119,7 +119,7 @@ class MovieStream extends Component {
   render() {
     // eslint-disable-next-line
     const video = this.state.movie ? require(`../../tmp/${this.state.movie.data.movie.title_long}/The Shawshank Redemption 1994.720p.BRRip.x264.YIFY.mp4`) : undefined;
-    // console.log(this.state.movie.data.movie.title_long)
+    console.log(this.state.movie ? this.state.movie.data.movie.title_long : undefined)
     const {
       movie, trailer, related, comment,
     } = this.state;

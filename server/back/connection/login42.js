@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
             var ID = result[0].ID;
             const token = jwt.sign({ id: ID }, 'ultrasecret');
             console.log(token);
-            res.redirect(`https://localhost:3000/signup?token=${token}`)      
+            res.redirect(`https://localhost:3000/signup?truc=rien&token=${token}`)      
           }); 
         }
       });
