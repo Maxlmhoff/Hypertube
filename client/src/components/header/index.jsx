@@ -22,14 +22,16 @@ class Header extends Component {
   }
 
   search(e) {
+    const { query } = this.state;
     if (e.key === 'Enter') {
-      window.location = `/search/${this.state.query}`;
+      window.location = `/search/${query}`;
     }
   }
 
 
   render() {
     const { dispatch, user } = this.props;
+    const { value } = this.state;
     return (
       <div>
         <div id="div_name">
@@ -39,7 +41,7 @@ class Header extends Component {
         <div className="main_banner">
           <div id="div_title">
             <Link to="/stream">
-              <img alt="duck" src={duck} className="duck" onClick={this.setRedirect} />
+              <img alt="duck" src={duck} className="duck" />
             </Link>
             <h1>Hypertube</h1>
           </div>
@@ -70,13 +72,15 @@ class Header extends Component {
             </ul>
           </div>
           <div id="div_search_disconnect">
-            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={this.state.value} onChange={this.handleKeyPress} onKeyPress={this.search} />
+            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={value} onChange={this.handleKeyPress} onKeyPress={this.search} />
             <Link to="/profile">
               <img src={profileIcon} id="profile_icon" alt="profile_icon" />
             </Link>
-            <button type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
-              Log out
-            </button>
+            <Link to="/">
+              <button type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
+                Log out
+              </button>
+            </Link>
           </div>
         </div>
       </div>

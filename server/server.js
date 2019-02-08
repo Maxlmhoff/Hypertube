@@ -20,6 +20,7 @@ var getAllUsers = require('./back/profile/getallusers');
 var modify = require('./back/profile/modify');
 var stream = require('./back/stream/stream');
 var comment = require('./back/stream/comment');
+var getComment = require('./back/stream/getcomment');
 
 
 //Midllewares
@@ -53,6 +54,7 @@ app.use('/getallusers', getAllUsers);
 app.use('/modify', modify);
 app.use('/stream', stream);
 app.use('/comment', comment);
+app.use('/getcomment', getComment);
 app.use('/img', express.static('public/img'));
 
 

@@ -39,9 +39,8 @@ function getStream(id) {
     },
     body: JSON.stringify({ id }),
   })
-    .then(res => res.json());
-  // .then(response => response.json());
-  // .then(() => {console.log("telechargement")})
+    .then(res => res.json())
+    // .then(() => { console.log('telechargement'); });
 }
 
 
@@ -54,6 +53,7 @@ class MovieStream extends Component {
       trailer: '',
       comment: '',
     };
+    // this.getComment();
     this.putComment = this.putComment.bind(this);
     this.handleChangeComment = this.handleChangeComment.bind(this);
     // const { user } = this.props;
@@ -61,18 +61,37 @@ class MovieStream extends Component {
 
   componentDidMount() {
     const { match } = this.props;
-    // getMovie(this.props.match.params.value)
-    //   .then(movie => this.setState({ movie }))
-    //   .then(() => {getStream(this.state.movie.data)})
+    // getMovie(match.params.value)
+    //   .then((movie) => {
+    //     this.setState({ movie });
+    //     return movie;
+    //   })
+    //   .then(movie => getStream(movie.data));
 
     getStream(match.params.value)
-      // .then(response => {console.log(response)})
-      .then(movie => this.setState({ movie: movie.movie }));
-    // .then(() => console.log(this.state.movie.data.movie))
-    // .then(() => this.setState({ trailer: 'https://www.youtube.com/embed/' + this.state.movie.data.movie.yt_trailer_code }));
+      // .then((response) => { console.log(response); })
+      // .then(() => { console.log(match); })
+      .then(movie => this.setState({ movie: movie.movie }))
+      // .then(() => console.log(this.state.movie.data.movie))
+      // .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.data.movie.yt_trailer_code}` }));
+
     getRelatedMovies(match.params.value)
-      .then(related => this.setState({ related }));
-    // .then(() => console.log(this.state.related.data.movies))
+      .then(related => this.setState({ related }))
+      // .then(() => console.log(this.state.related.data.movies))
+  }
+
+  getComment() {
+    const { movie } = this.state;
+    console.log(movie);
+    fetch(`http://${HYPERTUBE_ROUTE}/getcomment`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(movie),
+    })
+      .then(response => response.json())
+      .then(response => console.log(response));
   }
 
   handleChangeComment(event) {
@@ -82,6 +101,7 @@ class MovieStream extends Component {
   putComment() {
     const { token, user } = this.props;
     const { comment, movie } = this.state;
+    console.log(movie);
     fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
       method: 'POST',
       headers: {
@@ -103,6 +123,9 @@ class MovieStream extends Component {
       movie, trailer, related, comment,
     } = this.state;
     // const { user } = this.props;
+    if (!movie) {
+      return null;
+    }
     return (
       <div>
         <Header />
@@ -215,11 +238,7 @@ class MovieStream extends Component {
           <div id="form_div">
             <p id="title_comment">Leave a comment</p>
             <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
-            {/* <button onClick={putComment(user)} id="comment_button" type="button">
-              {console.log(user)}
-              LEAVE A COMMENT
-            </button> */}
-            <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Modifier" />
+            <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Envoyer" />
           </div>
         </div>
       </div>
