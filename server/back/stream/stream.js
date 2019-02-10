@@ -40,19 +40,19 @@ router.post('/', (req, res) => {
 
 
 
-
+            let path = undefined;
             engine.files.forEach(function (file, movie) {
-                // console.log('filename:', file.name);
+                console.log(file);
                 if (file.name.indexOf('.mp4') > 0) {
-                    var filePath = file.name;
-                    console.log('FILEPATH  ***  ' + filePath);
+                    path = file.path;
+                    console.log('FILEPATH  ***  ' + path);
                     var stream = file.createReadStream();
                     // stream is readable stream to containing the file content
-                    movie.path = filePath;
-                    return movie;
+                    // movies.path = filePath;
                 }
+                return path;
             })
-            // console.log(test)
+            console.log(path);
 
 
 
@@ -64,13 +64,15 @@ router.post('/', (req, res) => {
 
 
 
-            const file = engine.files[0];
-            var fileName = file.name;
-            var filePath = file.path;
-            var path = filePath;
-            var stream = file.createReadStream();
-            // stream is readable stream to containing the file content
-            movie.path = filePath;
+
+            // const file = engine.files[1];
+            // var fileName = file.name;
+            // var filePath = file.path;
+            // console.log('FILEPATH  ***  ' + filePath);
+            // var path = filePath;
+            // var stream = file.createReadStream();
+            // // stream is readable stream to containing the file content
+            movie.path = path;
             return movie;
         })
         .then((movie) => { res.json({ movie: movie }) });
