@@ -9,7 +9,10 @@ const Movie = ({ movie }) => (
   <div className="mini">
     <Link to={`/movie/${movie.id}`}>
       <div className="div_play_button">
+        <p>{movie.title}</p>
+        <p>{movie.year}</p>
         <img alt="play" src={playButton} />
+        <p>{movie.rating}</p>
       </div>
       <img alt="movies" src={movie.medium_cover_image} />
     </Link>

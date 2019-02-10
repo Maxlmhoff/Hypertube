@@ -27,6 +27,10 @@
     width: 65%;
 }
 
+.div_play_button p {
+    color:white;
+}
+
 .mini:hover .div_play_button{
     display: block;
 }

@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
             var fileName = file.name;
             var filePath = file.path;
             console.log(fileName + '  ***  ' + filePath);
-            path = filePath;
+            var path = filePath;
             console.log("filepath = " + path);
             var stream = file.createReadStream();
             // stream is readable stream to containing the file content
