@@ -18,6 +18,9 @@ var con = mysql.createConnection({
     var sql2 = "CREATE TABLE IF NOT EXISTS comment(id INT PRIMARY KEY AUTO_INCREMENT,login VARCHAR(255), userId VARCHAR(255), movieId VARCHAR(255), comment TEXT)"
     con.query(sql2, function (err, result) { if (err) throw err; console.log("Table comment created"); });
 
+    var sql3 = "CREATE TABLE IF NOT EXISTS vues (id INT AUTO_INCREMENT PRIMARY KEY, user_id INT, movie_id INT)";
+    con.query(sql3, (err) => { if (err) throw err; console.log("Table vues created"); });
+
   });
   
   module.exports = con;
