@@ -21,6 +21,7 @@ var modify = require('./back/profile/modify');
 var stream = require('./back/stream/stream');
 var comment = require('./back/stream/comment');
 var getComment = require('./back/stream/getcomment');
+var putVu = require('./back/stream/putvu');
 
 
 //Midllewares
@@ -55,6 +56,7 @@ app.use('/modify', modify);
 app.use('/stream', stream);
 app.use('/comment', comment);
 app.use('/getcomment', getComment);
+app.use('/putvu', putVu);
 app.use('/img', express.static('public/img'));
 
 

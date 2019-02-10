@@ -117,6 +117,23 @@ class MovieStream extends Component {
     });
   }
 
+  putVu() {
+    const { token } = this.props;
+    const { movie } = this.state;
+    console.log(movie);
+    console.log('qwertyy');
+    fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+      },
+      body: JSON.stringify({
+        movie,
+      }),
+    });
+  }
+
   render() {
     // eslint-disable-next-line
     const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
@@ -144,7 +161,7 @@ class MovieStream extends Component {
               width="100%"
               height={600}
             >
-              <BigPlayButton position="center" />
+              <BigPlayButton position="center" onClick={() => this.putVu} />
               <ControlBar>
                 <ReplayControl seconds={5} order={2.1} />
                 <ReplayControl seconds={10} order={2.2} />

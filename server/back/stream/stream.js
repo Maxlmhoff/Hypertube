@@ -64,14 +64,14 @@ router.post('/', (req, res) => {
 
 
 
-            // const file = engine.files[1];
-            // var fileName = file.name;
-            // var filePath = file.path;
-            // var path = filePath;
-            // var stream = file.createReadStream();
+            const file = engine.files[0];
+            var fileName = file.name;
+            var filePath = file.path;
+            var path = filePath;
+            var stream = file.createReadStream();
             // stream is readable stream to containing the file content
-            // movie.path = filePath;
-            // return movie;
+            movie.path = filePath;
+            return movie;
         })
         .then((movie) => { res.json({ movie: movie }) });
 })

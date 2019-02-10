@@ -4,9 +4,9 @@ var router = express.Router();
 var con = require('../../config/database');
 
 router.post('/', (req, res) => {
-    console.log(req.headers.authorization);
-    console.log("hola");
-    console.log(req.body.movie.data.movie.id);
+    // console.log(req.headers.authorization);
+    // console.log("hola");
+    // console.log(req.body.movie.data.movie.id);
     // console.log(req.body.id);
     // console.log(req.body.movieId);
     // console.log(req.body.login);
