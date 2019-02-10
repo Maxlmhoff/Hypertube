@@ -160,8 +160,9 @@ class MovieStream extends Component {
               fluid={false}
               width="100%"
               height={600}
+              onClick={this.putVu}
             >
-              <BigPlayButton position="center" onClick={() => this.putVu} />
+              <BigPlayButton position="center" />
               <ControlBar>
                 <ReplayControl seconds={5} order={2.1} />
                 <ReplayControl seconds={10} order={2.2} />

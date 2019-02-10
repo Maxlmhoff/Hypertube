@@ -1,13 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import './index.css';
 import playButton from '../../img/playButton.png';
 
-const Movie = ({ movie }) => (
+const HYPERTUBE_ROUTE = 'localhost:3001';
+
+function putVu(token, movie) {
+  console.log(movie);
+  console.log('qwertyy');
+  fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      movie,
+    }),
+  });
+}
+
+const Movie = ({ movie, token }) => (
   <div className="mini">
-    <Link to={`/movie/${movie.id}`}>
+    <Link to={`/movie/${movie.id}`} onClick={() => putVu(token, movie.id)}>
       <div className="div_play_button">
         <p>{movie.title}</p>
         <p>{movie.year}</p>
@@ -21,6 +39,10 @@ const Movie = ({ movie }) => (
 
 Movie.propTypes = {
   movie: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
-export default (Movie);
+const mapStateToProps = state => state;
+const mapDispatchToProps = dispatch => ({ dispatch });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Movie);
