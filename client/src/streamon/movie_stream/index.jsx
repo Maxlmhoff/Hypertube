@@ -153,7 +153,7 @@ class MovieStream extends Component {
           <div id="player_stream">
             {video}
               && (
-            <Player
+            {/* <Player
               playsInline
               poster={movie && movie.data.movie.large_cover_image}
               src={video}
@@ -168,7 +168,11 @@ class MovieStream extends Component {
                 <ReplayControl seconds={10} order={2.2} />
                 <ReplayControl seconds={30} order={2.3} />
               </ControlBar>
-            </Player>
+            </Player> */}
+            <video controls preload="metadata">
+              <source src={video} type="video/mp4"></source>
+              <track label="English" kind="subtitles" srclang="en" src="../../tmp/Forrest Gump (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
+            </video>
           )
             
           </div>

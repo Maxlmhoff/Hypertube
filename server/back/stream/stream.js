@@ -27,7 +27,6 @@ router.post('/', (req, res) => {
             //console.log(movie.data.movie)
             var hash = movie.data.movie.torrents[0].hash;
             var link = movie.data.movie.torrents[0].url;
-            var path = 'salut max';
             // console.log(req.body.movie_infos.movie.torrents[0]);
             var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: '/tmp/movies' });
             return new Promise(function (resolve, reject) {
@@ -41,18 +40,16 @@ router.post('/', (req, res) => {
 
 
             let path = undefined;
-            engine.files.forEach(function (file, movie) {
-                console.log(file);
+            engine.files.forEach(function (file) {
                 if (file.name.indexOf('.mp4') > 0) {
                     path = file.path;
                     console.log('FILEPATH  ***  ' + path);
-                    var stream = file.createReadStream();
                     // stream is readable stream to containing the file content
                     // movies.path = filePath;
                 }
+                var stream = file.createReadStream();
                 return path;
             })
-            console.log(path);
 
 
 
