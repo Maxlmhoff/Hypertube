@@ -22,6 +22,7 @@ var stream = require('./back/stream/stream');
 var comment = require('./back/stream/comment');
 var getComment = require('./back/stream/getcomment');
 var putVu = require('./back/stream/putvu');
+var getVu = require('./back/stream/getvu');
 
 
 //Midllewares
@@ -57,6 +58,7 @@ app.use('/stream', stream);
 app.use('/comment', comment);
 app.use('/getcomment', getComment);
 app.use('/putvu', putVu);
+app.use('/getvu', getVu);
 app.use('/img', express.static('public/img'));
 
 

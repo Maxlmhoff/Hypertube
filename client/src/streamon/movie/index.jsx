@@ -23,8 +23,21 @@ function putVu(token, movie) {
   });
 }
 
+function getVu(token) {
+  fetch(`http://${HYPERTUBE_ROUTE}/getvu`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: token,
+    },
+  })
+    // .then(success => JSON.stringify(success))
+    // .then(success => console.log(success));
+}
+
 const Movie = ({ movie, token }) => (
   <div className="mini">
+    {getVu(token)}
     <Link to={`/movie/${movie.id}`} onClick={() => putVu(token, movie.id)}>
       <div className="div_play_button">
         <p>{movie.title}</p>

@@ -6,12 +6,13 @@ var router = express.Router();
 var con = require('../../config/database');
 
 router.post('/', (req, res) => {
-  let token = req.body.token;
-  var movieId = eschtml(req.body.movie.data.movie.id);
+  console.log("AAAAAAAAAAAAAA")
+  let token = req.headers.authorization;
   var decoded = jwt.verify(token, 'ultrasecret');
   var sql = `SELECT * FROM vues WHERE user_id = ?`;
-  con.query(sql, [decoded], (err, result) => {
-    res.json({success: result});
+  con.query(sql, [decoded.id], (err, result) => {
+    console.log(result[0]);
+    res.json({success: result[0]});
   });
 });
 
