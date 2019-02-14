@@ -41,13 +41,18 @@ router.post('/', (req, res) => {
 
             let path = undefined;
             engine.files.forEach(function (file) {
+                console.log("fileName: ", file.name);
                 if (file.name.indexOf('.mp4') > 0) {
                     path = file.path;
                     console.log('FILEPATH  ***  ' + path);
-                    // stream is readable stream to containing the file content
-                    // movies.path = filePath;
                 }
-                var stream = file.createReadStream();
+                var stream = file.createReadStream({
+                    start: 10,
+                    end: 100
+                });
+                console.log(stream);
+                 // stream is readable stream to containing the file content
+
                 return path;
             })
 
