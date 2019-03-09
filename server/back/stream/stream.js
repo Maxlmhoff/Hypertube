@@ -16,8 +16,8 @@ function download(movie) {
 
 
 router.post('/', (req, res) => {
-    console.log("server server")
-    console.log(req.body.id)
+    // console.log("server server")
+    // console.log(req.body.id)
     fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + req.body.id, {
         method: 'GET',
     })
@@ -36,37 +36,22 @@ router.post('/', (req, res) => {
             });
         })
         .then(({ engine, movie }) => {
-
-
-
             let path = undefined;
             engine.files.forEach(function (file) {
-                console.log("fileName: ", file.name);
+                // console.log("fileName: ", file.name);
                 if (file.name.indexOf('.mp4') > 0) {
                     path = file.path;
-                    console.log('FILEPATH  ***  ' + path);
+                    // console.log('FILEPATH  ***  ' + path);
                 }
                 var stream = file.createReadStream({
                     start: 10,
                     end: 100
                 });
-                console.log(stream);
+                // console.log(stream);
                  // stream is readable stream to containing the file content
 
                 return path;
             })
-
-
-
-
-
-
-
-
-
-
-
-
             // const file = engine.files[1];
             // var fileName = file.name;
             // var filePath = file.path;

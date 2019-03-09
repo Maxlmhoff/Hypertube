@@ -52,6 +52,7 @@ class MovieStream extends Component {
       related: undefined,
       trailer: '',
       comment: '',
+      allComments: [],
     };
     // this.getComment();
     this.putComment = this.putComment.bind(this);
@@ -71,28 +72,29 @@ class MovieStream extends Component {
     getStream(match.params.value)
       // .then((response) => { console.log(response); })
       // .then(() => { console.log(match); })
-      .then(movie => this.setState({ movie: movie.movie }))
+      .then(movie => this.setState({ movie: movie.movie.data.movie }))
+      // .then(movie => this.setState({ movie: movie }))
       // .then(movie => console.log(movie))
       // .then(() => console.log(this.state.movie.data.movie))
-      .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.data.movie.yt_trailer_code}` }));
+      .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.yt_trailer_code}` }))
+      .then(() => this.getComment());
 
     getRelatedMovies(match.params.value)
-      .then(related => this.setState({ related }))
+      .then(related => this.setState({ related: related.data.movies }))
       // .then(() => console.log(this.state.related.data.movies))
   }
 
   getComment() {
     const { movie } = this.state;
-    console.log(movie);
     fetch(`http://${HYPERTUBE_ROUTE}/getcomment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(movie),
+      body: JSON.stringify({ movie }),
     })
       .then(response => response.json())
-      .then(response => console.log(response));
+      .then(response => this.setState({ allComments: response }));
   }
 
   handleChangeComment(event) {
@@ -102,7 +104,7 @@ class MovieStream extends Component {
   putComment() {
     const { token, user } = this.props;
     const { comment, movie } = this.state;
-    console.log(movie);
+    // console.log(movie);
     fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
       method: 'POST',
       headers: {
@@ -120,7 +122,7 @@ class MovieStream extends Component {
   putVu() {
     const { token } = this.props;
     const { movie } = this.state;
-    console.log(movie);
+    // console.log(movie);
     console.log('qwertyy');
     fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
       method: 'POST',
@@ -136,11 +138,11 @@ class MovieStream extends Component {
 
   render() {
     // eslint-disable-next-line
-    const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
-    console.log("page movie_stream");
-    console.log(this.state.movie ? this.state.movie.data.movie.title_long : undefined)
+    // const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
+    // console.log("page movie_stream");
+    // console.log(this.state.movie ? this.state.movie.title_long : undefined)
     const {
-      movie, trailer, related, comment,
+      movie, trailer, related, comment, allComments,
     } = this.state;
     // const { user } = this.props;
     if (!movie) {
@@ -151,12 +153,12 @@ class MovieStream extends Component {
         <Header />
         <div id="main_div">
           <div id="player_stream">
-            {video}
+            {/* {video} */}
               && (
             <Player
               playsInline
-              poster={movie && movie.data.movie.large_cover_image}
-              src={video}
+              poster={movie && movie.large_cover_image}
+              // src={video}
               fluid={false}
               width="100%"
               height={600}
@@ -179,35 +181,36 @@ class MovieStream extends Component {
           <div id="movie_infos">
             <div className="mini_info">
               <img
-                src={movie && movie.data.movie.medium_cover_image}
-                alt={movie && movie.data.movie.title}
+                src={movie && movie.medium_cover_image}
+                alt={movie && movie.title}
               />
             </div>
             <div className="infos">
-              <div id="infos_title">{movie && movie.data.movie.title_english}</div>
+              <div id="infos_title">{movie && movie.title_english}</div>
               <div id="rty_infos">
                 Rating:
-                {movie && movie.data.movie.rating}
+                {movie && movie.rating}
                 /10
                 Time:
-                {movie && movie.data.movie.runtime}
+                {movie && movie.runtime}
                 min
                 Year:
-                {movie && movie.data.movie.year}
+                {movie && movie.year}
               </div>
               <div id="synopsys_title">
                 Synopsys
-                {movie && movie.data.movie.title_english}
+                {movie && movie.title_english}
               </div>
               <div id="synopsys">
-                {movie && movie.data.movie.description_full}
+                {movie && movie.description_full}
               </div>
             </div>
           </div>
           <div id="more_infos">
             <div id="genre">
               <span id="span_genre">Genre: </span>
-              {movie && movie.data.movie.genres.map(genre => (
+              {console.log(movie)}
+              {movie && movie.genres.map(genre => (
                 <span key={genre}>
                   {genre}
                 </span>
@@ -217,7 +220,7 @@ class MovieStream extends Component {
             <div id="cast_div">
               Cast:
               <br />
-              {movie && movie.data.movie.cast > 0 && movie.data.movie.cast.map(genre => (
+              {movie && movie.cast > 0 && movie.cast.map(genre => (
                 <span className="cast_name" key={genre}>
                   <img src={personIcon} className="person_icon" alt="person_icon" />
                   {genre.name}
@@ -246,7 +249,7 @@ class MovieStream extends Component {
             </div>
             <p id="title_suggestions">Films associés</p>
             <div className="suggestions_div">
-              {related && related.data.movies.map(suggestion => (
+              {related && related.map(suggestion => (
                 <Link key={suggestion.id} to={`/movie/${suggestion.id}`}>
                   <div
                     className="suggestion_movie"
@@ -262,9 +265,21 @@ class MovieStream extends Component {
             </div>
           </div>
           <div id="form_div">
+            {console.log(allComments)}
             <p id="title_comment">Leave a comment</p>
             <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
             <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Envoyer" />
+            <h3 id="title_comment">Comment :</h3>
+            {allComments.comment && allComments.comment.map(avis => (
+              <div key={avis.id} id="all_comment">
+                <h4 key={avis.id}>
+                  {/* {console.log(avis)} */}
+                  {avis.login}
+                  :
+                </h4>
+                {avis.comment}
+              </div>
+            ))}
           </div>
         </div>
       </div>

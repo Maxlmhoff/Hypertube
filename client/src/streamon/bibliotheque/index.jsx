@@ -8,14 +8,17 @@ function getMovies() {
   return fetch('https://yts.am/api/v2/list_movies.json?sort_by=rating&limit=30', {
     method: 'GET',
   })
-    .then(res => res.json());
+    // .then(() => console.log('hey'))
+    .then(res => res.json())
+    .then(res => res.data.movies)
+    // .then(res => console.log(res));
 }
 
 class Stream extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      movies: undefined,
+      movies: [],
     };
   }
 
@@ -32,7 +35,7 @@ class Stream extends Component {
         <Header />
         <div id="mini_container">
           {movies && console.log(movies)}
-          {movies && movies.data.movies.map(movie => (
+          {movies && movies.map(movie => (
             <Movie key={movie.id} movie={movie} />
           ))}
         </div>
