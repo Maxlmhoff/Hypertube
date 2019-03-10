@@ -9,8 +9,6 @@ import playButton from '../../img/playButton.png';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function putVu(token, movie) {
-  console.log(movie);
-  console.log('qwertyy');
   fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
     method: 'POST',
     headers: {
@@ -23,21 +21,8 @@ function putVu(token, movie) {
   });
 }
 
-function getVu(token) {
-  fetch(`http://${HYPERTUBE_ROUTE}/getvu`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-    },
-  })
-    // .then(success => JSON.stringify(success))
-    // .then(success => console.log(success));
-}
-
-const Movie = ({ movie, token }) => (
-  <div className="mini">
-    {getVu(token)}
+const Movie = ({ movie, token, style }) => (
+  <div className="mini" style={style}>
     <Link to={`/movie/${movie.id}`} onClick={() => putVu(token, movie.id)}>
       <div className="div_play_button">
         <p>{movie.title}</p>
@@ -53,6 +38,11 @@ const Movie = ({ movie, token }) => (
 Movie.propTypes = {
   movie: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
+  style: PropTypes.object,
+};
+
+Movie.defaultProps = {
+  style: {},
 };
 
 const mapStateToProps = state => state;

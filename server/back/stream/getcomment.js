@@ -3,11 +3,16 @@ var router = express.Router();
 var con = require('../../config/database');
 
 router.post('/', (req, res) => {
-  let movieId = req.body.movie.id;
-  var sql = 'SELECT * FROM comment WHERE movieId = ?';
-  con.query(sql, [movieId], (err, result) => {
-    res.json({comment: result});
-  });
+  if (req.body.movie) {
+    let movieId = req.body.movie.movie.data.movie.id;
+    var sql = 'SELECT * FROM comment WHERE movieId = ?';
+    con.query(sql, [movieId], (err, result) => {
+      res.json({comment: result});
+    });
+  }
+  else {
+    res.json({error: 'movie not defined'});    
+  }
 });
 
 module.exports = router;

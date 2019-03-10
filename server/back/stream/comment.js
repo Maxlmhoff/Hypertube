@@ -4,12 +4,6 @@ var router = express.Router();
 var con = require('../../config/database');
 
 router.post('/', (req, res) => {
-    // console.log(req.headers.authorization);
-    // console.log("hola");
-    // console.log(req.body.movie.data.movie.id);
-    // console.log(req.body.id);
-    // console.log(req.body.movieId);
-    // console.log(req.body.login);
   if (req.body.comment && req.headers.authorization){
     var userId = eschtml(req.body.user.id);
     var comment = eschtml(req.body.comment);

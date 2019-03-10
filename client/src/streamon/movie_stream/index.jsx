@@ -16,16 +16,14 @@ import SendButton from '../../components/forms/SendButton';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
-// function getMovie(id) {
-//   return fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${id}&with_cast=true`, {
-//     method: 'GET',
-//   })
-//     .then(res => res.json());
-// }
-
 function getRelatedMovies(id) {
-  return fetch(`https://yts.am/api/v2/movie_suggestions.json?movie_id=${id}`, {
-    method: 'GET',
+  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ yts: 'oui', id }),
   })
     .then(res => res.json());
 }
@@ -39,8 +37,7 @@ function getStream(id) {
     },
     body: JSON.stringify({ id }),
   })
-    .then(res => res.json())
-    // .then(() => { console.log('telechargement'); });
+    .then(res => res.json());
 }
 
 
@@ -57,10 +54,12 @@ class MovieStream extends Component {
     // this.getComment();
     this.putComment = this.putComment.bind(this);
     this.handleChangeComment = this.handleChangeComment.bind(this);
+    this.getComment = this.getComment.bind(this);
     // const { user } = this.props;
   }
 
   componentDidMount() {
+    this.mounted = true;
     const { match } = this.props;
     // getMovie(match.params.value)
     //   .then((movie) => {
@@ -72,20 +71,35 @@ class MovieStream extends Component {
     getStream(match.params.value)
       // .then((response) => { console.log(response); })
       // .then(() => { console.log(match); })
-      .then(movie => this.setState({ movie: movie.movie.data.movie }))
+      .then((movie) => {
+        if (this.mounted) {
+          this.setState({ movie: movie.movie.data.movie });
+          return movie;
+        }
+        return undefined;
+      })
       // .then(movie => this.setState({ movie: movie }))
       // .then(movie => console.log(movie))
       // .then(() => console.log(this.state.movie.data.movie))
-      .then(() => this.setState({ trailer: `https://www.youtube.com/embed/${this.state.movie.yt_trailer_code}` }))
-      .then(() => this.getComment());
+      .then((movie) => {
+        if (this.mounted) {
+          this.setState({ trailer: `https://www.youtube.com/embed/${movie.yt_trailer_code}` });
+          return movie;
+        }
+        return undefined;
+      })
+      .then(movie => this.getComment(movie));
 
     getRelatedMovies(match.params.value)
-      .then(related => this.setState({ related: related.data.movies }))
-      // .then(() => console.log(this.state.related.data.movies))
+      .then(related => this.setState({ related: related.data.movies }));
+    // .then(() => console.log(this.state.related.data.movies))
   }
 
-  getComment() {
-    const { movie } = this.state;
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
+  getComment(movie) {
     fetch(`http://${HYPERTUBE_ROUTE}/getcomment`, {
       method: 'POST',
       headers: {
@@ -94,7 +108,11 @@ class MovieStream extends Component {
       body: JSON.stringify({ movie }),
     })
       .then(response => response.json())
-      .then(response => this.setState({ allComments: response }));
+      .then((response) => {
+        if (this.mounted) {
+          this.setState({ allComments: response });
+        }
+      });
   }
 
   handleChangeComment(event) {
@@ -104,7 +122,6 @@ class MovieStream extends Component {
   putComment() {
     const { token, user } = this.props;
     const { comment, movie } = this.state;
-    // console.log(movie);
     fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
       method: 'POST',
       headers: {
@@ -119,22 +136,6 @@ class MovieStream extends Component {
     });
   }
 
-  putVu() {
-    const { token } = this.props;
-    const { movie } = this.state;
-    // console.log(movie);
-    console.log('qwertyy');
-    fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: token,
-      },
-      body: JSON.stringify({
-        movie,
-      }),
-    });
-  }
 
   render() {
     // eslint-disable-next-line
@@ -173,10 +174,10 @@ class MovieStream extends Component {
             </Player>
             {/* <video controls preload="metadata">
               <source src={video} type="video/mp4"></source>
-              <track label="English" kind="subtitles" srclang="en" src="../../tmp/Forrest Gump (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
+            <track label="English" kind="subtitles" srclang="en" src="../../tmp/Forrest Gump
+            (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
             </video> */}
           )
-            
           </div>
           <div id="movie_infos">
             <div className="mini_info">
@@ -209,7 +210,6 @@ class MovieStream extends Component {
           <div id="more_infos">
             <div id="genre">
               <span id="span_genre">Genre: </span>
-              {console.log(movie)}
               {movie && movie.genres.map(genre => (
                 <span key={genre}>
                   {genre}
@@ -265,7 +265,6 @@ class MovieStream extends Component {
             </div>
           </div>
           <div id="form_div">
-            {console.log(allComments)}
             <p id="title_comment">Leave a comment</p>
             <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
             <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Envoyer" />
@@ -273,7 +272,6 @@ class MovieStream extends Component {
             {allComments.comment && allComments.comment.map(avis => (
               <div key={avis.id} id="all_comment">
                 <h4 key={avis.id}>
-                  {/* {console.log(avis)} */}
                   {avis.login}
                   :
                 </h4>
