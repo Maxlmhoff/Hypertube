@@ -17,15 +17,8 @@
 
 .main_banner #div_title
 {
-  /* border: 1px solid white; */
   margin-left: 30px;
   display: flex;
-}
-
-#div_menu
-{
-  /* border: 1px solid white; */
-  /* margin-right: 200px; */
 }
 
 .main_banner #div_menu ul
@@ -49,7 +42,6 @@
 
 #div_search_disconnect
 {
-  /* border: 1px solid white; */
   margin-right: 30px;
   display: flex;
   width: 200px;
@@ -84,7 +76,6 @@ button:hover
   width: 400px;
   height: 35px;
   border-radius: 5px;
-  /* background: url('../../img/mglass.png') no-repeat; */
   background-size: 22px;
   background-position: 170px;
 }
@@ -93,7 +84,6 @@ button:hover
 {
   width: 40px;
   height: 40px;
-  /* margin-top: 2px; */
 }
 
 .duck{

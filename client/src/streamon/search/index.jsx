@@ -30,6 +30,18 @@ class Search extends Component {
   componentDidMount() {
     const { match } = this.props;
     getMovies(match.params.value)
+      .then((movie) => {
+        movie.data.movies.sort((a, b) => {
+          if (a.title < b.title) {
+            return -1;
+          }
+          if (a.title > b.title) {
+            return 1;
+          }
+          return (0);
+        });
+        return movie;
+      })
       .then(movie => this.setState({ movie }));
   }
 
