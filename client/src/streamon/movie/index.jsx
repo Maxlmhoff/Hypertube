@@ -26,7 +26,7 @@ const Movie = ({
   movie, token, style, api,
 }) => (
   <div className="mini" style={style}>
-    <Link to={`/movie/${api}/${movie.id}`} onClick={() => putVu(token, movie.id)}>
+    <Link to={`/movie/${movie.api || api}/${movie.id}`} onClick={() => putVu(token, movie.id)}>
       <div className="div_play_button">
         <p className="movie_title">{movie.title}</p>
         <p>{movie.year}</p>

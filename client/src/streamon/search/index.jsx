@@ -14,7 +14,7 @@ function getMovies(queryTerm) {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ api: 'yts', queryTerm }),
+    body: JSON.stringify({ api: 'search', queryTerm }),
   })
     .then(res => res.json());
 }
@@ -31,7 +31,7 @@ class Search extends Component {
     const { match } = this.props;
     getMovies(match.params.value)
       .then((movie) => {
-        movie.data.movies.sort((a, b) => {
+        movie.sort((a, b) => {
           if (a.title < b.title) {
             return -1;
           }
@@ -42,6 +42,7 @@ class Search extends Component {
         });
         return movie;
       })
+      .then(movie => {console.log(movie); return movie })
       .then(movie => this.setState({ movie }));
   }
 
@@ -51,7 +52,7 @@ class Search extends Component {
       <div>
         <Header />
         <div id="mini_container">
-          {movie && movie.data.movie_count > 0 && movie.data.movies.map(movies => (
+          {movie && movie.map(movies => (
             <Movie key={movies.id} movie={movies} />
           ))}
         </div>

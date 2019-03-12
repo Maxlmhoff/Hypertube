@@ -93,7 +93,7 @@ class MovieStream extends Component {
       })
       .then(movie => this.getComment(movie));
 
-    if ( match.params.api === 'yts') {
+    if (match.params.api === 'yts') {
       getRelatedMovies(match.params.value, match.params.api)
         .then(related => this.setState({ related: related.data.movies }));
     }
@@ -149,7 +149,7 @@ class MovieStream extends Component {
     // console.log(this.state.movie ? this.state.movie.title_long : undefined)
     const { api } = this.props;
     const {
-      movie, trailer, related, comment, allComments,
+      movie, related, comment, allComments, trailer,
     } = this.state;
     // const { user } = this.props;
     if (!movie) {
@@ -227,8 +227,8 @@ class MovieStream extends Component {
                 }
               </div>
               <div id="cast_div">
-                Cast:
-                <br />
+                {/* Cast: */}
+                {/* <br /> */}
                 {movie && movie.cast > 0 && movie.cast.map(genre => (
                   <span className="cast_name" key={genre}>
                     <img src={personIcon} className="person_icon" alt="person_icon" />
@@ -245,7 +245,7 @@ class MovieStream extends Component {
                   </button>
                 </a>
               </div>
-              <div>
+              {/* <div>
                 <iframe
                   width="560"
                   height="315"
@@ -255,11 +255,11 @@ class MovieStream extends Component {
                   allowFullScreen
                   title="auto"
                 />
-              </div>
+              </div> */}
               <p id="title_suggestions">Films associés</p>
               <div className="suggestions_div">
                 {related && related.map(suggestion => (
-                  <Link key={suggestion.id} to={`/movie/${suggestion.id}`}>
+                  <Link key={suggestion.id} to={`/movie/${api}/${suggestion.id}`}>
                     <div
                       className="suggestion_movie"
                     >

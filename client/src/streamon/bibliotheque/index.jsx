@@ -8,14 +8,16 @@ import Header from '../../components/header';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
-function getMovies(api, page = 0) {
+function getMovies(api, page = 0, genre, sort) {
   return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ normal: 'normal', api, page: page + 1 }),
+    body: JSON.stringify({
+      api, page: page + 1, genre, sort,
+    }),
   })
     .then(res => res.json());
 }
@@ -26,8 +28,12 @@ class Stream extends Component {
     this.state = {
       movies: [],
       vus: undefined,
+      genre: 'Action',
+      sort: 'rating',
     };
     this.pagination = this.pagination.bind(this);
+    this.handleChangeGenre = this.handleChangeGenre.bind(this);
+    this.handleChangeSort = this.handleChangeSort.bind(this);
   }
 
   componentDidMount() {
@@ -49,6 +55,14 @@ class Stream extends Component {
       .then(success => this.setState({ vus: success.success }));
   }
 
+  handleChangeGenre(event) {
+    this.setState({ genre: event.target.value });
+  }
+
+  handleChangeSort(event) {
+    this.setState({ sort: event.target.value });
+  }
+
   pagination() {
     const { api } = this.props;
     const { movies } = this.state;
@@ -61,8 +75,10 @@ class Stream extends Component {
   }
 
   render() {
-    const { dispatch } = this.props;
-    const { movies, vus } = this.state;
+    const { dispatch, api } = this.props;
+    const {
+      movies, vus, genre, sort,
+    } = this.state;
     if (!movies || !vus) {
       return null;
     }
@@ -94,6 +110,37 @@ class Stream extends Component {
             API bay
           </button>
         </div>
+        {api === 'yts' && (
+          <div>
+            <div>
+              <label htmlFor={genre}>
+                Pick your genre:
+                <select value={genre} onChange={this.handleChangeGenre}>
+                  <option value="Action">Action</option>
+                  <option value="Comedy">Comedy</option>
+                  <option value="Horror">Horror</option>
+                  <option value="Sci-Fi">Sci-Fi</option>
+                  <option value="Thriller">Thriller</option>
+                  <option value="Western">Western</option>
+                </select>
+              </label>
+              <button onClick={() => getMovies(api, 0, genre).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
+            </div>
+            <div>
+              <label htmlFor={sort}>
+                Sort by:
+                <select value={sort} onChange={this.handleChangeSort}>
+                  <option value="rating">rating</option>
+                  <option value="title">title</option>
+                  <option value="year">year</option>
+                  <option value="download_count">download_count</option>
+                  <option value="like_count">like_count</option>
+                </select>
+              </label>
+              <button onClick={() => getMovies(api, 0, undefined, sort).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
+            </div>
+          </div>
+        )}
         <InfiniteScroll
           pageStart={0}
           hasMore
