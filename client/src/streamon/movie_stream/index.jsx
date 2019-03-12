@@ -11,31 +11,32 @@ import '../../../node_modules/video-react/dist/video-react.css';
 import Header from '../../components/header';
 import playButton from '../../img/playButton.png';
 import personIcon from '../../img/personIcon.png';
+import pirate from '../../img/pirate.png';
 import InputTextArea from '../../components/forms/InputTextArea';
 import SendButton from '../../components/forms/SendButton';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
-function getRelatedMovies(id) {
+function getRelatedMovies(id, api) {
   return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ yts: 'oui', id }),
+    body: JSON.stringify({ api, id }),
   })
     .then(res => res.json());
 }
 
-function getStream(id) {
+function getStream(id, api) {
   return fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ id }),
+    body: JSON.stringify({ id, api }),
   })
     .then(res => res.json());
 }
@@ -67,13 +68,16 @@ class MovieStream extends Component {
     //     return movie;
     //   })
     //   .then(movie => getStream(movie.data));
-
-    getStream(match.params.value)
+    getStream(match.params.value, match.params.api)
       // .then((response) => { console.log(response); })
       // .then(() => { console.log(match); })
       .then((movie) => {
-        if (this.mounted) {
+        if (this.mounted && match.params.api === 'yts') {
           this.setState({ movie: movie.movie.data.movie });
+          return movie;
+        }
+        if (this.mounted && match.params.api === 'bay') {
+          this.setState({ movie });
           return movie;
         }
         return undefined;
@@ -82,17 +86,17 @@ class MovieStream extends Component {
       // .then(movie => console.log(movie))
       // .then(() => console.log(this.state.movie.data.movie))
       .then((movie) => {
-        if (this.mounted) {
+        if (this.mounted && match.params.api === 'yts') {
           this.setState({ trailer: `https://www.youtube.com/embed/${movie.yt_trailer_code}` });
-          return movie;
         }
-        return undefined;
+        return movie;
       })
       .then(movie => this.getComment(movie));
 
-    getRelatedMovies(match.params.value)
-      .then(related => this.setState({ related: related.data.movies }));
-    // .then(() => console.log(this.state.related.data.movies))
+    if ( match.params.api === 'yts') {
+      getRelatedMovies(match.params.value, match.params.api)
+        .then(related => this.setState({ related: related.data.movies }));
+    }
   }
 
   componentWillUnmount() {
@@ -100,12 +104,13 @@ class MovieStream extends Component {
   }
 
   getComment(movie) {
+    const { api } = this.props;
     fetch(`http://${HYPERTUBE_ROUTE}/getcomment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ movie }),
+      body: JSON.stringify({ movie, api }),
     })
       .then(response => response.json())
       .then((response) => {
@@ -142,6 +147,7 @@ class MovieStream extends Component {
     // const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
     // console.log("page movie_stream");
     // console.log(this.state.movie ? this.state.movie.title_long : undefined)
+    const { api } = this.props;
     const {
       movie, trailer, related, comment, allComments,
     } = this.state;
@@ -158,7 +164,7 @@ class MovieStream extends Component {
               && (
             <Player
               playsInline
-              poster={movie && movie.large_cover_image}
+              poster={movie && (movie.large_cover_image || pirate)}
               // src={video}
               fluid={false}
               width="100%"
@@ -182,88 +188,92 @@ class MovieStream extends Component {
           <div id="movie_infos">
             <div className="mini_info">
               <img
-                src={movie && movie.medium_cover_image}
+                src={movie && (movie.medium_cover_image || pirate)}
                 alt={movie && movie.title}
               />
             </div>
-            <div className="infos">
-              <div id="infos_title">{movie && movie.title_english}</div>
-              <div id="rty_infos">
-                Rating:
-                {movie && movie.rating}
-                /10
-                Time:
-                {movie && movie.runtime}
-                min
-                Year:
-                {movie && movie.year}
+            {api === 'yts' && (
+              <div className="infos">
+                <div id="infos_title">{movie && movie.title_english}</div>
+                <div id="rty_infos">
+                  Rating:
+                  {movie && movie.rating}
+                  /10
+                  Time:
+                  {movie && movie.runtime}
+                  min
+                  Year:
+                  {movie && movie.year}
+                </div>
+                <div id="synopsys_title">
+                  Synopsys
+                  {movie && movie.title_english}
+                </div>
+                <div id="synopsys">
+                  {movie && movie.description_full}
+                </div>
               </div>
-              <div id="synopsys_title">
-                Synopsys
-                {movie && movie.title_english}
-              </div>
-              <div id="synopsys">
-                {movie && movie.description_full}
-              </div>
-            </div>
+            )}
           </div>
-          <div id="more_infos">
-            <div id="genre">
-              <span id="span_genre">Genre: </span>
-              {movie && movie.genres.map(genre => (
-                <span key={genre}>
-                  {genre}
-                </span>
-              ))
-              }
+          {api === 'yts' && (
+            <div id="more_infos">
+              <div id="genre">
+                <span id="span_genre">Genre: </span>
+                {movie && movie.genres.map(genre => (
+                  <span key={genre}>
+                    {genre}
+                  </span>
+                ))
+                }
+              </div>
+              <div id="cast_div">
+                Cast:
+                <br />
+                {movie && movie.cast > 0 && movie.cast.map(genre => (
+                  <span className="cast_name" key={genre}>
+                    <img src={personIcon} className="person_icon" alt="person_icon" />
+                    {genre.name}
+                    <br />
+                  </span>
+                ))}
+              </div>
+              <div id="trailer_button">
+                <a href={trailer} target="_blank" rel="noopener noreferrer">
+                  <button type="button">
+                    <img src={playButton} id="play_button" alt="play_button" />
+                    REGARDER LA BANDE ANNONCE
+                  </button>
+                </a>
+              </div>
+              <div>
+                <iframe
+                  width="560"
+                  height="315"
+                  src={trailer}
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  title="auto"
+                />
+              </div>
+              <p id="title_suggestions">Films associés</p>
+              <div className="suggestions_div">
+                {related && related.map(suggestion => (
+                  <Link key={suggestion.id} to={`/movie/${suggestion.id}`}>
+                    <div
+                      className="suggestion_movie"
+                    >
+                      <img
+                        src={suggestion.medium_cover_image}
+                        alt={suggestion.title}
+                      />
+                      <p className="title_movie_suggested">{suggestion.title}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-            <div id="cast_div">
-              Cast:
-              <br />
-              {movie && movie.cast > 0 && movie.cast.map(genre => (
-                <span className="cast_name" key={genre}>
-                  <img src={personIcon} className="person_icon" alt="person_icon" />
-                  {genre.name}
-                  <br />
-                </span>
-              ))}
-            </div>
-            <div id="trailer_button">
-              <a href={trailer} target="_blank" rel="noopener noreferrer">
-                <button type="button">
-                  <img src={playButton} id="play_button" alt="play_button" />
-                  REGARDER LA BANDE ANNONCE
-                </button>
-              </a>
-            </div>
-            <div>
-              <iframe
-                width="560"
-                height="315"
-                src={trailer}
-                frameBorder="0"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                title="auto"
-              />
-            </div>
-            <p id="title_suggestions">Films associés</p>
-            <div className="suggestions_div">
-              {related && related.map(suggestion => (
-                <Link key={suggestion.id} to={`/movie/${suggestion.id}`}>
-                  <div
-                    className="suggestion_movie"
-                  >
-                    <img
-                      src={suggestion.medium_cover_image}
-                      alt={suggestion.title}
-                    />
-                    <p className="title_movie_suggested">{suggestion.title}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </div>
+          )}
           <div id="form_div">
             <p id="title_comment">Leave a comment</p>
             <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
@@ -286,6 +296,7 @@ class MovieStream extends Component {
 }
 
 MovieStream.propTypes = {
+  api: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,

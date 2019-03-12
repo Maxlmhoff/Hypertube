@@ -1,8 +1,23 @@
+ #bandeau_button {
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     height: 100px;
+     width: 100%;
+ }
+
+ .apibutton {
+     height: 50px;
+     width: 180px;
+     background-color: orange;
+     margin: 10px;
+     border-radius: 5px;
+ }
+
 #mini_container {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 50px;
 }
 
 .mini {
@@ -21,10 +36,6 @@
     position: absolute;
     margin-top: 6%;
     display: none;
-}
-
-.div_play_button img {
-    width: 65%;
 }
 
 .div_play_button p {

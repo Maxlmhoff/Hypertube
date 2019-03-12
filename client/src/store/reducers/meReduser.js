@@ -2,6 +2,7 @@ const initialState = {
   token: '',
   user: {},
   allUsers: {},
+  api: 'yts',
 };
 
 function users(state = initialState, action) {
@@ -28,6 +29,18 @@ function users(state = initialState, action) {
       nextState = {
         ...state,
         allUsers: action.value,
+      };
+      return nextState || state;
+    case 'YTS':
+      nextState = {
+        ...state,
+        api: action.value,
+      };
+      return nextState || state;
+    case 'BAY':
+      nextState = {
+        ...state,
+        api: action.value,
       };
       return nextState || state;
     default:

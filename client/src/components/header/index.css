@@ -22,7 +22,7 @@
   display: flex;
 }
 
-.main_banner #div_menu
+#div_menu
 {
   /* border: 1px solid white; */
   /* margin-right: 200px; */
@@ -41,14 +41,24 @@
   font-size: 1.2em;
   cursor: pointer;
 }
+#div_search_disconnect a {
+  display: flex;
+  align-items: center;
+}
 
-.main_banner #div_search_disconnect
+
+#div_search_disconnect
 {
   /* border: 1px solid white; */
   margin-right: 30px;
   display: flex;
-  width: 300px;
-  justify-content: space-around
+  width: 200px;
+  justify-content: center;
+}
+#div_search_disconnect button{
+  width: 80px;
+  height: 30px;
+  margin: 5px;
 }
 .main_banner h1
 {
@@ -71,7 +81,7 @@ button:hover
 
 #search
 {
-  width: 200px;
+  width: 400px;
   height: 35px;
   border-radius: 5px;
   /* background: url('../../img/mglass.png') no-repeat; */
@@ -79,55 +89,10 @@ button:hover
   background-position: 170px;
 }
 
-.down_arrow
-{
-  width: 20px;
-  height: 20px;
-}
-
-#div_movies
-{
-  display: none;
-  width: 200px;
-  border: 2px solid white;
-}
-
-#div_series
-{
-  display: none;
-  width: 200px;
-  border: 2px solid white;
-}
-
-#div_mangas
-{
-  display: none;
-  width: 200px;
-  border: 2px solid white;
-}
-
-.main_banner #div_menu ul li:hover #div_movies
-{
-  display: block;
-  position: absolute;
-}
-
-.main_banner #div_menu ul li:hover #div_series
-{
-  display: block;
-  position: absolute;
-}
-
-.main_banner #div_menu ul li:hover #div_mangas
-{
-  display: block;
-  position: absolute;
-}
-
 #profile_icon
 {
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   /* margin-top: 2px; */
 }
 

@@ -1,19 +1,20 @@
 var express = require('express');
 var router = express.Router();
-var con = require('../../config/database');
 const fetch = require('node-fetch');
+const PirateBay = require('thepiratebay');
 
 router.post('/', (req, res) => {
   if (req.body.api === 'yts') {
     console.log('1')
     if (req.body.normal) {
       console.log('A')
-      fetch('https://yts.am/api/v2/list_movies.json?sort_by=rating&limit=30', {
+      fetch(`https://yts.am/api/v2/list_movies.json?sort_by=rating&limit=30&page=${req.body.page}`, {
       method: 'GET',
     })
     .then(response => response.json())
     .then(response => res.json(response.data.movies))
-    }
+    .catch((err) => console.log('erreur yts'));
+  }
     else if (req.body.id) {
       console.log('B')
       console.log(req.body.id)
@@ -22,8 +23,9 @@ router.post('/', (req, res) => {
           method: 'GET',
         })
           .then(response => response.json())
-          .then(response => res.json(response));
-    }
+          .then(response => res.json(response))
+          .catch((err) => console.log('erreur yts'));
+  }
     else if (req.body.queryTerm) {
       console.log('C')
       fetch(`https://yts.am/api/v2/list_movies.json?query_term=${req.body.queryTerm}&limit=50`, {
@@ -34,9 +36,16 @@ router.post('/', (req, res) => {
       .catch((err) => console.log('machin'));
     }
   }
-  else if (req.body.bay) {
+  else if (req.body.api === 'bay') {
       console.log('2')
-      res.json({ bay: 'Bay'})
+      PirateBay.topTorrents(201)
+      
+      .then(response => res.json(response.map(elem => ({
+        title: elem.name,
+        id: elem.id,
+      }))))
+      // test.json();
+    // .then(response => res.json(response))
   }
   else {
       console.log('3')

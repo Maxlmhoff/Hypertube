@@ -46,38 +46,14 @@ class Header extends Component {
             <h1>Hypertube</h1>
           </div>
           <div id="div_menu">
-            <ul>
-              <li>ACCUEIL</li>
-              <li>
-                FILMS
-                {/* <img alt="arrow" src={down_arrow} className="down_arrow" /> */}
-                <div id="div_movies">
-                  test
-                </div>
-              </li>
-              <li>
-                SERIES
-                {/* <img alt="arrow" src={down_arrow} className="down_arrow" /> */}
-                <div id="div_series">
-                  test
-                </div>
-              </li>
-              <li>
-                MANGAS
-                {/* <img alt="arrow" src={down_arrow} className="down_arrow" /> */}
-                <div id="div_mangas">
-                  test
-                </div>
-              </li>
-            </ul>
+            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={value} onChange={this.handleKeyPress} onKeyPress={this.search} />
           </div>
           <div id="div_search_disconnect">
-            <input type="text" name="search" id="search" placeholder="Rechercher Film, Série, ..." value={value} onChange={this.handleKeyPress} onKeyPress={this.search} />
             <Link to="/profile">
               <img src={profileIcon} id="profile_icon" alt="profile_icon" />
             </Link>
             <Link to="/">
-              <button type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
+              <button id="dc_button" type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
                 Log out
               </button>
             </Link>
