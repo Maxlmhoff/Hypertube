@@ -76,3 +76,12 @@ h2 {
 .success{
   color: lightgreen;
 }
+
+@media (max-width: 640px) {
+  .all_profiles{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+}

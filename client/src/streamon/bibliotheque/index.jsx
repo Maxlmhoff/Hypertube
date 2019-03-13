@@ -111,8 +111,8 @@ class Stream extends Component {
           </button>
         </div>
         {api === 'yts' && (
-          <div>
-            <div>
+          <div id="div_genre_sort">
+            <div className="div_all_sort">
               <label htmlFor={genre}>
                 Pick your genre:
                 <select value={genre} onChange={this.handleChangeGenre}>
@@ -124,9 +124,9 @@ class Stream extends Component {
                   <option value="Western">Western</option>
                 </select>
               </label>
-              <button onClick={() => getMovies(api, 0, genre).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
+              <button className="button_submit_filter" onClick={() => getMovies(api, 0, genre).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
             </div>
-            <div>
+            <div className="div_all_sort">
               <label htmlFor={sort}>
                 Sort by:
                 <select value={sort} onChange={this.handleChangeSort}>
@@ -137,7 +137,7 @@ class Stream extends Component {
                   <option value="like_count">like_count</option>
                 </select>
               </label>
-              <button onClick={() => getMovies(api, 0, undefined, sort).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
+              <button className="button_submit_filter" onClick={() => getMovies(api, 0, undefined, sort).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
             </div>
           </div>
         )}
