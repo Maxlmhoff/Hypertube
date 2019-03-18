@@ -62,6 +62,7 @@ app.use('/putvu', putVu);
 app.use('/getvu', getVu);
 app.use('/apifetch', apiFetch);
 app.use('/img', express.static('public/img'));
+app.use('/movies', express.static('tmp/movies'));
 
 
 

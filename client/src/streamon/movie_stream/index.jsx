@@ -52,7 +52,6 @@ class MovieStream extends Component {
       comment: '',
       allComments: [],
     };
-    // this.getComment();
     this.putComment = this.putComment.bind(this);
     this.handleChangeComment = this.handleChangeComment.bind(this);
     this.getComment = this.getComment.bind(this);
@@ -62,17 +61,10 @@ class MovieStream extends Component {
   componentDidMount() {
     this.mounted = true;
     const { match } = this.props;
-    // getMovie(match.params.value)
-    //   .then((movie) => {
-    //     this.setState({ movie });
-    //     return movie;
-    //   })
-    //   .then(movie => getStream(movie.data));
     getStream(match.params.value, match.params.api)
-      // .then((response) => { console.log(response); })
-      // .then(() => { console.log(match); })
       .then((movie) => {
         if (this.mounted && match.params.api === 'yts') {
+          console.log(movie.movie.data.movie);
           this.setState({ movie: movie.movie.data.movie });
           return movie;
         }
@@ -82,9 +74,6 @@ class MovieStream extends Component {
         }
         return undefined;
       })
-      // .then(movie => this.setState({ movie: movie }))
-      // .then(movie => console.log(movie))
-      // .then(() => console.log(this.state.movie.data.movie))
       .then((movie) => {
         if (this.mounted && match.params.api === 'yts') {
           this.setState({ trailer: `https://www.youtube.com/embed/${movie.yt_trailer_code}` });
@@ -144,8 +133,9 @@ class MovieStream extends Component {
 
   render() {
     // eslint-disable-next-line
-    // const video = this.state.movie ? require(`../../tmp/${this.state.movie.path}`) : undefined;
+    const video = this.state.movie ? `http://${HYPERTUBE_ROUTE}/movies/${this.state.movie.path}` : undefined;
     // console.log("page movie_stream");
+    console.log(video)
     // console.log(this.state.movie ? this.state.movie.title_long : undefined)
     const { api } = this.props;
     const {
@@ -160,17 +150,15 @@ class MovieStream extends Component {
         <Header />
         <div id="main_div">
           <div id="player_stream">
-            {/* {video} */}
-              && (
             <Player
               playsInline
               poster={movie && (movie.large_cover_image || pirate)}
-              // src={video}
+              src={video}
               fluid={false}
               width="100%"
               height={600}
-              onClick={this.putVu}
             >
+              {/* <source src={`http://www.w3schools.com/html/mov_bbb.mp4`} /> */}
               <BigPlayButton position="center" />
               <ControlBar>
                 <ReplayControl seconds={5} order={2.1} />
@@ -180,7 +168,7 @@ class MovieStream extends Component {
             </Player>
             {/* <video controls preload="metadata">
               <source src={video} type="video/mp4"></source>
-            <track label="English" kind="subtitles" srclang="en" src="../../tmp/Forrest Gump
+            <track label="English" kind="subtitles" srcLang="en" src="../../tmp/Forrest Gump
             (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
             </video> */}
           )
@@ -245,7 +233,7 @@ class MovieStream extends Component {
                   </button>
                 </a>
               </div>
-              {/* <div>
+              <div>
                 <iframe
                   width="560"
                   height="315"
@@ -255,7 +243,7 @@ class MovieStream extends Component {
                   allowFullScreen
                   title="auto"
                 />
-              </div> */}
+              </div>
               <p id="title_suggestions">Films associés</p>
               <div className="suggestions_div">
                 {related && related.map(suggestion => (
