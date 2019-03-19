@@ -24,8 +24,9 @@ router.post('/', (req, res) => {
                 //console.log(movie.data.movie)
                 var hash = movie.data.movie.torrents[0].hash;
                 var link = movie.data.movie.torrents[0].url;
-                // console.log(req.body.movie_infos.movie.torrents[0]);
-                var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: 'tmp/movies' });
+                console.log(link);
+                console.log(hash);
+                var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: '/tmp' });
                 return new Promise(function (resolve, reject) {
                     engine.on('ready', function () {
                         resolve({ engine, movie });
@@ -42,10 +43,7 @@ router.post('/', (req, res) => {
             path = file.path;
                     // console.log('FILEPATH  ***  ' + path);
                 }
-                var stream = file.createReadStream({
-                    start: 10,
-                    end: 100
-                });
+                var stream = file.createReadStream();
                 // console.log(stream);
                 // stream is readable stream to containing the file content
 
@@ -57,10 +55,10 @@ router.post('/', (req, res) => {
             // // console.log('FILEPATH  ***  ' + filePath);
             // var path = filePath;
             // var stream = file.createReadStream();
-            // // stream is readable stream to containing the file content
+            // stream is readable stream to containing the file content
             movie.data.movie.path = path;
             // console.log(path);
-            console.log(movie);
+            // console.log(movie);
             return movie;
         })
         .then((movie) => { res.json({ movie: movie }) });

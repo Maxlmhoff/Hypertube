@@ -14,6 +14,7 @@ import personIcon from '../../img/personIcon.png';
 import pirate from '../../img/pirate.png';
 import InputTextArea from '../../components/forms/InputTextArea';
 import SendButton from '../../components/forms/SendButton';
+// import test from '../../tmp/movies/The Dark Knight (2008)/The.Dark.Knight.2008.720p.BluRay.x264.YIFY.mp4';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
@@ -40,6 +41,15 @@ function getStream(id, api) {
   })
     .then(res => res.json());
 }
+
+const tryRequire = (path) => {
+  try {
+    return (require(`../../tmp/movies/${path}`));
+  } catch (err) {
+    console.log(err);
+    return undefined;
+  }
+};
 
 
 class MovieStream extends Component {
@@ -130,17 +140,23 @@ class MovieStream extends Component {
     });
   }
 
-
   render() {
     // eslint-disable-next-line
-    const video = this.state.movie ? `http://${HYPERTUBE_ROUTE}/movies/${this.state.movie.path}` : undefined;
+    // const video = this.state.movie ? `../../tmp/movies/${this.state.movie.path}` : undefined;
     // console.log("page movie_stream");
-    console.log(video)
+    // eslint-disable-next-line
+    // const test = this.state.movie ? require(`../../tmp/movies/${this.state.movie.path}`) : undefined;
     // console.log(this.state.movie ? this.state.movie.title_long : undefined)
     const { api } = this.props;
     const {
       movie, related, comment, allComments, trailer,
     } = this.state;
+
+    // eslint-disable-next-line
+    const video = movie ? tryRequire(movie.path) : undefined;
+    // const video = movie ? require(`../../tmp/movies/Schindlers List (1993)/Schindlers.List.1993.720p.BrRip.x264.BOKUTOX.YIFY.mp4`) : undefined;
+    console.log(video);
+    // console.log(video);
     // const { user } = this.props;
     if (!movie) {
       return null;
@@ -153,12 +169,12 @@ class MovieStream extends Component {
             <Player
               playsInline
               poster={movie && (movie.large_cover_image || pirate)}
-              src={video}
+              // src={test}
               fluid={false}
               width="100%"
               height={600}
             >
-              {/* <source src={`http://www.w3schools.com/html/mov_bbb.mp4`} /> */}
+              <source src={video} />
               <BigPlayButton position="center" />
               <ControlBar>
                 <ReplayControl seconds={5} order={2.1} />
