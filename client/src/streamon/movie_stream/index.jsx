@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import {
   Player, BigPlayButton, ReplayControl, ControlBar,
 } from 'video-react';
-
 import './index.css';
 import '../../../node_modules/video-react/dist/video-react.css';
 import Header from '../../components/header';
@@ -14,11 +13,11 @@ import personIcon from '../../img/personIcon.png';
 import pirate from '../../img/pirate.png';
 import InputTextArea from '../../components/forms/InputTextArea';
 import SendButton from '../../components/forms/SendButton';
-// import test from '../../tmp/movies/The Dark Knight (2008)/The.Dark.Knight.2008.720p.BluRay.x264.YIFY.mp4';
 
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function getRelatedMovies(id, api) {
+  console.log("in RelatedMovies");
   return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
@@ -30,26 +29,44 @@ function getRelatedMovies(id, api) {
     .then(res => res.json());
 }
 
-function getStream(id, api) {
+function getStream(movie, api) {
+  console.log("in getStream");
   return fetch(`http://${HYPERTUBE_ROUTE}/stream`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ id, api }),
+    body: JSON.stringify({ movie, api }),
   })
     .then(res => res.json());
 }
 
-const tryRequire = (path) => {
-  try {
-    return (require(`../../tmp/movies/${path}`));
-  } catch (err) {
-    console.log(err);
-    return undefined;
-  }
-};
+function getMoviesId(api, id, stream = 'oui') {
+  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      api, id, stream,
+    }),
+  })
+    .then(res => res.json());
+}
+
+// const tryRequire = (path) => {
+//   console.log("in tryRequire");
+//   console.log("path = " + path);
+//   try {
+//     // eslint-disable-next-line
+//     return (require(`../../tmp/${path}`));
+//   } catch (err) {
+//     // console.log(err);
+//     return undefined;
+//   }
+// };
 
 
 class MovieStream extends Component {
@@ -61,6 +78,7 @@ class MovieStream extends Component {
       trailer: '',
       comment: '',
       allComments: [],
+      video: '',
     };
     this.putComment = this.putComment.bind(this);
     this.handleChangeComment = this.handleChangeComment.bind(this);
@@ -70,15 +88,19 @@ class MovieStream extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    const { match } = this.props;
-    getStream(match.params.value, match.params.api)
+    const { match, api } = this.props;
+    getMoviesId(match.params.api, match.params.value)
       .then((movie) => {
+        console.log("match.params.value = " + match.params.value);
+        console.log("match.params.api = " + match.params.api);
+        console.log(movie);
         if (this.mounted && match.params.api === 'yts') {
-          console.log(movie.movie.data.movie);
-          this.setState({ movie: movie.movie.data.movie });
+          console.log(movie);
+          this.setState({ movie });
           return movie;
         }
         if (this.mounted && match.params.api === 'bay') {
+          console.log("SetState 2");
           this.setState({ movie });
           return movie;
         }
@@ -86,16 +108,24 @@ class MovieStream extends Component {
       })
       .then((movie) => {
         if (this.mounted && match.params.api === 'yts') {
+          console.log("SetState 3");
           this.setState({ trailer: `https://www.youtube.com/embed/${movie.yt_trailer_code}` });
         }
         return movie;
       })
-      .then(movie => this.getComment(movie));
-
-    if (match.params.api === 'yts') {
-      getRelatedMovies(match.params.value, match.params.api)
-        .then(related => this.setState({ related: related.data.movies }));
-    }
+      .then((movie) => {
+        if (this.mounted && match.params.api === 'yts') {
+          getRelatedMovies(match.params.value, match.params.api)
+            .then((related) => { this.setState({ related: related.data.movies }); console.log("setState 4")});
+        }
+        return (movie);
+      })
+      .then((movie) => { this.getComment(movie); return (movie); })
+      .then(movie => getStream(movie, api))
+      .then(movie => movie.movie)
+      // .then(movie => {console.log(movie); return movie})
+      .then(movie => this.setState({ video: movie.path }));
+    // .then(() => console.log(video));
   }
 
   componentWillUnmount() {
@@ -120,7 +150,9 @@ class MovieStream extends Component {
   }
 
   handleChangeComment(event) {
-    this.setState({ comment: event.target.value });
+    if (this.mounted) {
+      this.setState({ comment: event.target.value });
+    }
   }
 
   putComment() {
@@ -149,14 +181,14 @@ class MovieStream extends Component {
     // console.log(this.state.movie ? this.state.movie.title_long : undefined)
     const { api } = this.props;
     const {
-      movie, related, comment, allComments, trailer,
+      movie, related, comment, allComments, trailer, video,
     } = this.state;
 
     // eslint-disable-next-line
-    const video = movie ? tryRequire(movie.path) : undefined;
-    // const video = movie ? require(`../../tmp/movies/Schindlers List (1993)/Schindlers.List.1993.720p.BrRip.x264.BOKUTOX.YIFY.mp4`) : undefined;
-    console.log(video);
-    // console.log(video);
+    // const video = (movie && movie.path) ? tryRequire(movie.path) : undefined;
+    // console.log(movie.path);
+    // console.log(video || undefined);
+    // var test = movie.path ? movie.path : undefined;
     // const { user } = this.props;
     if (!movie) {
       return null;
@@ -166,28 +198,30 @@ class MovieStream extends Component {
         <Header />
         <div id="main_div">
           <div id="player_stream">
-            <Player
-              playsInline
-              poster={movie && (movie.large_cover_image || pirate)}
-              // src={test}
-              fluid={false}
-              width="100%"
-              height={600}
-            >
-              <source src={video} />
-              <BigPlayButton position="center" />
-              <ControlBar>
-                <ReplayControl seconds={5} order={2.1} />
-                <ReplayControl seconds={10} order={2.2} />
-                <ReplayControl seconds={30} order={2.3} />
-              </ControlBar>
-            </Player>
+            {video !== undefined && (
+              <Player
+                playsInline
+                poster={movie && (movie.large_cover_image || pirate)}
+                // src={test}
+                fluid={false}
+                width="100%"
+                height={600}
+              >
+                {console.log("hey " + video)}
+                <source src={video} />
+                <BigPlayButton position="center" />
+                <ControlBar>
+                  <ReplayControl seconds={5} order={2.1} />
+                  <ReplayControl seconds={10} order={2.2} />
+                  <ReplayControl seconds={30} order={2.3} />
+                </ControlBar>
+              </Player>
+            )}
             {/* <video controls preload="metadata">
-              <source src={video} type="video/mp4"></source>
-            <track label="English" kind="subtitles" srcLang="en" src="../../tmp/Forrest Gump
-            (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
-            </video> */}
-          )
+                <source src={video} type="video/mp4"></source>
+              <track label="English" kind="subtitles" srcLang="en" src="../../tmp/Forrest Gump
+              (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
+              </video> */}
           </div>
           <div id="movie_infos">
             <div className="mini_info">

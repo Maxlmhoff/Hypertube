@@ -12,56 +12,31 @@ function download(movie) {
 
 
 router.post('/', (req, res) => {
-    // console.log("server server")
-    // console.log(req.body.id)
     if (req.body.api === 'yts') {
-        fetch('https://yts.am/api/v2/movie_details.json?movie_id=' + req.body.id, {
-            method: 'GET',
+        var movie = req.body.movie;
+        var hash = movie.torrents[0].hash;
+        var link = movie.torrents[0].url;
+        var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: '/tmp/movies' });
+        return new Promise(function (resolve, reject) {
+            engine.on('ready', function () {
+                resolve({ engine, movie });
+            });
         })
-            .then(response => response.json())
-            // .then(movie => { console.log(movie.data) })
-            .then((movie) => {
-                //console.log(movie.data.movie)
-                var hash = movie.data.movie.torrents[0].hash;
-                var link = movie.data.movie.torrents[0].url;
-                console.log(link);
-                console.log(hash);
-                var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link + '&tr=http://track.one:1234/announce&tr=udp://track.two:80', { path: '/tmp' });
-                return new Promise(function (resolve, reject) {
-                    engine.on('ready', function () {
-                        resolve({ engine, movie });
-                    });
-                });
-            })
         .then(({ engine, movie }) => {
             let path = undefined;
-            console.log("Q")
             engine.files.forEach(function (file) {
-                // console.log("fileName: ", file.name);
-                if (file.name.indexOf('.mp4') > 0) {
-            console.log("W")
-            path = file.path;
-                    // console.log('FILEPATH  ***  ' + path);
+                if ((file.name.indexOf('.mp4') || file.name.indexOf('.MP4')) > 0) {
+                    path = file.path;
                 }
                 var stream = file.createReadStream();
-                // console.log(stream);
-                // stream is readable stream to containing the file content
-
                 return path;
             })
-            // const file = engine.files[1];
-            // var fileName = file.name;
-            // var filePath = file.path;
-            // // console.log('FILEPATH  ***  ' + filePath);
-            // var path = filePath;
-            // var stream = file.createReadStream();
-            // stream is readable stream to containing the file content
-            movie.data.movie.path = path;
-            // console.log(path);
-            // console.log(movie);
+            console.log(path);
+            movie.path = path;
+            console.log(movie.path);
             return movie;
-        })
-        .then((movie) => { res.json({ movie: movie }) });
+    })
+    .then((movie) => { res.json({ movie: movie }) });
     }
     else if (req.body.api === 'bay'){
         PirateBay

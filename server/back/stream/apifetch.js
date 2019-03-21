@@ -8,12 +8,23 @@ router.post('/', (req, res) => {
     console.log('1');
     if (req.body.id) {
       console.log('B');
-      fetch(`https://yts.am/api/v2/movie_suggestions.json?movie_id=${req.body.id}`, {
+      if (req.body.stream){
+        fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${req.body.id}`, {
+            method: 'GET',
+        })
+        .then(response => response.json())
+          .then(response => response.data.movie)
+          .then(response => res.json(response))
+          .catch((err) => console.log('erreur yts'));
+      }
+      else {
+        fetch(`https://yts.am/api/v2/movie_suggestions.json?movie_id=${req.body.id}`, {
           method: 'GET',
         })
           .then(response => response.json())
           .then(response => res.json(response))
           .catch((err) => console.log('erreur yts'));
+      } 
     }
     else if (req.body.genre) {
       console.log('C');
@@ -21,7 +32,6 @@ router.post('/', (req, res) => {
           method: 'GET',
         })
           .then(response => response.json())
-          .then(response => { console.log(response.data.movies); return response})
           .then(response => response.data.movies)
           .then(response => res.json(response))
           .catch((err) => console.log('erreur yts'));

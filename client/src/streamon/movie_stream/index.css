@@ -1,20 +1,18 @@
 #main_div {
-    border: 1px solid white;
     margin-top: 30px;
 
 }
 
 #player_stream {
-    border: 1px solid white;
     width: 90%;
     /* height: 600px; */
     margin: auto;
     margin-top: 50px;
     margin-bottom: 50px;
+    border: none;
 }
 
 #movie_infos {
-    border: 1px solid red;
     width: 90%;
     margin: auto;
     margin-bottom: 50px;
@@ -26,7 +24,6 @@
     width: 10vw;
 }
 .infos {
-    border: 1px solid green;
     margin-left: 15px;
 }
 
@@ -55,7 +52,6 @@
 }
 
 #more_infos {
-    border: 1px solid white;
     width: 90%;
     margin: auto;
     position: relative;
@@ -138,7 +134,6 @@
 }
 
 #form_div {
-    border: 1px solid white;
     width: 90%;
     margin: auto;
     margin-bottom: 50px;

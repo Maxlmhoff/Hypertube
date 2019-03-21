@@ -30,14 +30,10 @@ class Header extends Component {
 
 
   render() {
-    const { dispatch, user } = this.props;
+    const { dispatch } = this.props;
     const { value } = this.state;
     return (
       <div>
-        <div id="div_name">
-          Bonjour
-          {user.login}
-        </div>
         <div className="main_banner">
           <div id="div_title">
             <Link to="/stream">
@@ -66,7 +62,6 @@ class Header extends Component {
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  user: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = state => state;

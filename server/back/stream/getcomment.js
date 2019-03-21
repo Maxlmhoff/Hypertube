@@ -6,7 +6,7 @@ router.post('/', (req, res) => {
   if (req.body.movie) {
     let movieId;
     if (req.body.api === 'yts') {
-       movieId = req.body.movie.movie.data.movie.id;
+       movieId = req.body.movie.id;
     }
     else {
        movieId = req.body.movie.id;
