@@ -7,6 +7,7 @@ var router = express.Router();
 var con = require('../../config/database');
 const PirateBay = require('thepiratebay');
 var ffmpeg = require('fluent-ffmpeg');
+
 var pump = require('pump')
 
 function isVideo(file){
@@ -77,7 +78,17 @@ router.get('/:api/:id', async (req, res) => {
                     console.log('Salut4');
                     if(file.name.indexOf('.avi') !== -1 || file.name.indexOf('.AVI') !== -1){
                         console.log('Salut5');
-                        stream = file.createReadStream();
+                        stream = ffmpeg(file.createReadStream())
+                        .videoCodec('libvpx')
+                        .audioCodec('libvorbis')
+                        .videoBitrate('512k')
+                        .format('webm')
+                        .outputOptions([
+                            '-deadline realtime',
+                            '-error-resilient 1'
+                        ])
+                        .on('error', (err) => {})
+;
                     } else {
                         console.log('Salut6');
                         stream = file.createReadStream();
