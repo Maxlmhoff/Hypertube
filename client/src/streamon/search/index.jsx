@@ -42,7 +42,7 @@ class Search extends Component {
         });
         return movie;
       })
-      .then(movie => {console.log(movie); return movie })
+      // .then(movie => {console.log(movie); return movie })
       .then(movie => this.setState({ movie }));
   }
 
