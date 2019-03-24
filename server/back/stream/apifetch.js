@@ -9,13 +9,13 @@ router.post('/', (req, res) => {
     if (req.body.id) {
       console.log('B');
       if (req.body.stream){
-        fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${req.body.id}`, {
+        fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${req.body.id}&with_cast=true`, {
             method: 'GET',
         })
         .then(response => response.json())
-          .then(response => response.data.movie)
-          .then(response => res.json(response))
-          .catch((err) => console.log('erreur yts'));
+        .then(response => response.data.movie)
+        .then(response => res.json(response))
+        .catch((err) => console.log('erreur yts'));
       }
       else {
         fetch(`https://yts.am/api/v2/movie_suggestions.json?movie_id=${req.body.id}`, {

@@ -91,6 +91,9 @@
 }
 
 #cast_div {
+    display: flex;
+    /* justify-content: space-around; */
+    align-items: center;
     color: white;
     margin-top: 15px;
     margin-bottom: 15px;
@@ -98,14 +101,28 @@
 }
 
 .cast_name {
-    font-size: 0.9em;
-    opacity: 0.8;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.h {
+    color: white;
+}
+
+#b {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .person_icon {
-    width: 1%;
+    width: 100px;
+    height: 110px;
+
     margin-right: 3px;
-    opacity: 0.5;
 }
 
 #title_suggestions {

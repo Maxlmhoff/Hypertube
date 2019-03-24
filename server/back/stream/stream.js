@@ -7,7 +7,6 @@ var router = express.Router();
 var con = require('../../config/database');
 const PirateBay = require('thepiratebay');
 var ffmpeg = require('fluent-ffmpeg');
-
 var pump = require('pump')
 
 function isVideo(file){
@@ -38,35 +37,40 @@ router.get('/:api/:id', async (req, res) => {
         var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link, { path: 'tmp/movies' });
         return new Promise(function (resolve, reject) {
             engine.on('ready', function () {
-                resolve({ engine, movie });
+                    console.log('hey1');
+                    resolve({ engine, movie });
             });
         })
         .then(({ engine, movie }) => {
-            let path = undefined;
+                    console.log('hey2');
+                    let path = undefined;
             let stream;
             engine.files.forEach(function (file) {
                 if ((file.name.indexOf('.mp4') || file.name.indexOf('.MP4')) > 0) {
                     path = file.path;
                     stream = file.createReadStream();
+                    console.log('hey');
                 }
                 return path;
             });
             res.header({
-                'Content-type': 'video/mp4'
+                'Content-type': 'video/mp4',
+                'Access-Control-Allow-Origin': '*'
             })
+            if (stream === undefined){
+                res.json({ erreur: 'Nous sommes désolés cependant YTS nous retourne une erreur' });
+                return false;
+            }
             return stream.pipe(res);
         })
         .catch((err) => console.log(err.stack));
     }
     else if (req.params.api === 'bay'){
-        console.log('Bay');
         const movie = await PirateBay.getTorrent(req.params.id);
+        console.log(movie);
         var engine = torrentStream(movie.magnetLink, { path: 'tmp/movies' });
-        console.log('Salut');
         return new Promise(function (resolve, reject) {
-        console.log('Salut2');
         engine.on('ready', function () {
-        console.log('Salut3');
         resolve({ engine, movie });
             });
         })

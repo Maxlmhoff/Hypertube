@@ -36,11 +36,7 @@ class FbLogin extends React.Component {
 
   responseFacebook = (response) => {
     this.setState({
-      isLoggedIn: true,
-      name: response.name,
-      picture: response.picture.data.url,
       token: response.accessToken,
-      id: response.id,
     });
     const { token } = this.state;
     this.sendToken(token);

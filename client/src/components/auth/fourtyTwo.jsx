@@ -16,8 +16,6 @@ class FourtyTwo extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const response = queryString.parse(window.location.href);
-    console.log("AAAAAA");
-    console.log(response);
     if (response.token) {
       dispatch({ type: 'NEW_TOKEN', value: response.token });
       this.getUser(response.token);
@@ -36,7 +34,6 @@ class FourtyTwo extends React.Component {
     })
       .then(response => response.json())
       .then(response => dispatch({ type: 'GET_USER', value: response.user }))
-      .then(response => console.log(response))
       .then(() => window.location.replace('https://localhost:3000/stream'));
   }
 

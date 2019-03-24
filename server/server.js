@@ -24,6 +24,7 @@ var getComment = require('./back/stream/getcomment');
 var putVu = require('./back/stream/putvu');
 var getVu = require('./back/stream/getvu');
 var apiFetch = require('./back/stream/apifetch');
+// var subtitles = require('./back/stream/subtitles');
 
 
 //Midllewares
@@ -61,6 +62,7 @@ app.use('/getcomment', getComment);
 app.use('/putvu', putVu);
 app.use('/getvu', getVu);
 app.use('/apifetch', apiFetch);
+// app.use('/subtitles', subtitles);
 app.use('/img', express.static('public/img'));
 app.use('/movies', express.static('tmp/movies'));
 

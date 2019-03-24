@@ -8,7 +8,6 @@ import {
 import './index.css';
 import '../../../node_modules/video-react/dist/video-react.css';
 import Header from '../../components/header';
-import playButton from '../../img/playButton.png';
 import personIcon from '../../img/personIcon.png';
 import chargement from '../../img/chargement.jpg';
 import pirate from '../../img/pirate.png';
@@ -70,7 +69,6 @@ class MovieStream extends Component {
         // console.log("match.params.api = " + match.params.api);
         // console.log(movie);
         if (this.mounted && match.params.api === 'yts') {
-          // console.log(movie);
           this.setState({ movie });
           return movie;
         }
@@ -178,6 +176,7 @@ class MovieStream extends Component {
                 height={600}
               >
                 <source src={`http://localhost:3001/stream/${api}/${match.params.value}`} />
+                {/* <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3001/subtitles/${api}/${match.params.value}`} default /> */}
                 <BigPlayButton position="center" />
                 <ControlBar>
                   <ReplayControl seconds={5} order={2.1} />
@@ -228,8 +227,8 @@ class MovieStream extends Component {
                   {movie && movie.year}
                 </div>
                 <div id="synopsys_title">
-                  Synopsys
-                  {movie && movie.title_english}
+                  Synopsis
+                  {movie && ` ${movie.title_english}`}
                 </div>
                 <div id="synopsys">
                   {movie && movie.description_full}
@@ -248,26 +247,21 @@ class MovieStream extends Component {
                 ))
                 }
               </div>
+              <br />
+              <h4 className="h">Cast :</h4>
               <div id="cast_div">
-                {/* Cast: */}
-                {/* <br /> */}
-                {movie && movie.cast > 0 && movie.cast.map(genre => (
-                  <span className="cast_name" key={genre}>
-                    <img src={personIcon} className="person_icon" alt="person_icon" />
-                    {genre.name}
+                {movie && movie.cast && movie.cast.map(cast => (
+                  <span className="cast_name" key={cast.imdb_code}>
+                    {cast.character_name}
+                    :
+                    <img src={cast.url_small_image || personIcon} className="person_icon" alt="person_icon" />
+                    {cast.name}
                     <br />
                   </span>
                 ))}
               </div>
-              <div id="trailer_button">
-                <a href={trailer} target="_blank" rel="noopener noreferrer">
-                  <button type="button">
-                    <img src={playButton} id="play_button" alt="play_button" />
-                    REGARDER LA BANDE ANNONCE
-                  </button>
-                </a>
-              </div>
-              <div>
+              <div id="b">
+                <h4 className="h">Trailer</h4>
                 <iframe
                   width="560"
                   height="315"
@@ -286,7 +280,7 @@ class MovieStream extends Component {
                       className="suggestion_movie"
                     >
                       <img
-                        src={suggestion.medium_cover_image}
+                        src={suggestion.medium_cover_image || pirate}
                         alt={suggestion.title}
                       />
                       <p className="title_movie_suggested">{suggestion.title}</p>

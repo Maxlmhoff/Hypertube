@@ -34,9 +34,6 @@ function handleSubmit(event, dispatch) {
   })
     .then(res => res.json())
     .then((users) => {
-      console.log("token crée lors du login");
-      console.log(users.token);
-      console.log("1");
       var flash = document.getElementById('flash');
       // if (users[0].connected) {
       //   window.location = '/';
