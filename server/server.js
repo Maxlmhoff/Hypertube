@@ -24,11 +24,11 @@ var getComment = require('./back/stream/getcomment');
 var putVu = require('./back/stream/putvu');
 var getVu = require('./back/stream/getvu');
 var apiFetch = require('./back/stream/apifetch');
-// var subtitles = require('./back/stream/subtitles');
+var subtitles = require('./back/stream/subtitles');
 
 
 //Midllewares
-app.use(express.static(__dirname + '/public'));
+app.use('/public', express.static(__dirname + '/public'));
 app.use(session({
 	secret: 'karlsecret',
 	resave: false,
@@ -42,11 +42,8 @@ app.use(require('./Middlewares/user'))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-	console.log("celui qui est connecté est: ");
-	console.log(req.session.log);
-})
-
+app.use('/', express.static('build/index.html'));
+app.use('/', express.static('build'));
 
 app.use('/register', register);
 app.use('/signin', signin);
@@ -56,17 +53,16 @@ app.use('/login42', login42);
 app.use('/getuser', getUser);
 app.use('/getallusers', getAllUsers);
 app.use('/modify', modify);
-app.use('/stream', stream);
+app.use('/getstream', stream);
 app.use('/comment', comment);
 app.use('/getcomment', getComment);
 app.use('/putvu', putVu);
 app.use('/getvu', getVu);
 app.use('/apifetch', apiFetch);
-// app.use('/subtitles', subtitles);
+app.use('/subtitles', subtitles);
 app.use('/img', express.static('public/img'));
-app.use('/movies', express.static('tmp/movies'));
 
-
+app.use('*', express.static('build/index.html'));
 
 app.listen(PORT, () => {
 		console.log("Server listening on port 3001");

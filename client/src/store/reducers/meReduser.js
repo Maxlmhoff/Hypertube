@@ -3,6 +3,7 @@ const initialState = {
   user: {},
   allUsers: {},
   api: 'yts',
+  langue: 'en',
 };
 
 function users(state = initialState, action) {
@@ -41,6 +42,18 @@ function users(state = initialState, action) {
       nextState = {
         ...state,
         api: action.value,
+      };
+      return nextState || state;
+    case 'EN':
+      nextState = {
+        ...state,
+        langue: action.value,
+      };
+      return nextState || state;
+    case 'FR':
+      nextState = {
+        ...state,
+        langue: action.value,
       };
       return nextState || state;
     default:

@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       con.query(sql, [email], (err, result) => {
         if (result.length > 0){
           const token = jwt.sign({ id: result[0].id }, 'ultrasecret');
-          res.redirect(`https://localhost:3000/signup?truc=rien&token=${token}`)      
+          res.redirect(`http://localhost:3001/signup?truc=rien&token=${token}`)      
 
         }
         else {
@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
             var ID = result[0].ID;
             const token = jwt.sign({ id: ID }, 'ultrasecret');
             console.log(token);
-            res.redirect(`https://localhost:3000/signup?truc=rien&token=${token}`)      
+            res.redirect(`http://localhost:3001/signup?truc=rien&token=${token}`)      
           }); 
         }
       });

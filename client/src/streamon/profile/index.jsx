@@ -15,6 +15,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChangeRadio = this.handleChangeRadio.bind(this);
     this.handleChangeFile = this.handleChangeFile.bind(this);
     this.handleChangeLogin = this.handleChangeLogin.bind(this);
     this.handleChangeName = this.handleChangeName.bind(this);
@@ -31,6 +32,7 @@ class Profile extends Component {
       photo: undefined,
       error: false,
       message: '',
+      lang: 'en',
     };
     this.getUser(token);
     this.getAllUser();
@@ -64,8 +66,14 @@ class Profile extends Component {
   }
 
   handleSubmit() {
-    const { token } = this.props;
+    const { token, dispatch } = this.props;
+    const { lang } = this.state;
     const data = new FormData();
+    if (lang === 'en') {
+      dispatch({ type: 'EN', value: 'en' });
+    } else {
+      dispatch({ type: 'FR', value: 'fr' });
+    }
     Object.entries(this.state).map(([key, value]) => {
       data.append(key, value);
       return ({ key, value });
@@ -88,6 +96,10 @@ class Profile extends Component {
       // .then(response => console.log(response.error))
       .then(() => this.getUser(token))
       .then(() => this.getAllUser());
+  }
+
+  handleChangeRadio(value) {
+    this.setState({ lang: value.target.value });
   }
 
   handleChangeFile(event) {
@@ -117,7 +129,7 @@ class Profile extends Component {
   render() {
     const { user, allUsers } = this.props;
     const {
-      login, name, firstname, email, error, message,
+      login, name, firstname, email, error, message, lang,
     } = this.state;
     return (
       <div className="page">
@@ -139,6 +151,16 @@ class Profile extends Component {
               <div className="form_div">
                 <InputEmail value={email} onChange={this.handleChangeEmail} required={false} placeholder={user.email} label="Email" name="email" id="Email" />
                 <InputPassword onChange={this.handleChangePassword} required={false} placeholder="********" label="Password" name="password" id="Password" />
+              </div>
+            </div>
+            <div id="fdp">
+              <div className="radio">
+                <input type="radio" value="en" checked={lang === 'en'} onChange={this.handleChangeRadio} />
+                <p>English</p>
+              </div>
+              <div className="radio">
+                <input type="radio" value="fr" checked={lang === 'fr'} onChange={this.handleChangeRadio} />
+                <p>Français</p>
               </div>
             </div>
             <div className="form_div">
@@ -173,6 +195,7 @@ class Profile extends Component {
 
 Profile.propTypes = {
   token: PropTypes.string.isRequired,
+  langue: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
   user: PropTypes.object.isRequired,
   allUsers: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,

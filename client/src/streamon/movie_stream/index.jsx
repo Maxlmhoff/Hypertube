@@ -175,14 +175,9 @@ class MovieStream extends Component {
                 width="100%"
                 height={600}
               >
-                <source src={`http://localhost:3001/stream/${api}/${match.params.value}`} />
-                {/* <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3001/subtitles/${api}/${match.params.value}`} default /> */}
+                <source src={`http://localhost:3001/getstream/${api}/${match.params.value}`} />
+                <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3001/subtitles/${api}/${match.params.value}`} default />
                 <BigPlayButton position="center" />
-                <ControlBar>
-                  <ReplayControl seconds={5} order={2.1} />
-                  <ReplayControl seconds={10} order={2.2} />
-                  <ReplayControl seconds={30} order={2.3} />
-                </ControlBar>
               </Player>
               {/* <video controls preload="metadata">
                   <source src={video} type="video/mp4"></source>

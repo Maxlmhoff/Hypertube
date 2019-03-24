@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "client": "cd client && npm start",
+    "client": "cd client && npm run build && cp -r build ../server/",
     "server": "cd server && npm start",
-    "start": "concurrently - kill-others \"npm run server\" \"npm run client\" \"mkdir /tmp/movies\"",
+    "start": "concurrently - kill-others \"npm run client && npm run server\" \"mkdir /tmp/movies\"",
     "install": "cd client && npm install && cd ../server && npm install"
   },
   "keywords": [],

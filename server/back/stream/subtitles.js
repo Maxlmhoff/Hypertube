@@ -1,6 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const fs = require('fs');
+var srt2vtt = require('srt-to-vtt');
 var router = express.Router();
 // const OS = require('opensubtitles-api');
 // const OpenSubtitles = new OS({ useragent:'Hypersub' });
@@ -20,7 +21,7 @@ router.get('/:api/:id', async (req, res) => {
           movie.subtitles = file;
         }
       })
-      fs.createReadStream(`${__dirname}/../../tmp/movies/${movie.title_long}/${movie.subtitles}`).pipe(res);
+      fs.createReadStream(`${__dirname}/../../tmp/movies/${movie.title_long}/${movie.subtitles}`).pipe(srt2vtt()).pipe(res);
     }
     else {
 

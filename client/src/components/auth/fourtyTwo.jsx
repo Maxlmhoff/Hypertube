@@ -34,7 +34,7 @@ class FourtyTwo extends React.Component {
     })
       .then(response => response.json())
       .then(response => dispatch({ type: 'GET_USER', value: response.user }))
-      .then(() => window.location.replace('https://localhost:3000/stream'));
+      .then(() => window.location.replace('http://localhost:3001/stream'));
   }
 
   render() {

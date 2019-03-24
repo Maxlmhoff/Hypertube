@@ -35,6 +35,12 @@ h2 {
   justify-content: space-around;
 }
 
+#fdp {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
 .form_div {
   display: flex;
   justify-content: space-around;
@@ -47,6 +53,12 @@ h2 {
   justify-content: center;
   align-items: center;
   margin-top:50px;
+}
+
+.radio{
+  display: flex;
+  width: 200px;
+  justify-content: space-between;
 }
 
 .profile_picture{
