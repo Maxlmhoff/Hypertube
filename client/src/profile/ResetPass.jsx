@@ -16,7 +16,7 @@ class ResetPass extends Component {
     // const {} = this.props;
     event.preventDefault();
     const data = new FormData(event.target);
-    fetch(`http://${HYPERTUBE_ROUTE}/resetPass`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/resetPass`, {
       method: 'POST',
       body: data,
     })

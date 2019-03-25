@@ -44,7 +44,7 @@ router.post('/', (req, res) => {
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
-                                                    var path =  'http://localhost:3001/img/' + result1;
+                                                    var path =  'https://localhost:3001/img/' + result1;
                                                 }
                                                 else if (files.photo.type === 'image/jpg') {
                                                     var jpg = ".jpg";
@@ -54,7 +54,7 @@ router.post('/', (req, res) => {
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
-                                                    var path =  'http://localhost:3001/img/' + result1;
+                                                    var path =  'https://localhost:3001/img/' + result1;
                                                 }
                                                 else if (files.photo.type === 'image/jpeg') {
                                                     var jpg = ".jpeg";
@@ -64,7 +64,7 @@ router.post('/', (req, res) => {
                                                     fs.copyFile(oldpath, newpath, function (err) {
                                                         console.log("file moved (/server/register)");
                                                     });
-                                                    var path =  'http://localhost:3001/img/' + result1;
+                                                    var path =  'https://localhost:3001/img/' + result1;
 
                                                 }
                                                 con.query('INSERT INTO users SET login = ?, name = ?, firstname = ?, email = ?, password = ?, img = ?', [login, name, firstname, email, hash.generate(password), path]);

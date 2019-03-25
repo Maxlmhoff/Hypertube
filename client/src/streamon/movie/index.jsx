@@ -10,7 +10,7 @@ import pirate from '../../img/pirate.png';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function putVu(token, movie) {
-  fetch(`http://${HYPERTUBE_ROUTE}/putvu`, {
+  fetch(`https://${HYPERTUBE_ROUTE}/putvu`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const Movie = ({
         <img className="playbutton" alt="play" src={playButton} />
         <p>{movie.rating}</p>
       </div>
-      <img className="cover_photo" alt="movies" src={movie.medium_cover_image || pirate} />
+      <img className="cover_photo" alt="movies" src={(movie.medium_cover_image === 'https://yts.am/assets/images/movies/night_2019/medium-cover.jpg' ? pirate : movie.medium_cover_image) || pirate} />
     </Link>
   </div>
 );

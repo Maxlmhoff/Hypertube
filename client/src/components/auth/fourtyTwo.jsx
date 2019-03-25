@@ -24,7 +24,7 @@ class FourtyTwo extends React.Component {
 
   getUser(token) {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getuser`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -34,7 +34,7 @@ class FourtyTwo extends React.Component {
     })
       .then(response => response.json())
       .then(response => dispatch({ type: 'GET_USER', value: response.user }))
-      .then(() => window.location.replace('http://localhost:3001/stream'));
+      .then(() => window.location.replace('https://localhost:3001/stream'));
   }
 
   render() {
@@ -50,7 +50,7 @@ class FourtyTwo extends React.Component {
       );
     } else {
       FourtyTwoContent = (
-        <a href="https://api.intra.42.fr/oauth/authorize?client_id=95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Flogin42&response_type=code">
+        <a href="https://api.intra.42.fr/oauth/authorize?client_id=95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438&redirect_uri=https%3A%2F%2Flocalhost%3A3001%2Flogin42&response_type=code">
           <button
             style={{
               width: '245px',

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import {
-  Player, BigPlayButton, ReplayControl, ControlBar,
+  Player, BigPlayButton,
 } from 'video-react';
 import './index.css';
 import '../../../node_modules/video-react/dist/video-react.css';
@@ -17,8 +17,7 @@ import SendButton from '../../components/forms/SendButton';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function getRelatedMovies(id, api) {
-  // console.log("in RelatedMovies");
-  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+  return fetch(`https://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -30,7 +29,7 @@ function getRelatedMovies(id, api) {
 }
 
 function getMoviesId(api, id, stream = 'oui') {
-  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+  return fetch(`https://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -57,7 +56,6 @@ class MovieStream extends Component {
     this.putComment = this.putComment.bind(this);
     this.handleChangeComment = this.handleChangeComment.bind(this);
     this.getComment = this.getComment.bind(this);
-    // const { user } = this.props;
   }
 
   componentDidMount() {
@@ -65,15 +63,11 @@ class MovieStream extends Component {
     const { match } = this.props;
     getMoviesId(match.params.api, match.params.value)
       .then((movie) => {
-        // console.log("match.params.value = " + match.params.value);
-        // console.log("match.params.api = " + match.params.api);
-        // console.log(movie);
         if (this.mounted && match.params.api === 'yts') {
           this.setState({ movie });
           return movie;
         }
         if (this.mounted && match.params.api === 'bay') {
-          // console.log("SetState 2");
           this.setState({ movie });
           return movie;
         }
@@ -81,7 +75,6 @@ class MovieStream extends Component {
       })
       .then((movie) => {
         if (this.mounted && match.params.api === 'yts') {
-          // console.log("SetState 3");
           this.setState({ trailer: `https://www.youtube.com/embed/${movie.yt_trailer_code}` });
         }
         return movie;
@@ -102,7 +95,7 @@ class MovieStream extends Component {
 
   getComment(movie) {
     const { api } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getcomment`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getcomment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -126,7 +119,7 @@ class MovieStream extends Component {
   putComment() {
     const { token, user } = this.props;
     const { comment, movie } = this.state;
-    fetch(`http://${HYPERTUBE_ROUTE}/comment`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/comment`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -141,23 +134,10 @@ class MovieStream extends Component {
   }
 
   render() {
-    // eslint-disable-next-line
-    // const video = this.state.movie ? `../../tmp/movies/${this.state.movie.path}` : undefined;
-    // console.log("page movie_stream");
-    // eslint-disable-next-line
-    // const test = this.state.movie ? require(`../../tmp/movies/${this.state.movie.path}`) : undefined;
-    // console.log(this.state.movie ? this.state.movie.title_long : undefined)
-    const { api, match } = this.props;
+    const { api, match, langue } = this.props;
     const {
       movie, related, comment, allComments, trailer, video,
     } = this.state;
-
-    // eslint-disable-next-line
-    // const video = (movie && movie.path) ? tryRequire(movie.path) : undefined;
-    // console.log(movie.path);
-    // console.log(video || undefined);
-    // var test = movie.path ? movie.path : undefined;
-    // const { user } = this.props;
     if (!movie) {
       return null;
     }
@@ -175,15 +155,10 @@ class MovieStream extends Component {
                 width="100%"
                 height={600}
               >
-                <source src={`http://localhost:3001/getstream/${api}/${match.params.value}`} />
-                <track label="English" kind="subtitles" srcLang="en" src={`http://localhost:3001/subtitles/${api}/${match.params.value}`} default />
+                <source src={`https://localhost:3001/getstream/${api}/${match.params.value}`} />
+                <track label="English" kind="subtitles" srcLang="en" src={`https://localhost:3001/subtitles/${api}/${match.params.value}`} default />
                 <BigPlayButton position="center" />
               </Player>
-              {/* <video controls preload="metadata">
-                  <source src={video} type="video/mp4"></source>
-                <track label="English" kind="subtitles" srcLang="en" src="../../tmp/Forrest Gump
-                (1994)/Forrest.Gump.1994.720p.BrRip.x264.YIFY.srt.srt" default></track>
-                </video> */}
             </div>
           ) : (
             <div id="player_stream">
@@ -195,7 +170,6 @@ class MovieStream extends Component {
                 width="100%"
                 height={600}
               >
-                {/* {console.log("hey " + video)} */}
                 <source src={video} />
                 <BigPlayButton position="center" />
               </Player>
@@ -235,7 +209,7 @@ class MovieStream extends Component {
             <div id="more_infos">
               <div id="genre">
                 <span id="span_genre">Genre: </span>
-                {movie && movie.genres.map(genre => (
+                {movie && movie.genres && movie.genres.map(genre => (
                   <span key={genre}>
                     {genre}
                   </span>
@@ -243,7 +217,7 @@ class MovieStream extends Component {
                 }
               </div>
               <br />
-              <h4 className="h">Cast :</h4>
+              <h4 className="h">Casting :</h4>
               <div id="cast_div">
                 {movie && movie.cast && movie.cast.map(cast => (
                   <span className="cast_name" key={cast.imdb_code}>
@@ -267,7 +241,17 @@ class MovieStream extends Component {
                   title="auto"
                 />
               </div>
-              <p id="title_suggestions">Films associés</p>
+              <p id="title_suggestions">
+                {langue === 'fr' ? (
+                  <p>
+                    Films associés
+                  </p>
+                ) : (
+                  <p>
+                  Movies associates
+                  </p>
+                )}
+              </p>
               <div className="suggestions_div">
                 {related && related.map(suggestion => (
                   <Link key={suggestion.id} to={`/movie/${api}/${suggestion.id}`}>
@@ -286,7 +270,17 @@ class MovieStream extends Component {
             </div>
           )}
           <div id="form_div">
-            <p id="title_comment">Leave a comment</p>
+            <p id="title_comment">
+              {langue === 'fr' ? (
+                <p>
+                  Laissez un commentaire
+                </p>
+              ) : (
+                <p>
+                Let a comment
+                </p>
+              )}
+            </p>
             <InputTextArea onChange={this.handleChangeComment} value={comment} name="comment" label="comment" id="comment" />
             <SendButton onClick={this.putComment} bootstrapButtonType="btn btn-warning" value="Envoyer" />
             <h3 id="title_comment">Comment :</h3>
@@ -310,6 +304,7 @@ MovieStream.propTypes = {
   api: PropTypes.string.isRequired,
   match: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
+  langue: PropTypes.string.isRequired,
   user: PropTypes.object.isRequired,
 };
 

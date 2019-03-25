@@ -22,7 +22,7 @@ class FbLogin extends React.Component {
 
   getUser(token) {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getuser`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -44,7 +44,7 @@ class FbLogin extends React.Component {
 
   sendToken(token) {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/loginFb`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/loginFb`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',

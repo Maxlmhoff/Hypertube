@@ -24,7 +24,7 @@ router.post("/", function (req, res) {
                     html: '<html><body><div align=center> \
 					Voici votre nouveau mot de passe:  <BR />\
 					<p>'+ key + '</p> \
-					<p><a href=http://localhost:3000/signin>Hypertube</a></p> \
+					<p><a href=https://localhost:3000/signin>Hypertube</a></p> \
 					</div></body></html>'
                 }
                 transporter.sendMail(mail, function (error) { if (error) { throw error } });

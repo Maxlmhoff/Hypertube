@@ -5,9 +5,7 @@ const PirateBay = require('thepiratebay');
 
 router.post('/', (req, res) => {
   if (req.body.api === 'yts') {
-    console.log('1');
     if (req.body.id) {
-      console.log('B');
       if (req.body.stream){
         fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${req.body.id}&with_cast=true`, {
             method: 'GET',
@@ -27,7 +25,6 @@ router.post('/', (req, res) => {
       } 
     }
     else if (req.body.genre) {
-      console.log('C');
       fetch(`https://yts.am/api/v2/list_movies.json?genre=${req.body.genre}`, {
           method: 'GET',
         })
@@ -36,7 +33,6 @@ router.post('/', (req, res) => {
           .then(response => res.json(response))
           .catch((err) => console.log('erreur yts'));
       } else {
-      console.log('A')
       fetch(`https://yts.am/api/v2/list_movies.json?sort_by=${req.body.sort || 'rating'}&limit=30&page=${req.body.page}`, {
       method: 'GET',
     })
@@ -46,18 +42,16 @@ router.post('/', (req, res) => {
     }
   }
   else if (req.body.api === 'bay') {
-      console.log('2')
       PirateBay.topTorrents(201)
       
       .then(response => res.json(response.map(elem => ({
         title: elem.name,
         id: elem.id,
-      }))))
+      }))));
       // test.json();
     // .then(response => res.json(response))
   }
   else if (req.body.api === 'search' && req.body.queryTerm) {
-    console.log('3')
     var list = [];
       fetch(`https://yts.am/api/v2/list_movies.json?query_term=${req.body.queryTerm}&limit=50`, {
         method: 'GET',
@@ -87,7 +81,6 @@ router.post('/', (req, res) => {
       })
   }
   else {
-    console.log('4')
     res.json({ erreur: 'Veuillez préciser une api'})
   }
 })

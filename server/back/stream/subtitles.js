@@ -8,6 +8,9 @@ var router = express.Router();
 
 
 router.get('/:api/:id', async (req, res) => {
+  res.header({
+    'Content-type': 'text/vtt',
+  });
   if (req.params.api === 'yts') {
       const movie = await fetch(`https://yts.am/api/v2/movie_details.json?movie_id=${req.params.id}`, {
           method: 'GET',
@@ -15,18 +18,30 @@ router.get('/:api/:id', async (req, res) => {
       .then(response => response.json())
       .then(movie => movie.data.movie);
     if (movie.title_long){
+    console.log(movie.path)
+
+    console.log("2")
+    console.log(movie.title_long)
+    try {
       var files = fs.readdirSync(`${__dirname}/../../tmp/movies/${movie.title_long}`);
+    } catch(e) {
+      res.end();
+      return;
+    }
       files.forEach(function (file) {
-        if (file.indexOf('.srt') !== -1) {
-          movie.subtitles = file;
+    console.log("3")
+    if (file.indexOf('.srt') !== -1) {
+    console.log("4")
+    movie.subtitles = file;
         }
       })
-      fs.createReadStream(`${__dirname}/../../tmp/movies/${movie.title_long}/${movie.subtitles}`).pipe(srt2vtt()).pipe(res);
-    }
-    else {
-
+      if (movie.subtitles) {
+        fs.createReadStream(`${__dirname}/../../tmp/movies/${movie.title_long}/${movie.subtitles}`).pipe(srt2vtt()).pipe(res);
+        return;
+      }
     }
   }
+  res.end();
 })
 
 module.exports = router;

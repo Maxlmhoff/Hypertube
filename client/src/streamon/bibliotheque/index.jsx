@@ -9,7 +9,7 @@ import Header from '../../components/header';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function getMovies(api, page = 0, genre, sort) {
-  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+  return fetch(`https://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -44,7 +44,7 @@ class Stream extends Component {
   }
 
   getVu(token) {
-    fetch(`http://${HYPERTUBE_ROUTE}/getvu`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getvu`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -75,7 +75,7 @@ class Stream extends Component {
   }
 
   render() {
-    const { dispatch, api } = this.props;
+    const { dispatch, api, langue } = this.props;
     const {
       movies, vus, genre, sort,
     } = this.state;
@@ -114,7 +114,11 @@ class Stream extends Component {
           <div id="div_genre_sort">
             <div className="div_all_sort">
               <label htmlFor={genre}>
-                Pick your genre:
+                {langue === 'fr' ? (
+                  'Choisi ton genre'
+                ) : (
+                  'Pick your gender'
+                )}
                 <select value={genre} onChange={this.handleChangeGenre}>
                   <option value="Action">Action</option>
                   <option value="Comedy">Comedy</option>
@@ -128,13 +132,17 @@ class Stream extends Component {
             </div>
             <div className="div_all_sort">
               <label htmlFor={sort}>
-                Sort by:
+                {langue === 'fr' ? (
+                  'Ranger par'
+                ) : (
+                  'Sort by'
+                )}
                 <select value={sort} onChange={this.handleChangeSort}>
-                  <option value="rating">rating</option>
-                  <option value="title">title</option>
-                  <option value="year">year</option>
-                  <option value="download_count">download_count</option>
-                  <option value="like_count">like_count</option>
+                  <option value="rating">{langue === 'fr' ? ('Notation') : ('Rating')}</option>
+                  <option value="title">{langue === 'fr' ? ('Titre') : ('Title')}</option>
+                  <option value="year">{langue === 'fr' ? ('Année') : ('Year')}</option>
+                  <option value="download_count">{langue === 'fr' ? ('Plus téléchargés') : ('More downloaded')}</option>
+                  <option value="like_count">{langue === 'fr' ? ('Plus liker') : ('More liked')}</option>
                 </select>
               </label>
               <button className="button_submit_filter" onClick={() => getMovies(api, 0, undefined, sort).then(response => this.setState({ movies: response }))} type="submit" value="Submit">Submit</button>
@@ -165,6 +173,7 @@ class Stream extends Component {
 }
 
 Stream.propTypes = {
+  langue: PropTypes.string.isRequired,
   token: PropTypes.string.isRequired,
   api: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,

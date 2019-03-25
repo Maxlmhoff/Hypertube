@@ -8,7 +8,7 @@ import Header from '../../components/header';
 const HYPERTUBE_ROUTE = 'localhost:3001';
 
 function getMovies(queryTerm) {
-  return fetch(`http://${HYPERTUBE_ROUTE}/apifetch`, {
+  return fetch(`https://${HYPERTUBE_ROUTE}/apifetch`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',

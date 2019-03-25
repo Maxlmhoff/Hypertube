@@ -11,7 +11,7 @@ var con = require('../../config/database');
 
 router.post('/', async (req, res) => {
   var form = new formidable.IncomingForm();
-  form.parse(req, (err, fields, files) => {
+  form.parse(req, async (err, fields, files) => {
     var login = eschtml(fields.login);
     var name = eschtml(fields.name);
     var firstname = eschtml(fields.firstname);
@@ -23,21 +23,29 @@ router.post('/', async (req, res) => {
     var regNumber = /[0-9]+/;
     var regMail = /^[a-z0-9._-]+@[a-z0-9._-]+\.[a-z]{2,6}$/;
     let token = req.headers.authorization;
-    var decoded = jwt.verify(token, 'ultrasecret');
+    try {
+      var decoded = jwt.verify(token, 'ultrasecret');
+    } catch (e) {
+      res.end();
+      return;
+    }
     var sql = 'SELECT * FROM users WHERE id = ?';
-    con.query(sql, [decoded.id], async (err, result) => {
+    const result = await new Promise((resolve) => con.query(sql, [decoded.id], async (err, result) => {
+      resolve(result);
+    }));
   // login
-
   if (login.length === 0 &&
     name.length === 0 &&
     firstname.length === 0 &&
     email.length === 0 &&
     password.length === 0 &&
-    !files.photo)
-    res.json({error : 'Please enter something !'});
-
+    !files.photo) {
+      res.json({error : "Langue setup but you didn't change something else"});
+      return ;
+    }
   else if (login.length > 30){
-  res.json({error : 'Invalid login'});
+    res.json({error : 'Invalid login'});
+    return ;
   }
       if (login.length > 0 ){
         var sqlogin = "SELECT login FROM users WHERE login = ?";
@@ -72,17 +80,21 @@ router.post('/', async (req, res) => {
       // name
       else if (name.length > 30){
         res.json({error : 'Invalid name'});
+        return ;
       }
       else if (name === result[0].name) {
         res.json({error : 'Name is already taken'});
+        return ;
       }
 
       // firstname
       else if (firstname.length > 30){
         res.json({error : 'Invalid firstname'});
+        return ;
       }
       else if (firstname === result[0].firstname) {
         res.json({error : 'Firstname is already taken'});
+        return ;
       }
 
       // password
@@ -91,11 +103,14 @@ router.post('/', async (req, res) => {
           password.search(regNumber) !== -1 &&
           password.length > 5) {
         res.json({error : 'Password not good enough'});
+        return ;
       }
       else if (password !== passwordConfirm) {
         res.json({error : 'Password do not match'});
+        return ;
       } else if (files.photo && !(files.photo.type === 'image/png' || files.photo.type === 'image/jpg' || files.photo.type === 'image/jpeg')) {
         res.json({error : 'Invalid file'});
+        return ;
       } else {
       if (login.length === 0 || !login)
         login = result[0].login;
@@ -105,8 +120,10 @@ router.post('/', async (req, res) => {
         firstname = result[0].firstname;
       if (email.length === 0 || !email)
         email = result[0].email;
-      if (!files.photo)
+      if (!files.photo) {
         var result1 = result[0].img;
+        var path =  'https://localhost:3001/img/' + result1;
+      }
       if (password.length === 0 || !password)
         password = result[0].password;
       else
@@ -119,7 +136,7 @@ router.post('/', async (req, res) => {
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      var path =  'http://localhost:3001/img/' + result1;
+      var path =  'https://localhost:3001/img/' + result1;
     }
       else if (files.photo && files.photo.type === 'image/jpg') {
           let jpg = ".jpg";
@@ -129,7 +146,7 @@ router.post('/', async (req, res) => {
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      var path =  'http://localhost:3001/img/' + result1;
+      var path =  'https://localhost:3001/img/' + result1;
     }
       else if (files.photo && files.photo.type === 'image/jpeg') {
           let jpg = ".jpeg";
@@ -139,17 +156,14 @@ router.post('/', async (req, res) => {
           fs.copyFile(oldpath, newpath, function (err) {
               console.log("file moved (/server/register)");
           });
-      var path =  'http://localhost:3001/img/' + result1;
+      var path =  'https://localhost:3001/img/' + result1;
     }
       con.query('UPDATE users SET login = ?, name = ?, firstname = ?, password = ?, email = ?, img = ? WHERE id = ? ', [login, name, firstname, password, email, path, decoded.id]);
       res.json({success: "Vos modifications on bien été prises en compte"});
-      }
-    });
-    // console.log(login);
-    //res.send("fields");
-  });
+      return ;
+    }
+    })
 });
-
 
 
 module.exports = router;

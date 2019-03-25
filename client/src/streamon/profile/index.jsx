@@ -22,17 +22,16 @@ class Profile extends Component {
     this.handleChangeFistname = this.handleChangeFistname.bind(this);
     this.handleChangePassword = this.handleChangePassword.bind(this);
     this.handleChangeEmail = this.handleChangeEmail.bind(this);
-    const { token } = this.props;
+    const { token, langue } = this.props;
     this.state = {
       login: '',
       email: '',
       firstname: '',
       name: '',
       password: '',
-      photo: undefined,
       error: false,
       message: '',
-      lang: 'en',
+      lang: langue,
     };
     this.getUser(token);
     this.getAllUser();
@@ -40,7 +39,7 @@ class Profile extends Component {
 
   getUser(token) {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getuser`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -54,7 +53,7 @@ class Profile extends Component {
 
   getAllUser() {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getallusers`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getallusers`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -78,7 +77,7 @@ class Profile extends Component {
       data.append(key, value);
       return ({ key, value });
     });
-    fetch(`http://${HYPERTUBE_ROUTE}/modify`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/modify`, {
       method: 'POST',
       body: data,
       headers: {
@@ -127,7 +126,7 @@ class Profile extends Component {
   }
 
   render() {
-    const { user, allUsers } = this.props;
+    const { user, allUsers, langue } = this.props;
     const {
       login, name, firstname, email, error, message, lang,
     } = this.state;
@@ -144,34 +143,42 @@ class Profile extends Component {
             </div>
             <div className="big_form_div">
               <div className="form_div">
-                <InputText value={firstname} onChange={this.handleChangeFistname} required={false} placeholder={user.firstname} label="Prenom" name="prenom" id="Prenom" />
-                <InputText value={name} onChange={this.handleChangeName} required={false} placeholder={user.name} label="Nom" name="nom" id="Nom" />
+                <InputText value={firstname} onChange={this.handleChangeFistname} required={false} placeholder={user.firstname} label={langue === 'fr' ? 'Prenom' : 'Firstname'} name="prenom" id="Prenom" />
+                <InputText value={name} onChange={this.handleChangeName} required={false} placeholder={user.name} label={langue === 'fr' ? 'Nom' : 'Name'} name="nom" id="Nom" />
                 <InputText value={login} onChange={this.handleChangeLogin} required={false} placeholder={user.login} label="Login" name="login" id="Login" />
               </div>
               <div className="form_div">
                 <InputEmail value={email} onChange={this.handleChangeEmail} required={false} placeholder={user.email} label="Email" name="email" id="Email" />
-                <InputPassword onChange={this.handleChangePassword} required={false} placeholder="********" label="Password" name="password" id="Password" />
+                <InputPassword onChange={this.handleChangePassword} required={false} placeholder="********" label={langue === 'fr' ? 'Mot de passe' : 'Password'} name="password" id="Password" />
               </div>
             </div>
             <div id="fdp">
-              <div className="radio">
+              <div className="radio2">
                 <input type="radio" value="en" checked={lang === 'en'} onChange={this.handleChangeRadio} />
                 <p>English</p>
               </div>
-              <div className="radio">
+              <div className="radio2">
                 <input type="radio" value="fr" checked={lang === 'fr'} onChange={this.handleChangeRadio} />
                 <p>Français</p>
               </div>
             </div>
             <div className="form_div">
-              <SendButton onClick={this.handleSubmit} bootstrapButtonType="btn btn-warning" value="Modifier" />
+              <SendButton onClick={this.handleSubmit} bootstrapButtonType="btn btn-warning" value={langue === 'fr' ? 'Modifier' : 'Modify'} />
               <p id="flash" className={error ? 'error' : 'success'}>
                 {message}
               </p>
             </div>
           </div>
           <div className="other">
-            <h2>Tous les profils</h2>
+            {langue === 'fr' ? (
+              <h2>
+                Tous les profils
+              </h2>
+            ) : (
+              <h2>
+                All profiles
+              </h2>
+            )}
             <div className="all_profiles">
               {
                 Object.values(allUsers).map(elem => (

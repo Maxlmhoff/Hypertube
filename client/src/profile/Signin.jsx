@@ -12,7 +12,7 @@ const HYPERTUBE_ROUTE = 'localhost:3001';
 
 
 function getUser(token, dispatch) {
-  fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+  fetch(`https://${HYPERTUBE_ROUTE}/getuser`, {
     method: 'POST',
     headers: {
       Accept: 'application/json',
@@ -28,7 +28,7 @@ function handleSubmit(event, dispatch) {
   event.preventDefault();
   const data = new FormData(event.target);
 
-  fetch(`http://${HYPERTUBE_ROUTE}/signin`, {
+  fetch(`https://${HYPERTUBE_ROUTE}/signin`, {
     method: 'POST',
     body: data,
   })

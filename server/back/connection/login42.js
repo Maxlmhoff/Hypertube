@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
         client_id: '95ef3ef0c29389c329128b8eb8213b07d2ec51fa0a39ebf2ef364d0a04e71438',
         client_secret: '24a313d1bcd60f68c035e1ff986aa4b32ab6e4f61a0e68ed85a27b32af75179d',
         code: req.query.code, 
-        redirect_uri: 'http://localhost:3001/login42',
+        redirect_uri: 'https://localhost:3001/login42',
     })
   })
   .then(response => response.json())
@@ -35,7 +35,7 @@ router.get('/', (req, res) => {
       con.query(sql, [email], (err, result) => {
         if (result.length > 0){
           const token = jwt.sign({ id: result[0].id }, 'ultrasecret');
-          res.redirect(`http://localhost:3001/signup?truc=rien&token=${token}`)      
+          res.redirect(`https://localhost:3001/signup?truc=rien&token=${token}`)      
 
         }
         else {
@@ -44,7 +44,7 @@ router.get('/', (req, res) => {
             var ID = result[0].ID;
             const token = jwt.sign({ id: ID }, 'ultrasecret');
             console.log(token);
-            res.redirect(`http://localhost:3001/signup?truc=rien&token=${token}`)      
+            res.redirect(`https://localhost:3001/signup?truc=rien&token=${token}`)      
           }); 
         }
       });

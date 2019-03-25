@@ -15,10 +15,6 @@ function isVideo(file){
     tab.forEach(function (elem){
         if (file.indexOf(elem) !== -1 || file.indexOf(elem.toUpperCase()) !== -1){
             ret = true;
-            console.log("TATATATA");
-            console.log(file);
-            console.log(`${file.indexOf(elem)} ${file.indexOf(elem.toUpperCase())}`);
-            console.log("TUTUTUTU");
         }
     })
     return ret;
@@ -31,7 +27,11 @@ router.get('/:api/:id', async (req, res) => {
         })
         .then(response => response.json())
         .then(response => response.data.movie)
-        .catch((err) => console.log(err));
+        .catch(() => undefined);
+        if (!movie || !movie.torrents) {
+            res.end();
+            return;
+        }
         var hash = movie.torrents[0].hash;
         var link = movie.torrents[0].url;
         var engine = torrentStream('magnet:?xt=urn:btih:' + hash + '&dn=' + link, { path: 'tmp/movies' });
@@ -63,7 +63,7 @@ router.get('/:api/:id', async (req, res) => {
             }
             return stream.pipe(res);
         })
-        .catch((err) => console.log(err.stack));
+        .catch(() => res.end());
     }
     else if (req.params.api === 'bay'){
         const movie = await PirateBay.getTorrent(req.params.id);
@@ -106,7 +106,7 @@ router.get('/:api/:id', async (req, res) => {
             });
             return stream.pipe(res);
         })
-        .catch((err) => console.log(err));
+        .catch(() => res.end());
     }
     else {
         res.json({erreur: 'Api problem'});

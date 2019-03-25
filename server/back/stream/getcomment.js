@@ -4,13 +4,7 @@ var con = require('../../config/database');
 
 router.post('/', (req, res) => {
   if (req.body.movie) {
-    let movieId;
-    if (req.body.api === 'yts') {
-       movieId = req.body.movie.id;
-    }
-    else {
-       movieId = req.body.movie.id;
-    }
+    const movieId = req.body.movie.id;
     var sql = 'SELECT * FROM comment WHERE movieId = ?';
     con.query(sql, [movieId], (err, result) => {
       res.json({comment: result});

@@ -23,7 +23,7 @@ class Signup extends Component {
 
   getUser(token) {
     const { dispatch } = this.props;
-    fetch(`http://${HYPERTUBE_ROUTE}/getuser`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/getuser`, {
       method: 'POST',
       headers: {
         Accept: 'application/json',
@@ -40,7 +40,7 @@ class Signup extends Component {
     event.preventDefault();
     event.persist();
     const data = new FormData(event.target);
-    fetch(`http://${HYPERTUBE_ROUTE}/register`, {
+    fetch(`https://${HYPERTUBE_ROUTE}/register`, {
       method: 'POST',
       body: data,
     })

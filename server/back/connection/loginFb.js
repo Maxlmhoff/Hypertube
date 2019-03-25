@@ -2,7 +2,6 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 const request = require('request');
 var fs = require('fs');
-var http = require('http');
 
 const fetch = require('node-fetch');
 

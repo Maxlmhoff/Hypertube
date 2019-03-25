@@ -2,9 +2,16 @@ const express = require('express');
 const con = require('./config/database');
 var cors = require('cors');
 var session = require('express-session');
-var bodyParser = require('body-parser')
-
+var bodyParser = require('body-parser');
 const app = express();
+var fs = require('fs');
+var https = require('https');
+var privateKey  = fs.readFileSync('sslcert/server.key', 'utf8');
+var certificate = fs.readFileSync('sslcert/server.crt', 'utf8');
+var credentials = {key: privateKey, cert: certificate};
+var httpsServer = https.createServer(credentials, app);
+
+
 const PORT = 3001
 
 
@@ -25,6 +32,7 @@ var putVu = require('./back/stream/putvu');
 var getVu = require('./back/stream/getvu');
 var apiFetch = require('./back/stream/apifetch');
 var subtitles = require('./back/stream/subtitles');
+var deleteOldMovies = require('./back/stream/deleteOldMovies');
 
 
 //Midllewares
@@ -64,6 +72,7 @@ app.use('/img', express.static('public/img'));
 
 app.use('*', express.static('build/index.html'));
 
-app.listen(PORT, () => {
-		console.log("Server listening on port 3001");
-})
+httpsServer.listen(PORT);
+// app.listen(PORT, () => {
+// 		console.log("Server listening on port 3001");
+// })

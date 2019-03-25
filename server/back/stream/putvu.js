@@ -8,7 +8,12 @@ var con = require('../../config/database');
 router.post('/', (req, res) => {
   let token = req.headers.authorization;
   var movieId = eschtml(req.body.movie);
-  var decoded = jwt.verify(token, 'ultrasecret');
+  try {
+    var decoded = jwt.verify(token, 'ultrasecret');
+  } catch (err) {
+    res.end();
+    return ;
+  }
   var sql = `INSERT INTO vues (user_id, movie_id) VALUES (?, ?)`;
   con.query(sql,[decoded.id, movieId], (err, result) => { if (err) throw(err);
     res.json({success: "Film vu"});

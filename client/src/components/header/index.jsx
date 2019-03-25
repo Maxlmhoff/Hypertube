@@ -30,7 +30,7 @@ class Header extends Component {
 
 
   render() {
-    const { dispatch } = this.props;
+    const { dispatch, langue } = this.props;
     const { value } = this.state;
     return (
       <div>
@@ -50,7 +50,15 @@ class Header extends Component {
             </Link>
             <Link to="/">
               <button id="dc_button" type="button" onClick={() => dispatch({ type: 'DISCONNECT' })}>
-                Log out
+                {langue === 'fr' ? (
+                  <p>
+                    Deco
+                  </p>
+                ) : (
+                  <p>
+                    Log out
+                  </p>
+                )}
               </button>
             </Link>
           </div>
@@ -62,6 +70,7 @@ class Header extends Component {
 
 Header.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  langue: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => state;
