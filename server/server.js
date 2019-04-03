@@ -45,7 +45,7 @@ app.use(session({
 }));
 // cors permet d'accepter toutes les entetes HTTP 
 app.use(cors())
-app.use(require('./Middlewares/user'))
+// app.use(require('./Middlewares/user'))
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

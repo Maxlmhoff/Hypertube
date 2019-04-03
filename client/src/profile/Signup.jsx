@@ -70,7 +70,6 @@ class Signup extends Component {
   }
 
   render() {
-    const { token } = this.props;
     return (
       <div className="backgroundGrey">
         <div className="topBanner">
@@ -81,8 +80,6 @@ class Signup extends Component {
               <a href="resetPass" className="smallText" id="linkForgot">
                 I forgot my User ID or Password
               </a>
-              Token :
-              {token}
             </p>
           </div>
           <div className="divsInBanner">

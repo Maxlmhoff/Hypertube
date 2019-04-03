@@ -42,14 +42,22 @@ router.post('/', (req, res) => {
     }
   }
   else if (req.body.api === 'bay') {
-      PirateBay.topTorrents(201)
-      
-      .then(response => res.json(response.map(elem => ({
-        title: elem.name,
-        id: elem.id,
-      }))));
-      // test.json();
-    // .then(response => res.json(response))
+    if (req.body.id) {
+      PirateBay
+      .getTorrent(req.body.id)
+      .then(results => { console.log(results); return(results) } )
+      .then(results => res.json(results))
+      .catch(err => console.log(err))
+    } else {
+        PirateBay.topTorrents(201)
+        
+        .then(response => res.json(response.map(elem => ({
+          title: elem.name,
+          id: elem.id,
+        }))));
+        // test.json();
+      // .then(response => res.json(response))
+    }
   }
   else if (req.body.api === 'search' && req.body.queryTerm) {
     var list = [];
